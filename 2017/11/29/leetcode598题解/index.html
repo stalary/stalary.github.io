@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Range Addition II  题目描述  给出一个m*n的矩阵，值全为0，然后操作一个二维数组，来对矩阵进行改变，即每次数组中的[x,y]能够覆盖矩阵，即将覆盖的区域加1，返回矩阵中最大整数的个数  题解  这道题一上来思路就是要去找覆盖的地方，而覆盖的地方有什么特点呢？ 1，肯定是一个比操作它的区域要小的区域">
+<meta name="description" content="Range Addition II  题目描述  给出一个m*n的矩阵，值全为0，然后操作一个二维数组，来对矩阵进行改变，即每次数组中的[x,y]能够覆盖矩阵，即将覆盖的区域加1，返回矩阵中最大整数的个数  样例  1234567891011121314151617输入：  m = 3，n = 3 操作= [[2,2]">
 <meta name="keywords" content="数组">
 <meta property="og:type" content="article">
 <meta property="og:title" content="leetcode598题解">
 <meta property="og:url" content="http://stalary.com/2017/11/29/leetcode598题解/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="Range Addition II  题目描述  给出一个m*n的矩阵，值全为0，然后操作一个二维数组，来对矩阵进行改变，即每次数组中的[x,y]能够覆盖矩阵，即将覆盖的区域加1，返回矩阵中最大整数的个数  题解  这道题一上来思路就是要去找覆盖的地方，而覆盖的地方有什么特点呢？ 1，肯定是一个比操作它的区域要小的区域2，为最大整数，因为每次都会被覆盖，覆盖即加1 所以求个数的问题其实就是求最小区">
+<meta property="og:description" content="Range Addition II  题目描述  给出一个m*n的矩阵，值全为0，然后操作一个二维数组，来对矩阵进行改变，即每次数组中的[x,y]能够覆盖矩阵，即将覆盖的区域加1，返回矩阵中最大整数的个数  样例  1234567891011121314151617输入：  m = 3，n = 3 操作= [[2,2]，[3,3]] 输出： 4 说明： 最初，M = [[0,0,0]， [0,0,">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-28T16:27:25.275Z">
+<meta property="og:updated_time" content="2017-11-28T16:33:02.143Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="leetcode598题解">
-<meta name="twitter:description" content="Range Addition II  题目描述  给出一个m*n的矩阵，值全为0，然后操作一个二维数组，来对矩阵进行改变，即每次数组中的[x,y]能够覆盖矩阵，即将覆盖的区域加1，返回矩阵中最大整数的个数  题解  这道题一上来思路就是要去找覆盖的地方，而覆盖的地方有什么特点呢？ 1，肯定是一个比操作它的区域要小的区域2，为最大整数，因为每次都会被覆盖，覆盖即加1 所以求个数的问题其实就是求最小区">
+<meta name="twitter:description" content="Range Addition II  题目描述  给出一个m*n的矩阵，值全为0，然后操作一个二维数组，来对矩阵进行改变，即每次数组中的[x,y]能够覆盖矩阵，即将覆盖的区域加1，返回矩阵中最大整数的个数  样例  1234567891011121314151617输入：  m = 3，n = 3 操作= [[2,2]，[3,3]] 输出： 4 说明： 最初，M = [[0,0,0]， [0,0,">
 
 
 
@@ -397,6 +397,10 @@
 <li>题目描述</li>
 </ul>
 <p>给出一个m*n的矩阵，值全为0，然后操作一个二维数组，来对矩阵进行改变，即每次数组中的[x,y]能够覆盖矩阵，即将覆盖的区域加1，返回矩阵中最大整数的个数</p>
+<ul>
+<li>样例</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">输入：  </span><br><span class="line">m = <span class="number">3</span>，n = <span class="number">3</span> </span><br><span class="line">操作= [[<span class="number">2</span>,<span class="number">2</span>]，[<span class="number">3</span>,<span class="number">3</span>]] 输出： <span class="number">4</span></span><br><span class="line"> 说明： </span><br><span class="line">最初，M = </span><br><span class="line">[[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]，</span><br><span class="line"> [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]，</span><br><span class="line"> [<span class="number">0</span>，<span class="number">0</span>，<span class="number">0</span>]] </span><br><span class="line">执行后[<span class="number">2</span>,<span class="number">2</span>]，M = </span><br><span class="line">[[<span class="number">1</span>，<span class="number">1</span>,<span class="number">0</span>]，</span><br><span class="line"> [<span class="number">1</span>,<span class="number">1</span>，<span class="number">0</span>]，</span><br><span class="line"> [<span class="number">0</span>,<span class="number">0</span>，<span class="number">0</span>]] </span><br><span class="line">执行后[<span class="number">3</span>,<span class="number">3</span>] ，M = </span><br><span class="line">[[<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>]，</span><br><span class="line"> [<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>]，</span><br><span class="line"> [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]] </span><br><span class="line">所以M中的最大整数是<span class="number">2</span>，M中有四个。所以返回<span class="number">4</span>。</span><br></pre></td></tr></table></figure>
 <ul>
 <li>题解</li>
 </ul>
