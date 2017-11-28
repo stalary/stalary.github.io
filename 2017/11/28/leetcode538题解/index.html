@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Convert BST to Greater Tree 题目描述： 将一颗二叉搜索树的每个比当前节点大的节点都与该节点求和，从而形成一颗更大的二叉树 题解： 由题意，我们可以得知是一颗二叉搜索树，而二叉搜索数又有什么特点呢？ 1，左儿子一定小于根节点 2，右儿子一定大于根节点 所以我们可以推断出，最后一个右儿子节点一定">
+<meta name="description" content="Convert BST to Greater Tree  题目描述：  将一颗二叉搜索树的每个比当前节点大的节点都与该节点求和，从而形成一颗更大的二叉树  题解：  由题意，我们可以得知是一颗二叉搜索树，而二叉搜索数又有什么特点呢？ 1，左儿子一定小于根节点 2，右儿子一定大于根节点 所以我们可以推断出，最后一个右儿子">
 <meta name="keywords" content="二叉树">
 <meta property="og:type" content="article">
 <meta property="og:title" content="leetcode538题解">
 <meta property="og:url" content="http://stalary.com/2017/11/28/leetcode538题解/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="Convert BST to Greater Tree 题目描述： 将一颗二叉搜索树的每个比当前节点大的节点都与该节点求和，从而形成一颗更大的二叉树 题解： 由题意，我们可以得知是一颗二叉搜索树，而二叉搜索数又有什么特点呢？ 1，左儿子一定小于根节点 2，右儿子一定大于根节点 所以我们可以推断出，最后一个右儿子节点一定是最大的，最后一个左儿子节点一定是最小的，所以我们可以从先对右儿子进行相加，然后">
+<meta property="og:description" content="Convert BST to Greater Tree  题目描述：  将一颗二叉搜索树的每个比当前节点大的节点都与该节点求和，从而形成一颗更大的二叉树  题解：  由题意，我们可以得知是一颗二叉搜索树，而二叉搜索数又有什么特点呢？ 1，左儿子一定小于根节点 2，右儿子一定大于根节点 所以我们可以推断出，最后一个右儿子节点一定是最大的，最后一个左儿子节点一定是最小的，所以我们可以从先对右儿子进行相">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-28T00:05:09.092Z">
+<meta property="og:updated_time" content="2017-11-28T16:16:35.295Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="leetcode538题解">
-<meta name="twitter:description" content="Convert BST to Greater Tree 题目描述： 将一颗二叉搜索树的每个比当前节点大的节点都与该节点求和，从而形成一颗更大的二叉树 题解： 由题意，我们可以得知是一颗二叉搜索树，而二叉搜索数又有什么特点呢？ 1，左儿子一定小于根节点 2，右儿子一定大于根节点 所以我们可以推断出，最后一个右儿子节点一定是最大的，最后一个左儿子节点一定是最小的，所以我们可以从先对右儿子进行相加，然后">
+<meta name="twitter:description" content="Convert BST to Greater Tree  题目描述：  将一颗二叉搜索树的每个比当前节点大的节点都与该节点求和，从而形成一颗更大的二叉树  题解：  由题意，我们可以得知是一颗二叉搜索树，而二叉搜索数又有什么特点呢？ 1，左儿子一定小于根节点 2，右儿子一定大于根节点 所以我们可以推断出，最后一个右儿子节点一定是最大的，最后一个左儿子节点一定是最小的，所以我们可以从先对右儿子进行相">
 
 
 
@@ -393,13 +393,21 @@
 
       
         <p>Convert BST to Greater Tree</p>
-<p>题目描述：</p>
+<ul>
+<li>题目描述：</li>
+</ul>
 <p>将一颗二叉搜索树的每个比当前节点大的节点都与该节点求和，从而形成一颗更大的二叉树</p>
-<p>题解：</p>
+<ul>
+<li>题解：</li>
+</ul>
 <p>由题意，我们可以得知是一颗二叉搜索树，而二叉搜索数又有什么特点呢？</p>
 <p>1，左儿子一定小于根节点</p>
 <p>2，右儿子一定大于根节点</p>
-<p>所以我们可以推断出，最后一个右儿子节点一定是最大的，最后一个左儿子节点一定是最小的，所以我们可以从先对右儿子进行相加，然后依次与其他节点求和，下面展示一下code<br><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">int <span class="attr">sum=</span><span class="number">0</span>;</span><br><span class="line">public TreeNode convertBST(TreeNode root) &#123;</span><br><span class="line">    convert(root);</span><br><span class="line">    return root;</span><br><span class="line">&#125;</span><br><span class="line">public void convert(TreeNode <span class="keyword">node</span><span class="title">) &#123;</span></span><br><span class="line"><span class="title">if</span>(<span class="keyword">node</span> <span class="title">==null</span>) &#123;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line">convert(<span class="keyword">node</span>.<span class="title">right</span>);</span><br><span class="line"><span class="keyword">node</span>.<span class="title">val</span>+=sum;</span><br><span class="line">// 存储节点的值，供下次递归时使用</span><br><span class="line"><span class="attr">sum=</span> <span class="keyword">node</span>.<span class="title">val</span>;</span><br><span class="line">convert(<span class="keyword">node</span>.<span class="title">left</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>所以我们可以推断出，最后一个右儿子节点一定是最大的，最后一个左儿子节点一定是最小的，所以我们可以从先对右儿子进行相加，然后依次与其他节点求和</p>
+<ul>
+<li>code</li>
+</ul>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">int <span class="attr">sum=</span><span class="number">0</span>;</span><br><span class="line">public TreeNode convertBST(TreeNode root) &#123;</span><br><span class="line">    convert(root);</span><br><span class="line">    return root;</span><br><span class="line">&#125;</span><br><span class="line">public void convert(TreeNode <span class="keyword">node</span><span class="title">) &#123;</span></span><br><span class="line"><span class="title">if</span>(<span class="keyword">node</span> <span class="title">==null</span>) &#123;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line">convert(<span class="keyword">node</span>.<span class="title">right</span>);</span><br><span class="line"><span class="keyword">node</span>.<span class="title">val</span>+=sum;</span><br><span class="line">// 存储节点的值，供下次递归时使用</span><br><span class="line"><span class="attr">sum=</span> <span class="keyword">node</span>.<span class="title">val</span>;</span><br><span class="line">convert(<span class="keyword">node</span>.<span class="title">left</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
