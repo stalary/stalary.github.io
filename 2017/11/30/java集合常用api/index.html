@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="常用api[toc] listArrayList ArrayList是基于数组实现的动态数组，允许存在重复元素，这点要与HashMap和HashMap进行区分，我们首先要想到数组的一些特点：  对于get，set的随机访问速度较快 添加删除元素的速度较慢，因为需要移动元素  我们还要注意一个细节Arrays.asLis">
+<meta name="description" content="常用apilistArrayList ArrayList是基于数组实现的动态数组，允许存在重复元素，这点要与HashMap和HashMap进行区分，我们首先要想到数组的一些特点：  对于get，set的随机访问速度较快 添加删除元素的速度较慢，因为需要移动元素  我们还要注意一个细节Arrays.asList所返回的并">
 <meta name="keywords" content="集合">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java集合常用api">
 <meta property="og:url" content="http://stalary.com/2017/11/30/java集合常用api/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="常用api[toc] listArrayList ArrayList是基于数组实现的动态数组，允许存在重复元素，这点要与HashMap和HashMap进行区分，我们首先要想到数组的一些特点：  对于get，set的随机访问速度较快 添加删除元素的速度较慢，因为需要移动元素  我们还要注意一个细节Arrays.asList所返回的并不是一个真正的List,我们是无法对它进行add操作的。 常用方法的">
+<meta property="og:description" content="常用apilistArrayList ArrayList是基于数组实现的动态数组，允许存在重复元素，这点要与HashMap和HashMap进行区分，我们首先要想到数组的一些特点：  对于get，set的随机访问速度较快 添加删除元素的速度较慢，因为需要移动元素  我们还要注意一个细节Arrays.asList所返回的并不是一个真正的List,我们是无法对它进行add操作的。 常用方法的分析：  a">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-30T00:45:06.830Z">
+<meta property="og:updated_time" content="2017-11-30T00:48:02.643Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java集合常用api">
-<meta name="twitter:description" content="常用api[toc] listArrayList ArrayList是基于数组实现的动态数组，允许存在重复元素，这点要与HashMap和HashMap进行区分，我们首先要想到数组的一些特点：  对于get，set的随机访问速度较快 添加删除元素的速度较慢，因为需要移动元素  我们还要注意一个细节Arrays.asList所返回的并不是一个真正的List,我们是无法对它进行add操作的。 常用方法的">
+<meta name="twitter:description" content="常用apilistArrayList ArrayList是基于数组实现的动态数组，允许存在重复元素，这点要与HashMap和HashMap进行区分，我们首先要想到数组的一些特点：  对于get，set的随机访问速度较快 添加删除元素的速度较慢，因为需要移动元素  我们还要注意一个细节Arrays.asList所返回的并不是一个真正的List,我们是无法对它进行add操作的。 常用方法的分析：  a">
 
 
 
@@ -381,8 +381,7 @@
       
 
       
-        <h1 id="常用api"><a href="#常用api" class="headerlink" title="常用api"></a>常用api</h1><p>[toc]</p>
-<h2 id="list"><a href="#list" class="headerlink" title="list"></a>list</h2><h3 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h3><blockquote>
+        <h1 id="常用api"><a href="#常用api" class="headerlink" title="常用api"></a>常用api</h1><h2 id="list"><a href="#list" class="headerlink" title="list"></a>list</h2><h3 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h3><blockquote>
 <p>ArrayList是基于数组实现的动态数组，允许存在重复元素，这点要与HashMap和HashMap进行区分，我们首先要想到数组的一些特点：</p>
 <ol>
 <li>对于get，set的随机访问速度较快</li>
