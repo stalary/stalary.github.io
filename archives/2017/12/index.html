@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="mysql," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,18 +79,16 @@
 
 
 
-<meta name="description" content="原来一直没有想过数组是可以存到mysql中的，当今天真正使用时，才发现了桶思想的强大之处。  什么是桶思想呢？  桶排序大家一定都知道，这是一个牺牲了空间，来将时间复杂度降低到了线性的算法，而它的特点就是先划分出一定数量的桶，然后再将数字映射到各自的桶中，再对非空桶进行快速排序。  何时会用到这种思想呢？  例如我们我">
-<meta name="keywords" content="mysql">
-<meta property="og:type" content="article">
-<meta property="og:title" content="桶思想的mysql应用">
-<meta property="og:url" content="http://stalary.com/2017/11/30/桶思想的mysql应用/index.html">
+<meta name="description" content="study every day,knowledge never overflows">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Stalary的小书房">
+<meta property="og:url" content="http://stalary.com/archives/2017/12/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="原来一直没有想过数组是可以存到mysql中的，当今天真正使用时，才发现了桶思想的强大之处。  什么是桶思想呢？  桶排序大家一定都知道，这是一个牺牲了空间，来将时间复杂度降低到了线性的算法，而它的特点就是先划分出一定数量的桶，然后再将数字映射到各自的桶中，再对非空桶进行快速排序。  何时会用到这种思想呢？  例如我们我们需要统计一组数据时，其实使用一个字段就可以实现，例如我们需要统计一套试卷的答题">
+<meta property="og:description" content="study every day,knowledge never overflows">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-02T04:54:12.079Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="桶思想的mysql应用">
-<meta name="twitter:description" content="原来一直没有想过数组是可以存到mysql中的，当今天真正使用时，才发现了桶思想的强大之处。  什么是桶思想呢？  桶排序大家一定都知道，这是一个牺牲了空间，来将时间复杂度降低到了线性的算法，而它的特点就是先划分出一定数量的桶，然后再将数字映射到各自的桶中，再对非空桶进行快速排序。  何时会用到这种思想呢？  例如我们我们需要统计一组数据时，其实使用一个字段就可以实现，例如我们需要统计一套试卷的答题">
+<meta name="twitter:title" content="Stalary的小书房">
+<meta name="twitter:description" content="study every day,knowledge never overflows">
 
 
 
@@ -120,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://stalary.com/2017/11/30/桶思想的mysql应用/"/>
+  <link rel="canonical" href="http://stalary.com/archives/2017/12/"/>
 
 
 
 
 
-  <title>桶思想的mysql应用 | Stalary的小书房</title>
+  <title>归档 | Stalary的小书房</title>
   
 
 
@@ -158,7 +156,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-archive">
     <div class="headband"></div>
 <a href="https://github.com/stalary"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -262,247 +260,74 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block archive">
+    <div id="posts" class="posts-collapse">
+      <span class="archive-move-on"></span>
 
-  
+      <span class="archive-page-counter">
+        
+        
+        
+          
+        
+        嗯..! 目前共计 7 篇日志。 继续努力。
+      </span>
 
-  
-  
-  
+      
+
+        
+        
+        
+
+        
+          
+          <div class="collection-title">
+            <h1 class="archive-year" id="archive-year-2017">2017</h1>
+          </div>
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/11/30/桶思想的mysql应用/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2017/12/02/桶思想的mysql应用/" itemprop="url">
+              
+                <span itemprop="name">桶思想的mysql应用</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">桶思想的mysql应用</h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-30T21:40:40+08:00">
-                2017-11-30
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2017-12-02T12:57:40+08:00"
+              content="2017-12-02" >
+          12-02
+        </time>
+      </div>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据库，mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">数据库，mysql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2017/11/30/桶思想的mysql应用/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/11/30/桶思想的mysql应用/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
-            </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>原来一直没有想过数组是可以存到mysql中的，当今天真正使用时，才发现了桶思想的强大之处。</p>
-<ul>
-<li>什么是桶思想呢？</li>
-</ul>
-<p>桶排序大家一定都知道，这是一个牺牲了空间，来将时间复杂度降低到了线性的算法，而它的特点就是先划分出一定数量的桶，然后再将数字映射到各自的桶中，再对非空桶进行快速排序。</p>
-<ul>
-<li>何时会用到这种思想呢？</li>
-</ul>
-<p>例如我们我们需要统计一组数据时，其实使用一个字段就可以实现，例如我们需要统计一套试卷的答题情况，其实我们可以设置100个桶，每个学生的分数即对应桶。</p>
-<p>而且当我们只需要确定一个状态时，就可以使用0或1来表示，可以使用bitmap，例如男女，已毕业未毕业这种非反即正的问题。</p>
-<ul>
-<li><p>java中如何存储数组和取出？</p>
-<ul>
-<li>可以直接将数组转化为二进制进行存储</li>
-<li>先转化为字符串再进行存储，取出时再反序列化</li>
-<li>我使用的是gson的转化方法，序列化与反序列化十分方便</li>
-</ul>
-</li>
-<li><p>demo</p>
-</li>
-</ul>
-<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transient</span></span><br><span class="line"><span class="keyword">private</span> List&lt;Integer&gt; scores;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Column</span>(name = <span class="string">"scoreStr"</span>)</span><br><span class="line"><span class="keyword">private</span> String scoreStr;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">serializeFields</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.scoreStr = BeansFactory.getGson().toJson(scores);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">deserializeFields</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.scores = BeansFactory.getGson().fromJson(scoreStr, <span class="keyword">new</span> TypeToken&lt;List&lt;Integer&gt;&gt;()&#123;&#125;.getType());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里的@Transient注解是为了防止被序列化，我们将元素存入list中，然后再序列化为字符串，持久化到数据库中即可完成数据的存储，当我们需要使用数据时，只需要将字符串反序列化为list，就可以读取数据。</p>
-<hr>
-<p>数据库还有很多的思想等待我们去发现，去挖掘，项目中我们所需要学习的并不是一些前沿框架的使用，而是一些优秀的优化思想。</p>
-<h4 id="大道至简，知易行难"><a href="#大道至简，知易行难" class="headerlink" title="大道至简，知易行难"></a>大道至简，知易行难</h4>
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-    <div>
-    
-        <div style="text-align:center;color: #ccc;font-size:14px;">
-            -------------本文结束-感谢您的阅读-------------
-        </div>
-    
-</div>
-
-  
-</div>
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/mysql/" rel="tag"><i class="fa fa-tag"></i> mysql</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/11/30/leetcode349题解/" rel="next" title="leetcode349题解">
-                <i class="fa fa-chevron-left"></i> leetcode349题解
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
- 
-  
-  
-  
+    </header>
   </article>
 
 
 
-    <div class="post-spread">
       
-        <!-- JiaThis Button BEGIN -->
-<div class="jiathis_style">
-<span class="jiathis_txt">分享到：</span>
-<a class="jiathis_button_fav">收藏夹</a>
-<a class="jiathis_button_copy">复制网址</a>
-<a class="jiathis_button_email">邮件</a>
-<a class="jiathis_button_weixin">微信</a>
-<a class="jiathis_button_qzone">QQ空间</a>
-<a class="jiathis_button_tqq">腾讯微博</a>
-<a class="jiathis_button_douban">豆瓣</a>
-<a class="jiathis_button_share">一键分享</a>
 
-<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
-<a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" >
-var jiathis_config={
-  data_track_clickback:true,
-  summary:"",
-  shortUrl:false,
-  hideMore:false
-}
-</script>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-      
     </div>
   </div>
+  
+  
+  
+
+  
+
 
 
           </div>
@@ -510,15 +335,6 @@ var jiathis_config={
 
 
           
-
-  
-    <div class="comments" id="comments">
-      <div id="SOHUCS"></div>
-    </div>
-
-  
-
-
 
         </div>
         
@@ -539,17 +355,8 @@ var jiathis_config={
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -629,22 +436,6 @@ var jiathis_config={
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#大道至简，知易行难"><span class="nav-number">1.</span> <span class="nav-text">大道至简，知易行难</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -817,12 +608,6 @@ var jiathis_config={
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-<!-- needsharebutton Javascript file -->
-<script src="js/needsharebutton.min.js"></script>
-
-
 
   
 
