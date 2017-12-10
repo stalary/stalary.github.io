@@ -88,7 +88,7 @@
 <meta property="og:description" content="链表中环的入口结点  题目解释：  找到一个带环的链表中环的入口结点  样例：此时的入口结点就是3结点  题解：   这个题的思路是我们可以使用一对快慢指针：  首先快指针移动两个结点，慢指针移动一个结点，当两个结点相遇时就可以知道链表是否存在环。 然后返回相遇的点，再进行设置两个指针，第一个指针从相遇点开始向后移动，并统计结点的数量，当再次相遇时即可获得环中元素的数量。 最后使第二个指针从头开始">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-10dfbd7547961aae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-12-09T15:14:58.621Z">
+<meta property="og:updated_time" content="2017-12-10T08:22:09.851Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【剑指offer】链表中环的入口结点">
 <meta name="twitter:description" content="链表中环的入口结点  题目解释：  找到一个带环的链表中环的入口结点  样例：此时的入口结点就是3结点  题解：   这个题的思路是我们可以使用一对快慢指针：  首先快指针移动两个结点，慢指针移动一个结点，当两个结点相遇时就可以知道链表是否存在环。 然后返回相遇的点，再进行设置两个指针，第一个指针从相遇点开始向后移动，并统计结点的数量，当再次相遇时即可获得环中元素的数量。 最后使第二个指针从头开始">
@@ -409,7 +409,7 @@
 <ol>
 <li>首先快指针移动两个结点，慢指针移动一个结点，当两个结点相遇时就可以知道链表是否存在环。</li>
 <li>然后返回相遇的点，再进行设置两个指针，第一个指针从相遇点开始向后移动，并统计结点的数量，当再次相遇时即可获得环中元素的数量。</li>
-<li>最后使第二个指针从头开始移动，当和第一个指针相遇时即找到了入口结点  </li>
+<li>最后使第二个指针从头开始移动，第一个指针也随之移动，当和第一个指针相遇时即找到了入口结点  </li>
 </ol>
 <ul>
 <li>code：</li>
