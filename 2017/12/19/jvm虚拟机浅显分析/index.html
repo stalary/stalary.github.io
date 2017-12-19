@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="普及一下虚拟机中的一些区域，垃圾收集算法，垃圾收集器等，后续还会完善 运行时数据区域程序计数器 线程私有 一块较小的内存空间 记录正在执行的java方法的虚拟机字节码指令的地址(native方法为空) 没有OutOfMemoryOut的情况  Java虚拟机栈 线程私有 为虚拟机执行java方法服务 与线程的生命周期相">
+<meta name="description" content="普及一下虚拟机中的一些区域，垃圾收集算法，垃圾收集器等，后续还会完善 运行时数据区域程序计数器 线程私有 一块较小的内存空间 记录正在执行的java方法的虚拟机字节码指令的地址(native方法为空) 没有OutOfMemoryError的情况  Java虚拟机栈 线程私有 为虚拟机执行java方法服务 与线程的生命周">
 <meta name="keywords" content="虚拟机">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Java】虚拟机浅显分析">
 <meta property="og:url" content="http://stalary.com/2017/12/19/jvm虚拟机浅显分析/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="普及一下虚拟机中的一些区域，垃圾收集算法，垃圾收集器等，后续还会完善 运行时数据区域程序计数器 线程私有 一块较小的内存空间 记录正在执行的java方法的虚拟机字节码指令的地址(native方法为空) 没有OutOfMemoryOut的情况  Java虚拟机栈 线程私有 为虚拟机执行java方法服务 与线程的生命周期相同 当线程请求的栈深度大于虚拟机所允许的深度，抛出StackOverflowEr">
+<meta property="og:description" content="普及一下虚拟机中的一些区域，垃圾收集算法，垃圾收集器等，后续还会完善 运行时数据区域程序计数器 线程私有 一块较小的内存空间 记录正在执行的java方法的虚拟机字节码指令的地址(native方法为空) 没有OutOfMemoryError的情况  Java虚拟机栈 线程私有 为虚拟机执行java方法服务 与线程的生命周期相同 当线程请求的栈深度大于虚拟机所允许的深度，抛出StackOverflow">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-19T10:24:29.776Z">
+<meta property="og:updated_time" content="2017-12-19T11:28:58.613Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Java】虚拟机浅显分析">
-<meta name="twitter:description" content="普及一下虚拟机中的一些区域，垃圾收集算法，垃圾收集器等，后续还会完善 运行时数据区域程序计数器 线程私有 一块较小的内存空间 记录正在执行的java方法的虚拟机字节码指令的地址(native方法为空) 没有OutOfMemoryOut的情况  Java虚拟机栈 线程私有 为虚拟机执行java方法服务 与线程的生命周期相同 当线程请求的栈深度大于虚拟机所允许的深度，抛出StackOverflowEr">
+<meta name="twitter:description" content="普及一下虚拟机中的一些区域，垃圾收集算法，垃圾收集器等，后续还会完善 运行时数据区域程序计数器 线程私有 一块较小的内存空间 记录正在执行的java方法的虚拟机字节码指令的地址(native方法为空) 没有OutOfMemoryError的情况  Java虚拟机栈 线程私有 为虚拟机执行java方法服务 与线程的生命周期相同 当线程请求的栈深度大于虚拟机所允许的深度，抛出StackOverflow">
 
 
 
@@ -397,7 +397,7 @@
 <li>线程私有</li>
 <li>一块较小的内存空间</li>
 <li>记录正在执行的java方法的虚拟机字节码指令的地址(native方法为空)</li>
-<li>没有OutOfMemoryOut的情况</li>
+<li>没有OutOfMemoryError的情况</li>
 </ol>
 <h4 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h4><ol>
 <li>线程私有</li>
