@@ -275,6 +275,219 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/01/03/跨域请求丢失cookie的解决/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stalary">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stalary的小书房">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/03/跨域请求丢失cookie的解决/" itemprop="url">【web】跨域丢失cookie的问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-03T22:20:40+08:00">
+                2018-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/" itemprop="url" rel="index">
+                    <span itemprop="name">web</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/跨域/" itemprop="url" rel="index">
+                    <span itemprop="name">跨域</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/01/03/跨域请求丢失cookie的解决/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://stalary.com/2018/01/03/跨域请求丢失cookie的解决/" class="cy_cmt_count" data-xid="2018/01/03/跨域请求丢失cookie的解决/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>2018年的第一篇博客，新的开始，新的起点</p>
+<p>前几天在写一个利用cookie存储token的登陆demo时遇到了跨域丢失token的问题，在这里分享一下解决的方法。</p>
+<h4 id="案例分析"><a href="#案例分析" class="headerlink" title="案例分析"></a>案例分析</h4><ul>
+<li>前端使用了vue-reource的$http进行请求后台接口</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.$http(&#123;</span><br><span class="line">              url: <span class="string">"http://120.24.5.178:8100/user/login"</span>,</span><br><span class="line">              method: <span class="string">"POST"</span>,</span><br><span class="line">              body: <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">                username: <span class="keyword">this</span>.ruleForm.username,</span><br><span class="line">                password: <span class="keyword">this</span>.ruleForm.password</span><br><span class="line">              &#125;),</span><br><span class="line">              headers: &#123;</span><br><span class="line">                <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span></span><br><span class="line">              &#125;</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>登陆完成后，服务端监控发现无法拿到cookie，下面看几张前端控制台监控的图</p>
+</li>
+<li><p>无法拿到cookie时的监控图<br><img src="http://upload-images.jianshu.io/upload_images/9252736-6be7f1065e84050a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/9252736-f05479b3bf243d54.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+</li>
+<li>后台cors代码</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest req, ServletResponse res, FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        HttpServletRequest request = (HttpServletRequest) req;</span><br><span class="line">        HttpServletResponse response = (HttpServletResponse) res;</span><br><span class="line">        String origin = request.getHeader(<span class="string">"Origin"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"*"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Access-Control-Allow-Methods"</span>,</span><br><span class="line">                <span class="string">"GET, POST, PUT, DELETE, OPTIONS"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Access-Control-Allow-Credentials"</span>, <span class="string">"true"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Access-Control-Allow-Headers"</span>,</span><br><span class="line">                <span class="string">"Origin, X-Requested-With, Content-Type, Accept, Authorization"</span>);</span><br><span class="line"></span><br><span class="line">        chain.doFilter(req, res);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>后台获取cookie的代码</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Cookie[] cookies = request.getCookies();</span><br><span class="line">        <span class="keyword">if</span> (cookies != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : cookies) &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="string">"ticket"</span>.equals(cookie.getName())) &#123;</span><br><span class="line">                    String value = <span class="keyword">null</span>;</span><br><span class="line">                    <span class="keyword">if</span> (!StringUtils.isEmpty(cookie.getValue())) &#123;</span><br><span class="line">                        value = DigestUtil.Decrypt(cookie.getValue());</span><br><span class="line">                    &#125;</span><br><span class="line">                    User login = userService.findByTicket(value);</span><br><span class="line">                    request.getSession().setAttribute(<span class="string">"user"</span>, login);</span><br><span class="line">                    log.info(<span class="string">"ticket: "</span> + value);</span><br><span class="line">                    log.info(<span class="string">"user: "</span> + login);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>因为request中没有cookies，所以后台获取为null</p>
+</li>
+<li><p>经过上网查资料修改后的监控图片</p>
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-3177695f2b63ed13.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/9252736-36f7d79c8afde696.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<ul>
+<li>我们可以发现在request中多了cookie这个字段，并且在cookies中有了ticket，后台可以通过request.getCookies()进行获取了</li>
+</ul>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><ul>
+<li>最后定位到了这是一个跨域问题，在跨域时cookie被丢弃。</li>
+<li>前端：请求时增加withCredentials: true</li>
+<li><p>后端：</p>
+<ul>
+<li>直接使用*来匹配所有域名只能适用于无需使用cookie的场景</li>
+<li>可以将origin的*替换为允许请求的正则表达式</li>
+<li><p>可以加入一个list列表，代表请求白名单</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; allowedOrigins = Arrays.asList(<span class="string">"http://localhost:8080"</span>, <span class="string">"http://localhost:8100"</span>, <span class="string">"http://login.stalary.com"</span>);</span><br><span class="line">response.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, allowedOrigins.contains(origin) ? origin : <span class="string">""</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>也可以直接拿到前端的第一次options请求的header来进行跨域处理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String origin = request.getHeader(<span class="string">"Origin"</span>);</span><br><span class="line">    response.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, origin);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>本次简单的跨域丢失cookie的处理就介绍到这里了，如有问题可以私信博主qq<br><a href="login.stalary.com">登陆demo地址</a><br><a href="https://github.com/stalary/SpringBootDemo" target="_blank" rel="noopener">登陆demo源码地址</a><br><a href="http://login.stalary.com/swagger-ui.html" target="_blank" rel="noopener">登陆demo-swagger接口地址</a></p>
+<p>服务器时学生机，访问较慢，请见谅。</p>
+<p>#####每一次知识的积累，都是明天你微笑的源泉</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/12/29/spring-boot从创建到部署/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1163,239 +1376,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/12/14/并发工具包/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/14/并发工具包/" itemprop="url">【Java】并发工具包之CountDownLatch|CyclicBarrier|Semaphore</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-14T16:45:40+08:00">
-                2017-12-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/并发/" itemprop="url" rel="index">
-                    <span itemprop="name">并发</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2017/12/14/并发工具包/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://stalary.com/2017/12/14/并发工具包/" class="cy_cmt_count" data-xid="2017/12/14/并发工具包/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在java的并发包中为我们提供了三种并发控制的手段，他们分别是CountDownLatch|CyclicBarrier|Semaphore，今天我们分别来讲解一下这三种方法以及使用场景</p>
-<h2 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h2><ul>
-<li>特点：<ul>
-<li>首先设置一个计数器，在线程完成数达到计数器阈值之前，其他的一个或多个线程都会等待。</li>
-<li>计数器无法重置，一旦到达阈值，就会释放所有线程</li>
-</ul>
-</li>
-<li>适用场景：<ul>
-<li>实现并行(可以用来模拟高并发的操作)</li>
-<li>开始执行任务前先完成前置的一些任务</li>
-<li>检测死锁</li>
-</ul>
-</li>
-<li>使用：<ul>
-<li>当每次线程完成时在执行countDown()使计数器减1，当执行线程数达到计数器阈值时即会自动释放所有等待的线程</li>
-</ul>
-</li>
-<li>demo：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CountDownLatchDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 线程数量</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> THREAD_COUNT = <span class="number">10</span>;</span><br><span class="line">    <span class="comment">// 初始化，设置计数器大小</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> CountDownLatch countDownLatch = <span class="keyword">new</span> CountDownLatch(THREAD_COUNT);</span><br><span class="line">    <span class="comment">// 创建线程池，大小与计数器一致，不一致则无法实现一次并发所有请求</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ExecutorService ex = Executors.newFixedThreadPool(THREAD_COUNT);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; THREAD_COUNT; i++) &#123;</span><br><span class="line">            Runnable runnable = () -&gt; &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                    System.out.println(<span class="string">"Thread: "</span> + Thread.currentThread().getName());</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    <span class="comment">// 一个线程执行完毕，计数器减1</span></span><br><span class="line">                    countDownLatch.countDown();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            <span class="comment">// 线程池执行线程</span></span><br><span class="line">            ex.execute(runnable);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 关闭线程池</span></span><br><span class="line">        ex.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">after <span class="number">1</span>s output：</span><br><span class="line"></span><br><span class="line">Thread: pool-<span class="number">1</span>-thread-<span class="number">8</span></span><br><span class="line">Thread: pool-<span class="number">1</span>-thread-<span class="number">3</span></span><br><span class="line">Thread: pool-<span class="number">1</span>-thread-<span class="number">7</span></span><br><span class="line">Thread: pool-<span class="number">1</span>-thread-<span class="number">10</span></span><br><span class="line">Thread: pool-<span class="number">1</span>-thread-<span class="number">5</span></span><br><span class="line">Thread: pool-<span class="number">1</span>-thread-<span class="number">2</span></span><br><span class="line">Thread: pool-<span class="number">1</span>-thread-<span class="number">6</span></span><br><span class="line">Thread: pool-<span class="number">1</span>-thread-<span class="number">4</span></span><br><span class="line">Thread: pool-<span class="number">1</span>-thread-<span class="number">9</span></span><br><span class="line">Thread: pool-<span class="number">1</span>-thread-<span class="number">1</span></span><br></pre></td></tr></table></figure>
-<h2 id="CyclicBarrier"><a href="#CyclicBarrier" class="headerlink" title="CyclicBarrier"></a>CyclicBarrier</h2><ul>
-<li>特点：<ul>
-<li>设置屏障，当一组线程到达屏障时被阻塞，待所有线程到达时，取消所有阻塞。</li>
-</ul>
-</li>
-<li>适用场景：<ul>
-<li>需要所有子任务完成时才执行主任务(类似CountDownLatch)</li>
-<li>多线程计算，最后合并计算结果</li>
-</ul>
-</li>
-<li>使用：<ul>
-<li>每次执行完线程，调用await()进入屏障中等待</li>
-<li>当所有线程都到达屏障时，自动取消所有阻塞</li>
-</ul>
-</li>
-<li>demo：</li>
-</ul>
-<p>设置多名学生，求多个学生的平均成绩，如果使用多线程计算每个学生的成绩，则需要等待所有学生的成绩计算完毕，才能求平均值，所以可以使用CyclicBarrier    </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CyclicBarrierDemo</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置线程池数量</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_COUNT = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建屏障数量，屏障全部到达后执行当前类的run方法</span></span><br><span class="line">    <span class="keyword">private</span> CyclicBarrier cyclicBarrier = <span class="keyword">new</span> CyclicBarrier(<span class="number">5</span>, <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建线程池</span></span><br><span class="line">    <span class="keyword">private</span> Executor executor = Executors.newFixedThreadPool(THREAD_COUNT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 保存每个人的成绩</span></span><br><span class="line">    <span class="keyword">private</span> ConcurrentHashMap&lt;String, Integer&gt; scores = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        CyclicBarrierDemo c = <span class="keyword">new</span> CyclicBarrierDemo();</span><br><span class="line">        c.count();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">count</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            Runnable runnable = () -&gt; &#123;</span><br><span class="line">                <span class="comment">// 每个学生的随机成绩</span></span><br><span class="line">                <span class="keyword">int</span> temp = random.nextInt(<span class="number">100</span>);</span><br><span class="line">                scores.put(Thread.currentThread().getName(), temp);</span><br><span class="line">                System.out.println(temp);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="comment">// 进入屏障，等待其他学生计算完毕</span></span><br><span class="line">                    cyclicBarrier.await();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException | BrokenBarrierException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            executor.execute(runnable);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 求平均值</span></span><br><span class="line">        <span class="keyword">for</span> (Map.Entry&lt;String, Integer&gt; out : scores.entrySet()) &#123;</span><br><span class="line">            result += out.getValue();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"avg: "</span> + result / THREAD_COUNT);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">76</span></span><br><span class="line"><span class="number">98</span></span><br><span class="line"><span class="number">37</span></span><br><span class="line">avg: <span class="number">45</span></span><br></pre></td></tr></table></figure>
-<h2 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h2><ul>
-<li>特点：<ul>
-<li>设置同一时间被访问的线程数量，可以实现流量控制</li>
-</ul>
-</li>
-<li>适用场景：<ul>
-<li>限流，限制每次运行的线程数量</li>
-</ul>
-</li>
-<li>使用：<ul>
-<li>线程开始时调用acquire()使用一个信号量</li>
-<li>线程结束时调用semaphore.release()释放一个信号量</li>
-<li>当acquire()-release()&gt;Semaphore时，则无法再开始新的线程</li>
-</ul>
-</li>
-<li>demo：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SemaphoreDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 线程数量</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> THREAD_COUNT = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置线程池大小</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ExecutorService exec = Executors.newFixedThreadPool(THREAD_COUNT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置信号量的数量</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Semaphore semaphore = <span class="keyword">new</span> Semaphore(THREAD_COUNT);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">50</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> No = i;</span><br><span class="line">            Runnable runnable = () -&gt; &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    semaphore.acquire();</span><br><span class="line">                    System.out.println(<span class="string">"Get: "</span> + No);</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    semaphore.release();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            exec.execute(runnable);</span><br><span class="line">        &#125;</span><br><span class="line">        exec.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">every <span class="number">5</span>s output <span class="number">5</span>:</span><br><span class="line">Get: <span class="number">1</span></span><br><span class="line">Get: <span class="number">3</span></span><br><span class="line">Get: <span class="number">4</span></span><br><span class="line">Get: <span class="number">2</span></span><br><span class="line">Get: <span class="number">0</span></span><br><span class="line">Get: <span class="number">5</span></span><br><span class="line">Get: <span class="number">6</span></span><br><span class="line">Get: <span class="number">7</span></span><br><span class="line">Get: <span class="number">8</span></span><br><span class="line">Get: <span class="number">9</span></span><br><span class="line">Get: <span class="number">10</span></span><br><span class="line">Get: <span class="number">12</span></span><br><span class="line">Get: <span class="number">11</span></span><br><span class="line">Get: <span class="number">13</span></span><br><span class="line">Get: <span class="number">17</span></span><br><span class="line">Get: <span class="number">15</span></span><br><span class="line">Get: <span class="number">14</span></span><br><span class="line">Get: <span class="number">16</span></span><br><span class="line">Get: <span class="number">19</span></span><br><span class="line">Get: <span class="number">18</span></span><br><span class="line">Get: <span class="number">20</span></span><br><span class="line">Get: <span class="number">22</span></span><br><span class="line">Get: <span class="number">21</span></span><br><span class="line">Get: <span class="number">23</span></span><br><span class="line">Get: <span class="number">24</span></span><br><span class="line">Get: <span class="number">26</span></span><br><span class="line">Get: <span class="number">25</span></span><br><span class="line">Get: <span class="number">29</span></span><br><span class="line">Get: <span class="number">28</span></span><br><span class="line">Get: <span class="number">27</span></span><br><span class="line">Get: <span class="number">30</span></span><br><span class="line">Get: <span class="number">33</span></span><br><span class="line">Get: <span class="number">36</span></span><br><span class="line">Get: <span class="number">38</span></span><br><span class="line">Get: <span class="number">39</span></span><br><span class="line">Get: <span class="number">32</span></span><br><span class="line">Get: <span class="number">31</span></span><br><span class="line">Get: <span class="number">37</span></span><br><span class="line">Get: <span class="number">35</span></span><br><span class="line">Get: <span class="number">34</span></span><br><span class="line">Get: <span class="number">40</span></span><br><span class="line">Get: <span class="number">45</span></span><br><span class="line">Get: <span class="number">49</span></span><br><span class="line">Get: <span class="number">44</span></span><br><span class="line">Get: <span class="number">43</span></span><br><span class="line">Get: <span class="number">42</span></span><br><span class="line">Get: <span class="number">41</span></span><br><span class="line">Get: <span class="number">48</span></span><br><span class="line">Get: <span class="number">47</span></span><br><span class="line">Get: <span class="number">46</span></span><br></pre></td></tr></table></figure>
-<p>三种工具的使用方法就介绍的这里，源码分析待日后分析。。。。</p>
-<p>每一行代码，都是浩瀚星辰的点点繁星</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
- 
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1445,7 +1430,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1456,7 +1441,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1467,7 +1452,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1527,7 +1512,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
