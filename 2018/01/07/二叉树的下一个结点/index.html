@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="集合," />
+  <meta name="keywords" content="二叉树," />
 
 
 
@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="常用apilistArrayList ArrayList是基于数组实现的动态数组，允许存在重复元素，这点要与HashMap和HashMap进行区分，我们首先要想到数组的一些特点：  对于get，set的随机访问速度较快 添加删除元素的速度较慢，因为需要移动元素  我们还要注意一个细节Arrays.asList所返回的并">
-<meta name="keywords" content="集合">
+<meta name="description" content="二叉树中序遍历的下一个结点  题目解释：  找到给定的结点在中序遍历中的下一个结点，结点的结构中存在一个指向父结点的指针。  样例：  5号结点的下一个结点是1号结点，而1号结点的下一个结点是4号结点。  题解：  中序遍历的顺序即为左儿子，根，右儿子，所以分为以下两种情况  当存在右子树时，找到右子树的最左结点。 当">
+<meta name="keywords" content="二叉树">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【java】集合常用api">
-<meta property="og:url" content="http://stalary.com/2017/11/30/java集合常用api/index.html">
+<meta property="og:title" content="【剑指offer】二叉树中序遍历的下一个结点">
+<meta property="og:url" content="http://stalary.com/2018/01/07/二叉树的下一个结点/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="常用apilistArrayList ArrayList是基于数组实现的动态数组，允许存在重复元素，这点要与HashMap和HashMap进行区分，我们首先要想到数组的一些特点：  对于get，set的随机访问速度较快 添加删除元素的速度较慢，因为需要移动元素  我们还要注意一个细节Arrays.asList所返回的并不是一个真正的List,我们是无法对它进行add操作的。 常用方法的分析：  a">
+<meta property="og:description" content="二叉树中序遍历的下一个结点  题目解释：  找到给定的结点在中序遍历中的下一个结点，结点的结构中存在一个指向父结点的指针。  样例：  5号结点的下一个结点是1号结点，而1号结点的下一个结点是4号结点。  题解：  中序遍历的顺序即为左儿子，根，右儿子，所以分为以下两种情况  当存在右子树时，找到右子树的最左结点。 当不存在右子树时，则找第一个当前节点是父节点左孩子的节点此时1结点的下一个结点即为">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-04T16:07:45.192Z">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-645939fcf0242f9f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-2ade9cd082a52435.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-01-07T16:08:56.683Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【java】集合常用api">
-<meta name="twitter:description" content="常用apilistArrayList ArrayList是基于数组实现的动态数组，允许存在重复元素，这点要与HashMap和HashMap进行区分，我们首先要想到数组的一些特点：  对于get，set的随机访问速度较快 添加删除元素的速度较慢，因为需要移动元素  我们还要注意一个细节Arrays.asList所返回的并不是一个真正的List,我们是无法对它进行add操作的。 常用方法的分析：  a">
+<meta name="twitter:title" content="【剑指offer】二叉树中序遍历的下一个结点">
+<meta name="twitter:description" content="二叉树中序遍历的下一个结点  题目解释：  找到给定的结点在中序遍历中的下一个结点，结点的结构中存在一个指向父结点的指针。  样例：  5号结点的下一个结点是1号结点，而1号结点的下一个结点是4号结点。  题解：  中序遍历的顺序即为左儿子，根，右儿子，所以分为以下两种情况  当存在右子树时，找到右子树的最左结点。 当不存在右子树时，则找第一个当前节点是父节点左孩子的节点此时1结点的下一个结点即为">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/9252736-645939fcf0242f9f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -120,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://stalary.com/2017/11/30/java集合常用api/"/>
+  <link rel="canonical" href="http://stalary.com/2018/01/07/二叉树的下一个结点/"/>
 
 
 
 
 
-  <title>【java】集合常用api | Stalary的小书房</title>
+  <title>【剑指offer】二叉树中序遍历的下一个结点 | Stalary的小书房</title>
   
 
 
@@ -276,7 +279,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/11/30/java集合常用api/">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/01/07/二叉树的下一个结点/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="stalary">
@@ -293,7 +296,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">【java】集合常用api</h1>
+          <h1 class="post-title" itemprop="name headline">【剑指offer】二叉树中序遍历的下一个结点</h1>
         
 
         <div class="post-meta">
@@ -305,8 +308,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-30T08:10:00+08:00">
-                2017-11-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-07T23:50:40+08:00">
+                2018-01-07
               </time>
             
 
@@ -328,8 +331,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
                   </a>
                 </span>
 
@@ -339,8 +342,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/api/" itemprop="url" rel="index">
-                    <span itemprop="name">api</span>
+                  <a href="/categories/算法/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
                   </a>
                 </span>
 
@@ -358,8 +361,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/11/30/java集合常用api/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/11/30/java集合常用api/" itemprop="commentsCount"></span>
+                <a href="/2018/01/07/二叉树的下一个结点/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/01/07/二叉树的下一个结点/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -392,49 +395,34 @@
       
 
       
-        <h1 id="常用api"><a href="#常用api" class="headerlink" title="常用api"></a>常用api</h1><h2 id="list"><a href="#list" class="headerlink" title="list"></a>list</h2><h3 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h3><blockquote>
-<p>ArrayList是基于数组实现的动态数组，允许存在重复元素，这点要与HashMap和HashMap进行区分，我们首先要想到数组的一些特点：</p>
+        <p>二叉树中序遍历的下一个结点</p>
+<ul>
+<li>题目解释：</li>
+</ul>
+<p>找到给定的结点在中序遍历中的下一个结点，结点的结构中存在一个指向父结点的指针。</p>
+<ul>
+<li>样例：</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-645939fcf0242f9f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>5号结点的下一个结点是1号结点，而1号结点的下一个结点是4号结点。</p>
+<ul>
+<li>题解：</li>
+</ul>
+<p>中序遍历的顺序即为左儿子，根，右儿子，所以分为以下两种情况</p>
 <ol>
-<li>对于get，set的随机访问速度较快</li>
-<li>添加删除元素的速度较慢，因为需要移动元素</li>
+<li>当存在右子树时，找到右子树的最左结点。</li>
+<li>当不存在右子树时，则找第一个当前节点是父节点左孩子的节点<br><img src="http://upload-images.jianshu.io/upload_images/9252736-2ade9cd082a52435.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>此时1结点的下一个结点即为4结点</li>
 </ol>
-<p>我们还要注意一个细节Arrays.asList所返回的并不是一个真正的List,我们是无法对它进行add操作的。</p>
-<p>常用方法的分析：</p>
+<ul>
+<li>code：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * GetNext</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * 找到二叉树中序遍历中指定结点的下一个结点，结点中包含一个指向父结点的结点</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> lirongqian</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 2018/01/07</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetNext</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeLinkNode <span class="title">GetNext</span><span class="params">(TreeLinkNode pNode)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (pNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 当存在右子树时，找到右子树的最左结点</span></span><br><span class="line">        <span class="keyword">if</span> (pNode.right != <span class="keyword">null</span>) &#123;</span><br><span class="line">            pNode = pNode.right;</span><br><span class="line">            <span class="keyword">while</span> (pNode.left != <span class="keyword">null</span>) &#123;</span><br><span class="line">                pNode = pNode.left;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> pNode;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 当不存在右子树时，则找第一个当前节点是父节点左孩子的节点</span></span><br><span class="line">        <span class="keyword">while</span> (pNode.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>(pNode.next.left == pNode) &#123;</span><br><span class="line">                <span class="keyword">return</span> pNode.next;</span><br><span class="line">            &#125;</span><br><span class="line">            pNode = pNode.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TreeLinkNode</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    TreeLinkNode left = <span class="keyword">null</span>;</span><br><span class="line">    TreeLinkNode right = <span class="keyword">null</span>;</span><br><span class="line">    TreeLinkNode next = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    TreeLinkNode(<span class="keyword">int</span> val) &#123;</span><br><span class="line">        <span class="keyword">this</span>.val = val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个题的主要思路就是要理解清中序遍历的顺序，理解好左-中-右的顺序，上图中的三种情况为：</p>
 <ol>
-<li>add：当传入index时，会在指定的index后面添加元素，当不指定时默认在末尾进行添加。</li>
-<li>get：获取第index个的元素值</li>
-<li>contains：查看list中是否存在该元素，存在则返回true。</li>
-<li>set：这个方法可以与传入index的add方法进行区分，它会直接将index的元素修改为传入的元素</li>
-<li>remove：删除一个末尾的元素</li>
+<li>2-&gt;5，不存在右子树，为上一个结点的左结点</li>
+<li>5-&gt;1，存在右子树</li>
+<li>1-&gt;4，不存在右子树，且为上一个结点的右结点，所以要去找根结点</li>
 </ol>
-</blockquote>
-<h3 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h3><blockquote>
-<p>LinkedList是基于链表实现的，所以我们要想到链表的一些特点</p>
-<ol>
-<li>随机访问速度较慢，因为要移动指针</li>
-<li>添加删除元素的速度较快</li>
-</ol>
-<p>LinkedList经常呗作为堆栈，队列或者双向队列来使用</p>
-<p>常用方法的分析：</p>
-<ol>
-<li>getFirst: 获取第一个元素，当为空时会抛出异常</li>
-<li>removeFirst: 移除第一个元素，为空时抛出异常</li>
-<li>addFirst: 添加第一个元素</li>
-<li>peek: 只查看第一个元素，但不删除，为空时返回null，不会抛出异常</li>
-<li>poll: 查看第一个元素，并删除，为空时返回null，与peek进行区分</li>
-<li>pop: 查看第一个元素，并弹出，为空时会抛出异常，与poll进行区分</li>
-<li>offer: 向末尾添加一个元素</li>
-</ol>
-</blockquote>
-<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><h3 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h3><blockquote>
-<p>HashMap用来存储键值对，不允许存在重复的键，并通过链地址法来解决hash冲突，1.8中做了红黑树的优化。</p>
-<p>与HashTable进行比较，HashMap是线程不安全的，而且可以接受null的键值，可以使用ConcurrentHashMap来进行同步。</p>
-<p>做题时我们可以使用HashMap来做键值对映射，实现打表的方法。</p>
-</blockquote>
-<h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><h3 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet"></a>HashSet</h3><blockquote>
-<p>HashSet会对元素自动进行去重，我们可以使用HashSet来输出一个不重复的数组，可以通过contains的方法来判断是否已存在该元素</p>
-<p>HashSet和HashMap都是通过equals和hashCode</p>
-</blockquote>
+<p>聚沙成塔，学习非一日之功。</p>
 
       
     </div>
@@ -463,7 +451,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/集合/" rel="tag"><i class="fa fa-tag"></i> 集合</a>
+            <a href="/tags/二叉树/" rel="tag"><i class="fa fa-tag"></i> 二叉树</a>
           
         </div>
       
@@ -476,8 +464,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/29/leetcode122题解/" rel="next" title="【leetcode】122题解">
-                <i class="fa fa-chevron-left"></i> 【leetcode】122题解
+              <a href="/2018/01/03/跨域请求丢失cookie的解决/" rel="next" title="【web】跨域丢失cookie的问题">
+                <i class="fa fa-chevron-left"></i> 【web】跨域丢失cookie的问题
               </a>
             
           </div>
@@ -485,10 +473,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/30/leetcode349题解/" rel="prev" title="【leetcode】349题解">
-                【leetcode】349题解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -572,17 +556,8 @@ var jiathis_config={
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -668,22 +643,6 @@ var jiathis_config={
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常用api"><span class="nav-number">1.</span> <span class="nav-text">常用api</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#list"><span class="nav-number">1.1.</span> <span class="nav-text">list</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ArrayList"><span class="nav-number">1.1.1.</span> <span class="nav-text">ArrayList</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LinkedList"><span class="nav-number">1.1.2.</span> <span class="nav-text">LinkedList</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map"><span class="nav-number">1.2.</span> <span class="nav-text">Map</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap"><span class="nav-number">1.2.1.</span> <span class="nav-text">HashMap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set"><span class="nav-number">1.3.</span> <span class="nav-text">Set</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashSet"><span class="nav-number">1.3.1.</span> <span class="nav-text">HashSet</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
