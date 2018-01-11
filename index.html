@@ -423,6 +423,7 @@
 <p>在jdk1.8中我们可以这样进行排序</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peopleList.sort(Comparator.comparing(People::getAge));</span><br></pre></td></tr></table></figure>
 <p>当想要升序排序时，我们可以修改比较器中的compare或者直接调用reversed方法(1.8中实现的默认方法)</p>
+<p>还可以在比较时写一个匿名内部类的比较器进行比较，但使用lambda更加方便，所以不推荐使用。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总体来看Comparator更加灵活，可以不需要对象去继承一个接口，而且在1.8引入了lambda以后使用更加方便</p>
 
           
