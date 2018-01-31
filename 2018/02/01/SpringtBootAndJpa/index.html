@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="ffmpeg," />
+  <meta name="keywords" content="java," />
 
 
 
@@ -79,20 +79,40 @@
 
 
 
-<meta name="description" content="今天介绍一下java如何调用ffmpeg对音频视频等进行转码，暂时只介绍一个其他格式转码到mp3的例子 下载ffmpeg123456789101112131415161718192021222324252627282930313233343536373839Mac: 1.下载homebrew/usr/bin/ruby ">
-<meta name="keywords" content="ffmpeg">
+<meta name="description" content="新手入门Hibernate和Mybatis以及配置繁重的Spring-MVC还有些难度，今天就从实用出发，从零开始搭建一个Spring-Boot+Jpa的服务 什么是Jpa？Jpa是Java Persistence API的简称。致力于通过操作对象，执行CURD操作，使开发者从繁重的jdbc和sql中脱离出来的一种规范">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Java】ffmpeg的调用">
-<meta property="og:url" content="http://stalary.com/2017/12/23/JavaUseFfmpeg/index.html">
+<meta property="og:title" content="【java】Spring-Boot和Jpa整合开发">
+<meta property="og:url" content="http://stalary.com/2018/02/01/SpringtBootAndJpa/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="今天介绍一下java如何调用ffmpeg对音频视频等进行转码，暂时只介绍一个其他格式转码到mp3的例子 下载ffmpeg123456789101112131415161718192021222324252627282930313233343536373839Mac: 1.下载homebrew/usr/bin/ruby -e &amp;quot;$(curl -fsSL https://raw.github">
+<meta property="og:description" content="新手入门Hibernate和Mybatis以及配置繁重的Spring-MVC还有些难度，今天就从实用出发，从零开始搭建一个Spring-Boot+Jpa的服务 什么是Jpa？Jpa是Java Persistence API的简称。致力于通过操作对象，执行CURD操作，使开发者从繁重的jdbc和sql中脱离出来的一种规范。而Hibernate ORM框架则是Jpa规范的一种实现。Spring Dat">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-09647b4235fdecee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-12-26T16:49:56.060Z">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-0aafdf713ed5086b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-eae4a4de33816349.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-085107f62095be06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-2ad0d2dd0ef494ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-2b582b43c774adb4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-417a51c77862201a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-78d957b85b2062f7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-9b8dee17bd26e145.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-a6e70d2a4bcd82c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-62c8b56057786de6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-7d6363a7b5c0129f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-170c52152700db0c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-46de3961ee8ac462.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-83dd5045e969f129.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-7a0e8b537876fc4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-352f285800618321.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-e79e812d219d9ecd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-e04184eea5455d4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-59bc15931f182d67.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-014d3cc4f29040b0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-2fff89ae56ae85aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-01-31T18:52:26.742Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【Java】ffmpeg的调用">
-<meta name="twitter:description" content="今天介绍一下java如何调用ffmpeg对音频视频等进行转码，暂时只介绍一个其他格式转码到mp3的例子 下载ffmpeg123456789101112131415161718192021222324252627282930313233343536373839Mac: 1.下载homebrew/usr/bin/ruby -e &amp;quot;$(curl -fsSL https://raw.github">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/9252736-09647b4235fdecee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="【java】Spring-Boot和Jpa整合开发">
+<meta name="twitter:description" content="新手入门Hibernate和Mybatis以及配置繁重的Spring-MVC还有些难度，今天就从实用出发，从零开始搭建一个Spring-Boot+Jpa的服务 什么是Jpa？Jpa是Java Persistence API的简称。致力于通过操作对象，执行CURD操作，使开发者从繁重的jdbc和sql中脱离出来的一种规范。而Hibernate ORM框架则是Jpa规范的一种实现。Spring Dat">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/9252736-0aafdf713ed5086b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -122,13 +142,13 @@
 
 
 
-  <link rel="canonical" href="http://stalary.com/2017/12/23/JavaUseFfmpeg/"/>
+  <link rel="canonical" href="http://stalary.com/2018/02/01/SpringtBootAndJpa/"/>
 
 
 
 
 
-  <title>【Java】ffmpeg的调用 | Stalary的小书房</title>
+  <title>【java】Spring-Boot和Jpa整合开发 | Stalary的小书房</title>
   
 
 
@@ -278,7 +298,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/12/23/JavaUseFfmpeg/">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/02/01/SpringtBootAndJpa/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="stalary">
@@ -295,7 +315,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">【Java】ffmpeg的调用</h1>
+          <h1 class="post-title" itemprop="name headline">【java】Spring-Boot和Jpa整合开发</h1>
         
 
         <div class="post-meta">
@@ -307,8 +327,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-23T08:20:40+08:00">
-                2017-12-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T02:50:40+08:00">
+                2018-02-01
               </time>
             
 
@@ -330,8 +350,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/categories/Spring-Boot/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring-Boot</span>
                   </a>
                 </span>
 
@@ -341,8 +361,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/ffmpeg/" itemprop="url" rel="index">
-                    <span itemprop="name">ffmpeg</span>
+                  <a href="/categories/Spring-Boot/Jpad/" itemprop="url" rel="index">
+                    <span itemprop="name">Jpad</span>
                   </a>
                 </span>
 
@@ -360,8 +380,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/12/23/JavaUseFfmpeg/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/12/23/JavaUseFfmpeg/" itemprop="commentsCount"></span>
+                <a href="/2018/02/01/SpringtBootAndJpa/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/02/01/SpringtBootAndJpa/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -394,20 +414,44 @@
       
 
       
-        <p>今天介绍一下java如何调用ffmpeg对音频视频等进行转码，暂时只介绍一个其他格式转码到mp3的例子</p>
-<h3 id="下载ffmpeg"><a href="#下载ffmpeg" class="headerlink" title="下载ffmpeg"></a>下载ffmpeg</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Mac: </span><br><span class="line">1.下载homebrew</span><br><span class="line">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br><span class="line">2.下载ffmpeg</span><br><span class="line">brew ffmpeg</span><br><span class="line">3.找到ffmpeg</span><br><span class="line">文件路径：/usr/local/Cellar/ffmpeg/3.4.1/bin</span><br><span class="line"></span><br><span class="line">Windows:</span><br><span class="line">1.前往http://www.ffmpeg.org/download.html下载build文件</span><br><span class="line">2.解压文件，配置环境变量PATH，使系统可以找到该软件</span><br><span class="line">3.cmd输入ffmpeg -version查看是否安装成功</span><br><span class="line"></span><br><span class="line">linux:</span><br><span class="line">1.官网下载源码包</span><br><span class="line">2.解压源码包</span><br><span class="line">3. ./configure --enable-shared --prefix=/usr/local/ffmpeg --enable-libmp3lame(这里因为我是转mp3，所以下载了libmp3lame的编译器)</span><br><span class="line">4.make</span><br><span class="line">5.make install</span><br><span class="line">如果遇到报错，则有可能是缺少yasm的依赖，需要去下载yasm的包进行解压并编译</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">如果是centos系统可以直接使用yum -y install ffmpeg，如果需要切换数据源则按如下步骤:</span><br><span class="line"></span><br><span class="line">1.安装EPEL Release，因为安装需要使用其他的repo源，所以需要EPEL支持</span><br><span class="line">yum install -y epel-release </span><br><span class="line">#如果出现缺少Code提示，可以：</span><br><span class="line">sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</span><br><span class="line">#安装完成之后，可以查看是否安装成功</span><br><span class="line">yum repolist </span><br><span class="line">2.安装Nux-Dextop源</span><br><span class="line">#导入一个Code</span><br><span class="line">sudo rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro </span><br><span class="line">#安装nux-dextop 源</span><br><span class="line">sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm</span><br><span class="line">#查看repo源是否安装成功</span><br><span class="line">yum repolist </span><br><span class="line">3.yum安装ffmpeg</span><br><span class="line">yum install -y ffmpeg</span><br></pre></td></tr></table></figure>
-<h3 id="通过java调用ffmpeg"><a href="#通过java调用ffmpeg" class="headerlink" title="通过java调用ffmpeg"></a>通过java调用ffmpeg</h3><ul>
-<li>我们使用jave来进行操作ffmpeg</li>
-<li>jave：<a href="http://www.sauronsoftware.it/projects/jave/manual.php" target="_blank" rel="noopener">http://www.sauronsoftware.it/projects/jave/manual.php</a></li>
-<li>需要引入一个jar包，这里分享给大家(当时找了半天)</li>
-<li>链接:<a href="https://pan.baidu.com/s/1cygkBc" target="_blank" rel="noopener">https://pan.baidu.com/s/1cygkBc</a>  密码:qpg7</li>
-<li>引入的java中就可以开始使用了，下面是一个其他格式转化为mp3格式的小demo</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: Stalary</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2017/10/14</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        File source = <span class="keyword">new</span> File(<span class="string">"/Users/mac/Downloads/1"</span>);</span><br><span class="line">        File target = <span class="keyword">new</span> File(<span class="string">"/Users/mac/Downloads/test.mp3"</span>);</span><br><span class="line">        <span class="comment">// 设置转码后的格式</span></span><br><span class="line">        AudioAttributes audio = <span class="keyword">new</span> AudioAttributes();</span><br><span class="line">        audio.setCodec(<span class="string">"libmp3lame"</span>);</span><br><span class="line">        EncodingAttributes attrs = <span class="keyword">new</span> EncodingAttributes();</span><br><span class="line">        attrs.setFormat(<span class="string">"mp3"</span>);</span><br><span class="line">        attrs.setAudioAttributes(audio);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 这里需要注意：只有mac才需要进行指定ffmpeg路径，否则会找不到</span></span><br><span class="line">            <span class="comment">// 需要自行实现一个MyFFMPEGExecutableLocator类并继承FFMPEGLocator</span></span><br><span class="line">            <span class="comment">// 实现其中的getFFMPEGExecutablePath方法返回本机ffmpeg地址</span></span><br><span class="line">            <span class="comment">// 其他操作系统直接使用new Encoder();</span></span><br><span class="line">            Encoder encoder = <span class="keyword">new</span> Encoder(<span class="keyword">new</span> MyFFMPEGExecutableLocator());</span><br><span class="line">            encoder.encode(source, target, attrs);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalArgumentException | EncoderException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyFFMPEGExecutableLocator</span> <span class="keyword">extends</span> <span class="title">FFMPEGLocator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getFFMPEGExecutablePath</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"/usr/local/Cellar/ffmpeg/3.4.1/bin/ffmpeg"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面就是一个最基本的转码格式，具体需求可以去ffmpeg查看文档，下面说一下前端上传一个音频到获取到音频url的流程。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/9252736-09647b4235fdecee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="流程图"></p>
-<p>ffmpeg的基本使用就介绍到这里啦，爬了不少坑，也学到了不少</p>
-<p>每一次钻研，都是未来上升的阶梯</p>
+        <p>新手入门<strong>Hibernate</strong>和<strong>Mybatis</strong>以及配置繁重的<strong>Spring-MVC</strong>还有些难度，今天就从实用出发，从零开始搭建一个<strong>Spring-Boot+Jpa</strong>的服务</p>
+<h3 id="什么是Jpa？"><a href="#什么是Jpa？" class="headerlink" title="什么是Jpa？"></a>什么是Jpa？</h3><p>Jpa是<strong>Java Persistence API</strong>的简称。<br>致力于通过操作<strong>对象</strong>，执行<strong>CURD</strong>操作，使开发者从繁重的jdbc和sql中脱离出来的一种规范。<br>而<strong>Hibernate ORM</strong>框架则是Jpa规范的一种<strong>实现</strong>。<br><strong>Spring Data Jpa</strong>是在Jpa规范的基础下提供了Repository层的实现</p>
+<p>下图即为几种事物之间的关系：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-0aafdf713ed5086b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.11.05.png"></p>
+<h3 id="什么是Spring-Boot？"><a href="#什么是Spring-Boot？" class="headerlink" title="什么是Spring-Boot？"></a>什么是Spring-Boot？</h3><p>是一种可以方便集成各种依赖，省去大多数配置文件的自动化框架，可以基于Spring进行快速开发</p>
+<h3 id="项目的搭建"><a href="#项目的搭建" class="headerlink" title="项目的搭建"></a>项目的搭建</h3><p>首先准备好IDEA<br><img src="http://upload-images.jianshu.io/upload_images/9252736-eae4a4de33816349.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.14.18.png"></p>
+<p>点击Create New Project</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-085107f62095be06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.14.58.png"></p>
+<p>点击右侧的Spring Initalizr，然后点击Next</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-2ad0d2dd0ef494ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.16.10.png"></p>
+<p><strong>Group</strong>即为所在组<br><strong>Artifact</strong>即为项目名<br><strong>Type</strong>选择<strong>Maven Project</strong>，<strong>Maven</strong>稍后进行讲解<br><strong>Packaging</strong>选择<strong>jar</strong><br>点击<strong>Next</strong><br>有的小伙伴一定会有疑问，为什么不选择<strong>war</strong><br>这里进行说明一下，因为<strong>Spring-boot</strong>是一个自带<strong>tomcat</strong>的容器，当我们使用<strong>tomcat</strong>进行部署时，需要将<strong>war</strong>包放入到<strong>/tomcat/webapps</strong>进行运行，而<strong>Spring-boot</strong>则只需要打成<strong>jar，java -jar</strong>即可运行，是不是很方便？</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-2b582b43c774adb4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.24.11.png"></p>
+<p>勾选上右侧我所选择的依赖，然后点击Next，再点击Finish，我们的项目就创建完成了</p>
+<p><strong>Lombok</strong>大家可能还很陌生，这是一个可以极大简化开发的插件，需要在使用时勾选下图中右侧<strong>Enable annotation processing</strong>，意思是开启注解处理，因为<strong>Lombok</strong>是基于注解(在类或者方法上进行标记的一种语法)的插件</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-417a51c77862201a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.26.40.png"></p>
+<p>下面我们打开项目中的<strong>pom.xml</strong>，如果右下角有提示，可以点击<strong>auto-import</strong>，意思为自动导入依赖包</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-78d957b85b2062f7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.29.32.png"></p>
+<p>下面说一下<strong>Maven</strong><br>这是一个十分便捷的依赖管理工具，我们可以通过<dependency></dependency>来直接倒入包，而不用再去网上搜索一个个的jar包<br>所以大家以后需要什么依赖可以直接去maven仓库(<a href="https://mvnrepository.com/" target="_blank" rel="noopener">https://mvnrepository.com/</a>)<br>直接复制代码过来，就可以下载依赖</p>
+<p>搜索想要添加的依赖，然后点击想要的版本号(可以选择用的人数最多的，即Usages数量最大的)进入<br><img src="http://upload-images.jianshu.io/upload_images/9252736-9b8dee17bd26e145.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.34.01.png"></p>
+<p>然后复制下图中<strong>Maven</strong>里的代码到<strong>pom.xml</strong>中即可<br><img src="http://upload-images.jianshu.io/upload_images/9252736-a6e70d2a4bcd82c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.34.09.png"></p>
+<p>下面就要开始创建我们的<strong>MVC</strong>架构了<br>大家可以按照我所建的包(右键src/main/java/你的包名，即与Application同目录， new Package)来进行创建</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-62c8b56057786de6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.40.43.png"></p>
+<p>当然，这些只是最基本的结构，下面配置一下<strong>resources</strong>里的<strong>application.properties</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-7d6363a7b5c0129f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.45.46.png"></p>
+<p>大家需要把<strong>url</strong>里的<strong>loginDemo</strong>替换成自己创建的db库名，<strong>username</strong>和<strong>password</strong>替换成自己的mysql数据库的，<strong>port</strong>为自定义的运行后的端口号</p>
+<p>下面来进行编写一个简单的查询接口</p>
+<p>1.我们在utils里创建一个ResponseMessage，这是用来返回数据时，返回统一格式<br><img src="http://upload-images.jianshu.io/upload_images/9252736-170c52152700db0c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.11.28.png"><br>这里的<strong>@Data</strong>和<strong>@AllArgsConstructor</strong>和<strong>@NoArgsConstructor</strong>都是<strong>Lombok</strong>插件的注解，代表自动为实体生成<strong>get，set</strong>方法，重写<strong>toString()</strong>方法，自动生成全参，无参构造函数</p>
+<p>2.创建一个和数据库中的表映射的实体类<br><img src="http://upload-images.jianshu.io/upload_images/9252736-46de3961ee8ac462.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.11.47.png"><br><strong>@Id</strong>和<strong>@GeneratedValue</strong>代表生成表的时候设为自增主键，最后又添加了一个不含有id的构造函数，，因为不传id，就代表生成自增id，创建新数据</p>
+<p>3.创建一个repository<br><img src="http://upload-images.jianshu.io/upload_images/9252736-83dd5045e969f129.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.11.53.png"><br>要继承<strong>JpaRepository</strong>，并且泛型传入<strong>User</strong>对象<br>因为实体中设置了<strong>status=0</strong>代表正常，所以我们按照<strong>status</strong>搜出所有正常的<strong>User</strong></p>
+<p>4.创建一个service<br><img src="http://upload-images.jianshu.io/upload_images/9252736-7a0e8b537876fc4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.11.55.png"><br>通过<strong>@Autowired</strong>注入<strong>UserRepository</strong>进行调用<strong>findByStatus()</strong>方法</p>
+<p>5.创建一个controller<br><img src="http://upload-images.jianshu.io/upload_images/9252736-352f285800618321.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.12.03.png"><br><strong>@RequestController</strong>内部包含两个注解<strong>@RequestBody和@Controller</strong>代表这是一个返回json数据格式的controller<br><strong>@RequestMapping</strong>代表映射，即一会访问接口时的地址<br>内部调用service方法的getList()进行返回数据</p>
+<p>6.创建test单元测试，用于增加初始数据<br><img src="http://upload-images.jianshu.io/upload_images/9252736-e79e812d219d9ecd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.08.46.png"><br>这里<strong>Hibernate</strong>自动建的表会出现中文乱码无法插入的错误，在<strong>varchar</strong>的字段后面加上<strong>CHARACTER SET ‘utf8’</strong>即可解决<br><img src="http://upload-images.jianshu.io/upload_images/9252736-e04184eea5455d4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.25.58.png"><br>然后点击18行的绿色按钮。Run Tests即可完成数据初始化</p>
+<p>7.去BootJpaApplication点击第七行绿色按钮，Run<br><img src="http://upload-images.jianshu.io/upload_images/9252736-59bc15931f182d67.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.27.43.png"><br>打开浏览器输入url(<a href="http://localhost:8088/user/list" target="_blank" rel="noopener">http://localhost:8088/user/list</a>)<br><img src="http://upload-images.jianshu.io/upload_images/9252736-014d3cc4f29040b0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.09.43.png"><br>这样我们就拿到了数据，一个完成的项目也就搭建完成了</p>
+<h3 id="项目的部署"><a href="#项目的部署" class="headerlink" title="项目的部署"></a>项目的部署</h3><p>1.在命令行中使用<strong>mvn package</strong>打成jar包<br><img src="http://upload-images.jianshu.io/upload_images/9252736-2fff89ae56ae85aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.32.18.png"><br><strong>注意：在运行之前，先将init()中代码注释掉，否则会重复创建数据</strong></p>
+<p>2.在命令行中使用<strong>java -jar target/boot-jpa-0.0.1-SNAPSHOT.jar</strong>即可开启服务，再次访问<a href="http://localhost:8088/user/list" target="_blank" rel="noopener">http://localhost:8088/user/list</a><br>依旧能够成功获取数据(开启服务前不要忘记刚才通过<strong>BootJpaApplication</strong>运行的服务)</p>
+<p>一个完整的Spring-Boot+Jpa的创建到运行到部署的流程就此全部完成<br>本人github上放有基于Spring-Boot+Jpa的一个登陆demo，欢迎大家查看<br><a href="https://github.com/stalary/SpringBootDemo" target="_blank" rel="noopener">https://github.com/stalary/SpringBootDemo</a></p>
+<hr>
+<p>今天我们耀眼的光芒，不过是明日无人问津的落日余晖。</p>
 
       
     </div>
@@ -436,7 +480,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/ffmpeg/" rel="tag"><i class="fa fa-tag"></i> ffmpeg</a>
+            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
           
         </div>
       
@@ -449,8 +493,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/19/Jvm/" rel="next" title="【Java】虚拟机浅显分析">
-                <i class="fa fa-chevron-left"></i> 【Java】虚拟机浅显分析
+              <a href="/2018/01/28/RedisSubscribeAndPublish/" rel="next" title="【redis】订阅发布模式的实现">
+                <i class="fa fa-chevron-left"></i> 【redis】订阅发布模式的实现
               </a>
             
           </div>
@@ -458,10 +502,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/25/URIAndURL/" rel="prev" title="【计算机网络】URI和URL的区别">
-                【计算机网络】URI和URL的区别 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -663,7 +703,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载ffmpeg"><span class="nav-number">1.</span> <span class="nav-text">下载ffmpeg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过java调用ffmpeg"><span class="nav-number">2.</span> <span class="nav-text">通过java调用ffmpeg</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是Jpa？"><span class="nav-number">1.</span> <span class="nav-text">什么是Jpa？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是Spring-Boot？"><span class="nav-number">2.</span> <span class="nav-text">什么是Spring-Boot？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目的搭建"><span class="nav-number">3.</span> <span class="nav-text">项目的搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目的部署"><span class="nav-number">4.</span> <span class="nav-text">项目的部署</span></a></li></ol></div>
             
 
           </div>
