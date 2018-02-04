@@ -275,6 +275,351 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/12/19/Jvm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stalary">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stalary的小书房">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/19/Jvm/" itemprop="url">【Java】虚拟机浅显分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-19T18:45:40+08:00">
+                2017-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/12/19/Jvm/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://stalary.com/2017/12/19/Jvm/" class="cy_cmt_count" data-xid="2017/12/19/Jvm/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>普及一下虚拟机中的一些区域，垃圾收集算法，垃圾收集器等，后续还会完善</p>
+<h2 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h2><h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><ol>
+<li>线程私有</li>
+<li>一块较小的内存空间</li>
+<li>记录正在执行的java方法的虚拟机字节码指令的地址(native方法为空)</li>
+<li>没有OutOfMemoryError的情况</li>
+</ol>
+<h4 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h4><ol>
+<li>线程私有</li>
+<li>为虚拟机执行java方法服务</li>
+<li>与线程的生命周期相同</li>
+<li>当线程请求的栈深度大于虚拟机所允许的深度，抛出StackOverflowError，当虚拟机扩展时无法申请到足够的内存，将会抛出OutOfMemoryError</li>
+<li>方法执行时创建的栈帧用于存储局部变量表，操作数栈，动态链接，方法出口</li>
+<li>方法调用时分配栈帧，离开时撤销栈帧</li>
+<li><p>局部变量表：</p>
+<ul>
+<li>存放基本数据类型</li>
+<li>对象引用</li>
+</ul>
+</li>
+</ol>
+<h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4><ol>
+<li>为虚拟机执行native方法服务</li>
+<li>和虚拟机栈相同，会抛出StackOverflowError和OutOfMemoryError</li>
+</ol>
+<h4 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h4><ol>
+<li>线程共享</li>
+<li>内存中最大的一块</li>
+<li>存放对象实例以及数组</li>
+<li>垃圾收集器管理的主要区域(GC堆)</li>
+<li>堆中分为新生代和老年代</li>
+<li>堆无法再扩展时，抛出OutOfMemoryError</li>
+</ol>
+<h4 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h4><ol>
+<li>线程共享</li>
+<li>存储已被虚拟机加载的类信息，常量，静态变量，编译器编译后的代码</li>
+<li>方法区无法满足内存需求时抛出OutOfMemoryError</li>
+<li>使用永久代实现</li>
+</ol>
+<h4 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h4><ol>
+<li>方法区的一部分</li>
+<li>存储字面量和符号引用</li>
+<li>无法再申请到内存时抛出OutOfMemoryError</li>
+</ol>
+<h2 id="对象的访问"><a href="#对象的访问" class="headerlink" title="对象的访问"></a>对象的访问</h2><h4 id="句柄访问"><a href="#句柄访问" class="headerlink" title="句柄访问"></a>句柄访问</h4><ol>
+<li>引用存储对象的句柄地址</li>
+<li>对象被修改时只会改变句柄中的实例数据指针，引用本身不改变</li>
+</ol>
+<h4 id="直接指针访问"><a href="#直接指针访问" class="headerlink" title="直接指针访问"></a>直接指针访问</h4><ol>
+<li>引用存储对象的地址</li>
+<li>速度更快，Sun HotSpot虚拟机中使用</li>
+</ol>
+<h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><h4 id="堆溢出"><a href="#堆溢出" class="headerlink" title="堆溢出"></a>堆溢出</h4><ol>
+<li>不断创建对象实例并且GC Roots到对象之间有可达路径避免垃圾回收时会产生(OOME Java heap space)</li>
+</ol>
+<h4 id="栈溢出"><a href="#栈溢出" class="headerlink" title="栈溢出"></a>栈溢出</h4><ol>
+<li>栈深度大于虚拟机所允许的深度(SOE)</li>
+<li>虚拟机扩展时无法申请到足够的内存</li>
+<li>多线程下导致的内存溢出，可以通过减少最大堆和减少栈容量来换取更多的线程(OOME)</li>
+</ol>
+<h4 id="方法区和运行时常量池溢出"><a href="#方法区和运行时常量池溢出" class="headerlink" title="方法区和运行时常量池溢出"></a>方法区和运行时常量池溢出</h4><ol>
+<li>产生大量的动态类(OOME PermGen space)</li>
+</ol>
+<h2 id="判断对象是否已经死亡"><a href="#判断对象是否已经死亡" class="headerlink" title="判断对象是否已经死亡"></a>判断对象是否已经死亡</h2><h4 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h4><ol>
+<li>有一个地方引用，计数器加1，引用失效时减1，当为0时即代表不可能被使用</li>
+<li>缺点是无法解决循环引用的问题<br>A.instance = B;B.instance = A。两个对象都已经不可能被访问</li>
+</ol>
+<h4 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h4><ol>
+<li>GC Roots对象作为起点，判断是否存在路径(引用链)可以到达对象</li>
+<li><p>可以作为GC Roots的对象有：</p>
+<ul>
+<li>虚拟机栈中引用的对象</li>
+<li>方法区中类静态属性引用的对象</li>
+<li>方法区中常量引用的对象</li>
+<li>native方法引用的对象</li>
+</ul>
+</li>
+</ol>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><h4 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a>强引用</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A a = <span class="keyword">new</span> A();</span><br></pre></td></tr></table></figure>
+<p>只要强引用存在，垃圾回收器永远不会回收被引用的对象</p>
+<h4 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a>软引用</h4><ol>
+<li>有用但非必需的对象</li>
+<li>在将要发生内存溢出之前，进行回收，这次回收内存还没有足够的内存，才会抛出异常</li>
+<li>使用SoftReference来实现</li>
+</ol>
+<h4 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h4><ol>
+<li>非必需对象</li>
+<li>只能生存到下一次垃圾收集发生之前</li>
+<li>使用WeakReference来实现</li>
+</ol>
+<h4 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a>虚引用</h4><ol>
+<li>无法获得对象实例</li>
+<li>唯一目的是被垃圾回收时收到一个系统通知</li>
+<li>使用PhantomReference来实现</li>
+</ol>
+<h3 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h3><h4 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h4><ol>
+<li>首先标记需要回收的对象</li>
+<li>清除标记的对象</li>
+<li>缺点是会产生大量不连续的内存碎片，当需要分配较大对象时，会提前触发另一次垃圾回收</li>
+</ol>
+<h4 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h4><ol>
+<li>将内存按容量划分为大小相等的两块，每次只使用其中的一块，使用完成后将存活的对象复制到另一块，然后清理使用过的内存空间</li>
+<li>缺点是浪费内存</li>
+</ol>
+<h4 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h4><ol>
+<li>首先标记需要回收的对象</li>
+<li>将所有存活的对象向一端移动</li>
+<li>清理掉边界以外的内存</li>
+</ol>
+<h4 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h4><ol>
+<li>分为新生代和老年代进行收集</li>
+<li>新生代每次都有大批对象死去，可以选用复制算法，老年代中对象存活率高，使用标记-清除算法或者标记-整理算法</li>
+</ol>
+<h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><h4 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h4><ol>
+<li>单线程收集器，垃圾收集时，需停止其他的所有工作线程(Stop The World)</li>
+<li>在Client模式下时很好的选择</li>
+<li>新生代采用复制算法，老年代采用标记-整理算法</li>
+<li>由于单线程的环境，所以简单高效</li>
+<li>新生代收集器</li>
+</ol>
+<h4 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h4><ol>
+<li>Serial收集器的老年代版本</li>
+<li>在jdk1.5之前和Parallel Scavenge收集器搭配使用(1.5之后才有Parallel Old收集器)。</li>
+<li>作为CMS收集器的后备预案(发生Concurrent Mode Failure时使用)</li>
+<li>老年代收集器</li>
+</ol>
+<h4 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h4><ol>
+<li>Serial收集器的多线程版本</li>
+<li>新生代采用复制算法，老年代采用标记-整理算法</li>
+<li>与CMS收集器搭配使用</li>
+<li>并发收集器</li>
+<li>新生代收集器</li>
+</ol>
+<h4 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h4><ol>
+<li>吞吐量优先</li>
+<li>可以直接设置最大垃圾收集停顿时间(缩短停顿时间，同时也会缩短停顿间隔，减小吞吐量)和吞吐量(代码运行时间/代码运行时间+垃圾回收时间)大小</li>
+<li>可以使用自适应的调节策略来控制停顿时间和吞吐量(与ParNew的主要区别)</li>
+<li>年轻代收集器</li>
+<li>多线程</li>
+</ol>
+<h4 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h4><ol>
+<li>多线程</li>
+<li>老年代收集器</li>
+<li>jdk1.6中开始提供</li>
+</ol>
+<h4 id="CMS收集器"><a href="#CMS收集器" class="headerlink" title="CMS收集器"></a>CMS收集器</h4><ol>
+<li>停顿时间最短化</li>
+<li><p>分为四个步骤:</p>
+<ul>
+<li>初始标记</li>
+<li>并发标记</li>
+<li>重新标记</li>
+<li>并发清除</li>
+</ul>
+</li>
+</ol>
+<p>初始标记和重新标记需要Stop The World但是时间并不长，剩下两个步骤可以和用户线程并发执行</p>
+<ol>
+<li>基于标记-清除(注意)，会产生大量的内存碎片</li>
+<li>缺点是并发占用一部分用户线程，造成吞吐量降低应用程序变慢，无法处理浮动垃圾(垃圾回收时产生的垃圾)</li>
+</ol>
+<h4 id="G1收集器"><a href="#G1收集器" class="headerlink" title="G1收集器"></a>G1收集器</h4><ol>
+<li>分代收集</li>
+<li>使用多个cpu并行执行垃圾回收(缩短Stop The World的时间)，通过并发使其他线程和垃圾回收线程一起执行</li>
+<li>整体上标记-整理算法，局部上基于复制算法</li>
+<li>可预测何时停顿以及停顿时间，通过后台维护一个垃圾回收优先列表来实现</li>
+<li>与其他收集器不同，不再以新生代和老年代做区分，而是划分为多个大小相同的区域。</li>
+<li>通过Remembered Set来避免全堆扫描</li>
+<li><p>分为四个步骤：</p>
+<ul>
+<li>初始标记</li>
+<li>并发标记</li>
+<li>最终标记</li>
+<li>筛选回收</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>每一本书，都是我们升华的阶梯</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/12/14/ConcurrentUtils/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1043,228 +1388,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/12/07/SwordOfferAdjustOrder/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/07/SwordOfferAdjustOrder/" itemprop="url">【剑指offer】调整数组顺序使奇数位于偶数前面</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-07T10:35:40+08:00">
-                2017-12-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2017/12/07/SwordOfferAdjustOrder/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://stalary.com/2017/12/07/SwordOfferAdjustOrder/" class="cy_cmt_count" data-xid="2017/12/07/SwordOfferAdjustOrder/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>调整数组顺序使奇数位于偶数前面</p>
-<ul>
-<li>题目描述：</li>
-</ul>
-<p>给定一个数组，如果奇数位于偶数前面，则交换位置，并且要保证偶数和偶数之间的相对位置是不改变的</p>
-<ul>
-<li>样例：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">input:</span><br><span class="line">[1, 2, 3, 9, 4]</span><br><span class="line">output:</span><br><span class="line">[1, 3, 9, 2, 4]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>题解：</li>
-</ul>
-<p>这个题可以找到两种思路：</p>
-<ul>
-<li>在原数组中进行改变位置，当奇数在偶数后面时就进行移动</li>
-<li>新开辟一个数组，重新进行组装</li>
-</ul>
-<ul>
-<li>code：</li>
-</ul>
-<pre><code class="java"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reOrderArray</span><span class="params">(<span class="keyword">int</span> [] array)</span> </span>{
-        List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;(array.length);
-        <span class="keyword">for</span> (<span class="keyword">int</span> n : array) {
-            <span class="keyword">if</span> ((n &amp; <span class="number">1</span>) == <span class="number">1</span>) {
-                list.add(n);
-            }
-        }
-        <span class="keyword">for</span> (<span class="keyword">int</span> n : array) {
-            <span class="keyword">if</span> ((n &amp; <span class="number">1</span>) == <span class="number">0</span>) {
-                list.add(n);
-            }
-        }
-        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++) {
-            array[i] = list.get(i);
-        }
-    }
-
-    <span class="comment">/**</span>
-<span class="comment">     * 利用类似于插入排序的思想，如果存在偶数在奇数后面，就一直向前移动</span>
-<span class="comment">     * <span class="doctag">@param</span> array</span>
-<span class="comment">     */</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reOrderArray1</span><span class="params">(<span class="keyword">int</span>[] array)</span> </span>{
-        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++) {
-            <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &gt; <span class="number">0</span> &amp;&amp; array[j] % <span class="number">2</span> == <span class="number">1</span> &amp;&amp; array[j - <span class="number">1</span>] % <span class="number">2</span> == <span class="number">0</span>; j--) {
-                <span class="keyword">int</span> temp = array[j];
-                array[j] = array[j - <span class="number">1</span>];
-                array[j - <span class="number">1</span>] = temp;
-            }
-        }
-    }
-</code></pre>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
- 
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1314,7 +1442,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
