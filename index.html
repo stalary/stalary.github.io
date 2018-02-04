@@ -407,7 +407,7 @@
 <p>当我和女朋友都在家吃饭时，如果女朋友不是很饿，则她会等我吃完再用我的碗去吃饭，这就是轻量级锁状态</p>
 <p>当我和女朋友都很饿的时候，这时候就会去争抢这唯一的一个碗(贫穷的我)吃饭，这就是重量级锁状态</p>
 </blockquote>
-<h4 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h4><p>偏向锁的由来：</p>
+<h3 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h3><p>偏向锁的由来：</p>
 <blockquote>
 <p>大多数情况下，锁不存在多线程竞争，而是总是由同一线程多次获得时，为了使线程获得锁的代价更低而引入了偏向锁。</p>
 </blockquote>
@@ -434,7 +434,7 @@
 <blockquote>
 <p>当有第二个线程进入同步代码块时，则升级为轻量级锁</p>
 </blockquote>
-<h4 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h4><p>轻量级锁的加锁：</p>
+<h3 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h3><p>轻量级锁的加锁：</p>
 <blockquote>
 <p>如果成功使用CAS将对象头重的Mark Word替换为指向锁记录的指针，则获得锁，失败则当前线程尝试使用自旋(循环等待)来获取锁。</p>
 </blockquote>
@@ -442,11 +442,11 @@
 <blockquote>
 <p>当有另一个线程与该线程同时竞争时，锁会升级为重量级锁。为了防止继续自旋，一旦升级，将无法降级。</p>
 </blockquote>
-<h4 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a>重量级锁</h4><p>重量级锁特点：</p>
+<h3 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a>重量级锁</h3><p>重量级锁特点：</p>
 <blockquote>
 <p>其他线程试图获取锁时，都会被阻塞，只有持有锁的线程释放锁之后才会唤醒这些线程，进行竞争。</p>
 </blockquote>
-<h4 id="三种锁的对比"><a href="#三种锁的对比" class="headerlink" title="三种锁的对比"></a>三种锁的对比</h4><p><img src="http://upload-images.jianshu.io/upload_images/9252736-d05c6e30126341fd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-04 at 20.15.42.png"><br>通俗来讲就是：</p>
+<h3 id="三种锁的对比"><a href="#三种锁的对比" class="headerlink" title="三种锁的对比"></a>三种锁的对比</h3><p><img src="http://upload-images.jianshu.io/upload_images/9252736-d05c6e30126341fd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-04 at 20.15.42.png"><br>通俗来讲就是：</p>
 <ul>
 <li>偏向锁：仅有一个线程进入临界区</li>
 <li>轻量级锁：多个线程交替进入临界区</li>
