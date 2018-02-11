@@ -275,6 +275,216 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/02/12/DistributedSession/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stalary">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stalary的小书房">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/12/DistributedSession/" itemprop="url">【web】分布式session</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-12T00:20:40+08:00">
+                2018-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/" itemprop="url" rel="index">
+                    <span itemprop="name">web</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/跨session/" itemprop="url" rel="index">
+                    <span itemprop="name">跨session</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/02/12/DistributedSession/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://stalary.com/2018/02/12/DistributedSession/" class="cy_cmt_count" data-xid="2018/02/12/DistributedSession/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天我们来讲解一下分布式Session的几种实现方法</p>
+<h3 id="为什么要使用分布式Session"><a href="#为什么要使用分布式Session" class="headerlink" title="为什么要使用分布式Session"></a>为什么要使用分布式Session</h3><p>在分布式场景下，负载均衡会将用户请求随机分发，如果单机存储Session，会造成用户需要频繁登陆。</p>
+<p>###分布式Session的实现方式</p>
+<ul>
+<li>粘性Session(将用户请求固定在一台服务器)</li>
+<li>服务器Session复制(广播实现Session同步)</li>
+<li>缓存存储(Sticky模式和Non-Sticky模式)</li>
+<li>持久化存储(将Session存储到数据库)</li>
+</ul>
+<p>####粘性Session</p>
+<ul>
+<li><strong>原理：</strong>将用户锁定到某一台服务器上，用户的每次请求都会被发送到第一次请求的服务器上。</li>
+<li><strong>优点：</strong>简单易用，无需操作Session，直接配置Nginx即可。</li>
+<li><strong>缺点：</strong>缺乏容错性，如果当前访问的服务器发生宕机，请求被转发到其他服务器，用户需要重新登录。 </li>
+</ul>
+<p>####服务器Session复制</p>
+<ul>
+<li><strong>原理：</strong>任何一个节点的Session发生变化，都会广播给其他所有节点，以保证Session的同步。</li>
+<li><strong>优点：</strong>容错性较强，Session可以实时响应。</li>
+<li><strong>缺点：</strong>会影响到网络负荷，当并发量较大时，会降低服务器的性能。</li>
+</ul>
+<p>####缓存存储</p>
+<ul>
+<li><strong>原理：</strong><ul>
+<li>Sticky模式：请求处理完成后，将Session同步到缓存中，每次请求都会被映射到同一台服务器，直到服务器宕机，再去缓存中读取Session。</li>
+<li>Non-Sticky模式：每次请求被映射到的随机一台服务器，请求到来时从缓存中加载Session，请求处理完成，再将Session回写到缓存中。</li>
+</ul>
+</li>
+<li><strong>优点：</strong>容错性较强，Session可以实时响应。</li>
+<li><strong>缺点：</strong>一旦缓存重启，Session也会丢失(Redis默认保存快照，不会丢失)，需要重新登录。</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-2f4cc3428077c777.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>####持久化存储</p>
+<ul>
+<li><strong>原理：</strong>将Session存到数据库中，进行持久化。</li>
+<li><strong>优点：</strong>服务器宕机，Session不会丢失。</li>
+<li><strong>缺点：</strong>高并发时，对数据库造成很大的压力。</li>
+</ul>
+<p>参考</p>
+<ul>
+<li>集群/分布式环境下5种session处理策略：<a href="http://blog.csdn.net/u010028869/article/details/50773174?ref=myread" target="_blank" rel="noopener">http://blog.csdn.net/u010028869/article/details/50773174?ref=myread</a></li>
+<li>《大型分布式网站架构设计与实践》</li>
+</ul>
+<p><strong>我们今天所付出的一切，不过是为了能见到明天的太阳</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/02/08/ForkJoin/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1107,195 +1317,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/01/28/RedisSubscribeAndPublish/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/28/RedisSubscribeAndPublish/" itemprop="url">【redis】订阅发布模式的实现</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T17:50:40+08:00">
-                2018-01-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/订阅与发布/" itemprop="url" rel="index">
-                    <span itemprop="name">订阅与发布</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2018/01/28/RedisSubscribeAndPublish/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://stalary.com/2018/01/28/RedisSubscribeAndPublish/" class="cy_cmt_count" data-xid="2018/01/28/RedisSubscribeAndPublish/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近写一个模块时，用到了缓存，由于是两个服务之间的通信，所以会遇到数据不一致的情况，最后选择了使用Redis的发布订阅模式进行解决。</p>
-<h3 id="什么是发布订阅？"><a href="#什么是发布订阅？" class="headerlink" title="什么是发布订阅？"></a>什么是发布订阅？</h3><p>这就如同是我们常用的朋友圈，我们发送朋友圈时就是一个发布者，而能看到这条朋友圈的人就是一个订阅者，订阅者可以根据自己的喜好对发布的消息进行点赞，评论等操作。</p>
-<p>下面贴一张形象的图片：<br><img src="http://upload-images.jianshu.io/upload_images/9252736-082d521d5111375b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>一个完整的发布订阅需要经过三个步骤：</p>
-<ol>
-<li><p><strong>订阅者对发布者(频道)进行订阅：</strong>比如我们想要追剧，这时就可以订阅一个节目，每天更新都会为我们发送通知</p>
-</li>
-<li><p><strong>发布者发送消息：</strong>发布者如同一个发令枪，发送一条消息给所有的订阅者</p>
-</li>
-<li><p><strong>订阅者接收消息并做出动作：</strong>当发布者发布消息时，订阅者可以对消息进行处理或者做出响应的动作</p>
-</li>
-</ol>
-<h3 id="什么时候需要使用？"><a href="#什么时候需要使用？" class="headerlink" title="什么时候需要使用？"></a>什么时候需要使用？</h3><p>在分布式场景下，如果需要更新每一个结点的状态则可以使用发布订阅模式。</p>
-<p><strong>业务场景：</strong><br>前几天我在写一个批改服务，批改服务需要首先去题库服务调用题目已经用户答案，再批改完成后需要将批改后的结果传回题库服务进行存储。</p>
-<p><strong>解决方案：</strong></p>
-<ol>
-<li>使用kafka作为数据传递者(快递员)，实现异步(解决高并发问题)</li>
-<li>使用redis与cache作为缓存</li>
-<li>发布者为题库服务，订阅者为批改服务(题目服务更新完批改信息后发布消息)</li>
-</ol>
-<h3 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 订阅者：</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化时执行</span></span><br><span class="line">subscribeRedisChannel(CHANNEL_NAME);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅频道</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subscribeRedisChannel</span><span class="params">(<span class="keyword">final</span> String channel)</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">"add redis PUB/SUB , refresh Channel is "</span> + channel);</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    jedis.subscribe(refreshCachePubSub, channel);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    log.warn(<span class="string">"Redis Sub Exception"</span>, e);</span><br><span class="line">                    <span class="comment">// 订阅出现异常时，暂停1s线程</span></span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (Exception e2) &#123;</span><br><span class="line">                        log.warn(<span class="string">"Sleep Exception"</span>, e2);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 刷新缓存</span></span><br><span class="line"><span class="keyword">private</span> JedisPubSub refreshCachePubSub = <span class="keyword">new</span> JedisPubSub() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onMessage</span><span class="params">(String channel, String message)</span> </span>&#123;</span><br><span class="line">            log.info(<span class="string">"refresh channel : "</span> + channel + <span class="string">" || refresh key : "</span> + message);</span><br><span class="line">            <span class="keyword">if</span> (CHANNEL_NAME.equals(channel)) &#123;</span><br><span class="line">                <span class="comment">// 如果存在messge即只清空对应的缓存，如果不存在则清空该cache的所有缓存</span></span><br><span class="line">                <span class="keyword">if</span> (StringUtils.isBlank(message)) &#123;</span><br><span class="line">                    cacheApi.getCache().invalidateAll();</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    cacheApi.getCache().invalidate(Long.parseLong(message));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 发布者：</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 在更新完成后，主动调用，更新对应key的缓存</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">invalidCache</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        redisService.publishRedisChannel(RedisService.CHANNEL_NAME, key);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>停更了许久的博客终于复更了。<br>人就不能闲下来。。。一旦闲下来就越来越懒<br>就如同减肥。。。总是说说，一直在增肥</p>
-<p><strong>生命的意义就在于，不断的充实自己，不断的挑战自己，不断的去拥抱变化。</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
- 
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1350,7 +1371,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1361,7 +1382,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
