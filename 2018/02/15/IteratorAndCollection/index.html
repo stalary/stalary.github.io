@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="web," />
+  <meta name="keywords" content="java," />
 
 
 
@@ -79,23 +79,18 @@
 
 
 
-<meta name="description" content="2018年的第一篇博客，新的开始，新的起点 前几天在写一个利用cookie存储token的登陆demo时遇到了跨域丢失token的问题，在这里分享一下解决的方法。 案例分析 前端使用了vue-reource的$http进行请求后台接口  1234567891011this.$http(&amp;#123;       ">
-<meta name="keywords" content="web">
+<meta name="description" content="除夕夜，当然也不能忘记了敲代码，今天来分享一下Iterator的一些小知识 Iterator的源码分析1234567891011121314// 判断是否还有下一个元素boolean hasNext();// 获取游标当前元素E next();// 删除游标当前元素default void remove() &amp;">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【web】跨域丢失cookie的问题">
-<meta property="og:url" content="http://stalary.com/2018/01/03/CORSResolveCookiesLoose/index.html">
+<meta property="og:title" content="【java】Iterator源码分析">
+<meta property="og:url" content="http://stalary.com/2018/02/15/IteratorAndCollection/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="2018年的第一篇博客，新的开始，新的起点 前几天在写一个利用cookie存储token的登陆demo时遇到了跨域丢失token的问题，在这里分享一下解决的方法。 案例分析 前端使用了vue-reource的$http进行请求后台接口  1234567891011this.$http(&amp;#123;              url: &quot;http://120.24.5.178:8100/user/l">
+<meta property="og:description" content="除夕夜，当然也不能忘记了敲代码，今天来分享一下Iterator的一些小知识 Iterator的源码分析1234567891011121314// 判断是否还有下一个元素boolean hasNext();// 获取游标当前元素E next();// 删除游标当前元素default void remove() &amp;#123;        throw new UnsupportedOperationE">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-6be7f1065e84050a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-f05479b3bf243d54.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-3177695f2b63ed13.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-36f7d79c8afde696.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-02-11T16:15:04.465Z">
+<meta property="og:updated_time" content="2018-02-15T13:34:04.750Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【web】跨域丢失cookie的问题">
-<meta name="twitter:description" content="2018年的第一篇博客，新的开始，新的起点 前几天在写一个利用cookie存储token的登陆demo时遇到了跨域丢失token的问题，在这里分享一下解决的方法。 案例分析 前端使用了vue-reource的$http进行请求后台接口  1234567891011this.$http(&amp;#123;              url: &quot;http://120.24.5.178:8100/user/l">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/9252736-6be7f1065e84050a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="【java】Iterator源码分析">
+<meta name="twitter:description" content="除夕夜，当然也不能忘记了敲代码，今天来分享一下Iterator的一些小知识 Iterator的源码分析1234567891011121314// 判断是否还有下一个元素boolean hasNext();// 获取游标当前元素E next();// 删除游标当前元素default void remove() &amp;#123;        throw new UnsupportedOperationE">
 
 
 
@@ -125,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://stalary.com/2018/01/03/CORSResolveCookiesLoose/"/>
+  <link rel="canonical" href="http://stalary.com/2018/02/15/IteratorAndCollection/"/>
 
 
 
 
 
-  <title>【web】跨域丢失cookie的问题 | Stalary的小书房</title>
+  <title>【java】Iterator源码分析 | Stalary的小书房</title>
   
 
 
@@ -281,7 +276,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/01/03/CORSResolveCookiesLoose/">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/02/15/IteratorAndCollection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="stalary">
@@ -298,7 +293,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">【web】跨域丢失cookie的问题</h1>
+          <h1 class="post-title" itemprop="name headline">【java】Iterator源码分析</h1>
         
 
         <div class="post-meta">
@@ -310,8 +305,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-03T22:20:40+08:00">
-                2018-01-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-15T21:50:40+08:00">
+                2018-02-15
               </time>
             
 
@@ -333,8 +328,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/web/" itemprop="url" rel="index">
-                    <span itemprop="name">web</span>
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -344,8 +339,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/web/跨域/" itemprop="url" rel="index">
-                    <span itemprop="name">跨域</span>
+                  <a href="/categories/java/Iterator/" itemprop="url" rel="index">
+                    <span itemprop="name">Iterator</span>
                   </a>
                 </span>
 
@@ -363,8 +358,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2018/01/03/CORSResolveCookiesLoose/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/01/03/CORSResolveCookiesLoose/" itemprop="commentsCount"></span>
+                <a href="/2018/02/15/IteratorAndCollection/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/02/15/IteratorAndCollection/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -397,53 +392,46 @@
       
 
       
-        <p>2018年的第一篇博客，新的开始，新的起点</p>
-<p>前几天在写一个利用cookie存储token的登陆demo时遇到了跨域丢失token的问题，在这里分享一下解决的方法。</p>
-<h4 id="案例分析"><a href="#案例分析" class="headerlink" title="案例分析"></a>案例分析</h4><ul>
-<li>前端使用了vue-reource的$http进行请求后台接口</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.$http(&#123;</span><br><span class="line">              url: <span class="string">"http://120.24.5.178:8100/user/login"</span>,</span><br><span class="line">              method: <span class="string">"POST"</span>,</span><br><span class="line">              body: <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">                username: <span class="keyword">this</span>.ruleForm.username,</span><br><span class="line">                password: <span class="keyword">this</span>.ruleForm.password</span><br><span class="line">              &#125;),</span><br><span class="line">              headers: &#123;</span><br><span class="line">                <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span></span><br><span class="line">              &#125;</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
+        <p>除夕夜，当然也不能忘记了敲代码，今天来分享一下Iterator的一些小知识</p>
+<h3 id="Iterator的源码分析"><a href="#Iterator的源码分析" class="headerlink" title="Iterator的源码分析"></a>Iterator的源码分析</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 判断是否还有下一个元素</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">// 获取游标当前元素</span></span><br><span class="line"><span class="function">E <span class="title">next</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">// 删除游标当前元素</span></span><br><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">"remove"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 1.8中使用的遍历方法</span></span><br><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">forEachRemaining</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> E&gt; action)</span> </span>&#123;</span><br><span class="line">        Objects.requireNonNull(action);</span><br><span class="line">        <span class="keyword">while</span> (hasNext())</span><br><span class="line">            action.accept(next());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>demo:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;(Arrays.asList(<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span>));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(Iterator&lt;Integer&gt; it = list.iterator(); it.hasNext();) &#123;</span><br><span class="line">            Integer number = it.next();</span><br><span class="line">            <span class="keyword">if</span> (number % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">                it.remove();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(list);</span><br><span class="line">        list.add(<span class="number">2</span>);</span><br><span class="line">        list.add(<span class="number">4</span>);</span><br><span class="line">        Iterator iterator = list.iterator();</span><br><span class="line">        iterator.forEachRemaining(o -&gt; System.out.print(o + <span class="string">" "</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>]</span><br><span class="line"><span class="number">1</span> <span class="number">3</span> <span class="number">5</span> <span class="number">2</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
+<h3 id="异常原因："><a href="#异常原因：" class="headerlink" title="异常原因："></a>异常原因：</h3><p>NoSuchElementException</p>
+<blockquote>
+<p>当游标移动到末尾时，再调用next方法，就会报出这个异常，代表不存在元素</p>
+</blockquote>
+<p>UnsupportedOperationException</p>
+<blockquote>
+<p>有些方法没有对remove方法进行重写，所以会抛出默认的<br>throw new UnsupportedOperationException(“remove”);</p>
+</blockquote>
+<p>NullPointerException</p>
+<blockquote>
+<p>当传入的动作为空时会抛出这个异常</p>
+</blockquote>
+<p>IllegalStateException</p>
+<blockquote>
+<p>当调用remove之前没有调用next时会抛出这个异常</p>
+</blockquote>
+<p>ConcurrentModificationException</p>
+<blockquote>
+<p>并发异常，当modCount和expectedModCount不一致时，会抛出该异常，后面会详细介绍一下这个问题</p>
+</blockquote>
+<h3 id="Iterator和集合方法为什么不能一起使用？"><a href="#Iterator和集合方法为什么不能一起使用？" class="headerlink" title="Iterator和集合方法为什么不能一起使用？"></a>Iterator和集合方法为什么不能一起使用？</h3><p>首先来看一下下面这段代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;Integer&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;(Arrays.asList(<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span>));</span><br><span class="line">        Iterator&lt;Integer&gt; it = set.iterator();</span><br><span class="line">        <span class="keyword">while</span> (it.hasNext()) &#123;</span><br><span class="line">            Integer number= it.next();</span><br><span class="line">            <span class="keyword">if</span> (number % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">                set.remove(number);</span><br><span class="line">            &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码抛出了ConcurrentModificationException的异常，由于Set的底层是由HashMap实现的，所以我们看一下源码来分析</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Node&lt;K,V&gt; p = current;</span><br><span class="line">            <span class="keyword">if</span> (p == <span class="keyword">null</span>)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException();</span><br><span class="line">            <span class="keyword">if</span> (modCount != expectedModCount)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">            current = <span class="keyword">null</span>;</span><br><span class="line">            K key = p.key;</span><br><span class="line">            removeNode(hash(key), key, <span class="keyword">null</span>, <span class="keyword">false</span>, <span class="keyword">false</span>);</span><br><span class="line">            expectedModCount = modCount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>登陆完成后，服务端监控发现无法拿到cookie，下面看几张前端控制台监控的图</p>
+<li><p>这里我们看到了modCount和expectedModCount，modCount是记录HashMap的修改次数，而expectedModCount是HashIterator的修改次数，属于两个不同的计数器。</p>
 </li>
-<li><p>无法拿到cookie时的监控图<br><img src="http://upload-images.jianshu.io/upload_images/9252736-6be7f1065e84050a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/9252736-f05479b3bf243d54.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<li><p>当使用Iterator进行遍历的同时，调用set的remove方法时，会造成两个计数器不同步的现象，所以抛出了ConcurrentModificationException，当然add方法也是相同的道理。</p>
 </li>
-<li>后台cors代码</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest req, ServletResponse res, FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        HttpServletRequest request = (HttpServletRequest) req;</span><br><span class="line">        HttpServletResponse response = (HttpServletResponse) res;</span><br><span class="line">        String origin = request.getHeader(<span class="string">"Origin"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"*"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Access-Control-Allow-Methods"</span>,</span><br><span class="line">                <span class="string">"GET, POST, PUT, DELETE, OPTIONS"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Access-Control-Allow-Credentials"</span>, <span class="string">"true"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Access-Control-Allow-Headers"</span>,</span><br><span class="line">                <span class="string">"Origin, X-Requested-With, Content-Type, Accept, Authorization"</span>);</span><br><span class="line"></span><br><span class="line">        chain.doFilter(req, res);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>后台获取cookie的代码</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Cookie[] cookies = request.getCookies();</span><br><span class="line">        <span class="keyword">if</span> (cookies != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : cookies) &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="string">"ticket"</span>.equals(cookie.getName())) &#123;</span><br><span class="line">                    String value = <span class="keyword">null</span>;</span><br><span class="line">                    <span class="keyword">if</span> (!StringUtils.isEmpty(cookie.getValue())) &#123;</span><br><span class="line">                        value = DigestUtil.Decrypt(cookie.getValue());</span><br><span class="line">                    &#125;</span><br><span class="line">                    User login = userService.findByTicket(value);</span><br><span class="line">                    request.getSession().setAttribute(<span class="string">"user"</span>, login);</span><br><span class="line">                    log.info(<span class="string">"ticket: "</span> + value);</span><br><span class="line">                    log.info(<span class="string">"user: "</span> + login);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>因为request中没有cookies，所以后台获取为null</p>
-</li>
-<li><p>经过上网查资料修改后的监控图片</p>
+<li><p>所以我们可以知道有时抛出并发异常并不是由于多线程并发造成的，而是由于计数器的不一致</p>
 </li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/9252736-3177695f2b63ed13.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/9252736-36f7d79c8afde696.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<ul>
-<li>我们可以发现在request中多了cookie这个字段，并且在cookies中有了ticket，后台可以通过request.getCookies()进行获取了</li>
-</ul>
-<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><ul>
-<li>最后定位到了这是一个跨域问题，在跨域时cookie被丢弃。</li>
-<li>前端：请求时增加withCredentials: true</li>
-<li><p>后端：</p>
-<ul>
-<li>直接使用*来匹配所有域名只能适用于无需使用cookie的场景</li>
-<li>可以将origin的*替换为允许请求的正则表达式</li>
-<li><p>可以加入一个list列表，代表请求白名单</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; allowedOrigins = Arrays.asList(<span class="string">"http://localhost:8080"</span>, <span class="string">"http://localhost:8100"</span>, <span class="string">"http://login.stalary.com"</span>);</span><br><span class="line">response.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, allowedOrigins.contains(origin) ? origin : <span class="string">""</span>);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>也可以直接拿到前端的第一次options请求的header来进行跨域处理</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String origin = request.getHeader(<span class="string">"Origin"</span>);</span><br><span class="line">    response.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, origin);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<p>本次简单的跨域丢失cookie的处理就介绍到这里了，如有问题可以私信博主qq<br><a href="http://login.stalary.com" target="_blank" rel="noopener">登陆demo地址</a><br><a href="https://github.com/stalary/SpringBootDemo" target="_blank" rel="noopener">登陆demo源码地址</a><br><a href="http://login.stalary.com/swagger-ui.html" target="_blank" rel="noopener">登陆demo-swagger接口地址</a></p>
-<p>服务器是学生机，访问较慢，请见谅。</p>
-<h5 id="每一次知识的积累，都是明天你微笑的源泉"><a href="#每一次知识的积累，都是明天你微笑的源泉" class="headerlink" title="每一次知识的积累，都是明天你微笑的源泉"></a>每一次知识的积累，都是明天你微笑的源泉</h5>
+<p><strong>只有永不停歇的前进，才能保证不会后退</strong></p>
+
       
     </div>
     
@@ -471,7 +459,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/web/" rel="tag"><i class="fa fa-tag"></i> web</a>
+            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
           
         </div>
       
@@ -484,8 +472,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/29/SpringBootCreateAndDeploy/" rel="next" title="【Java】spring-boot从创建到部署">
-                <i class="fa fa-chevron-left"></i> 【Java】spring-boot从创建到部署
+              <a href="/2018/02/12/DistributedSession/" rel="next" title="【web】分布式session">
+                <i class="fa fa-chevron-left"></i> 【web】分布式session
               </a>
             
           </div>
@@ -493,10 +481,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/01/07/BinaryTreeNextNode/" rel="prev" title="【剑指offer】二叉树中序遍历的下一个结点">
-                【剑指offer】二叉树中序遍历的下一个结点 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -698,7 +682,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#案例分析"><span class="nav-number">1.</span> <span class="nav-text">案例分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方法"><span class="nav-number">2.</span> <span class="nav-text">解决方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#每一次知识的积累，都是明天你微笑的源泉"><span class="nav-number">2.1.</span> <span class="nav-text">每一次知识的积累，都是明天你微笑的源泉</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Iterator的源码分析"><span class="nav-number">1.</span> <span class="nav-text">Iterator的源码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方法"><span class="nav-number">2.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常原因："><span class="nav-number">3.</span> <span class="nav-text">异常原因：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Iterator和集合方法为什么不能一起使用？"><span class="nav-number">4.</span> <span class="nav-text">Iterator和集合方法为什么不能一起使用？</span></a></li></ol></div>
             
 
           </div>
