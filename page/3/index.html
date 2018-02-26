@@ -275,6 +275,207 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/01/11/ComparableAndComparator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stalary">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stalary的小书房">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/11/ComparableAndComparator/" itemprop="url">【java】Comparable和Comparator</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T23:50:40+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/源码分析/" itemprop="url" rel="index">
+                    <span itemprop="name">源码分析</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/01/11/ComparableAndComparator/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://stalary.com/2018/01/11/ComparableAndComparator/" class="cy_cmt_count" data-xid="2018/01/11/ComparableAndComparator/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天来分析一下Comparable和Comparator的区别，以及源码的解读。</p>
+<h3 id="Comparable"><a href="#Comparable" class="headerlink" title="Comparable"></a>Comparable</h3><ul>
+<li>源码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Comparable</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(T o)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以发现Comparable只是一个简单的泛型接口，内部含有一个compareTo接口。<br>根据接口的说明可知：</p>
+<ol>
+<li>实现了这个接口的集合(或者数组)可以通过使用Collections.sort()(或者Arrays.sort())进行排序</li>
+<li>实现了这个接口的对象，并重写了CompareTo()方法，可以无需Comparator比较器按照key值进行排序</li>
+</ol>
+<ul>
+<li>使用方法：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> <span class="keyword">implements</span> <span class="title">Comparable</span>&lt;<span class="title">Person</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Person o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.getAge().compareTo(o.getAge());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Person p1 = <span class="keyword">new</span> Person(<span class="string">"stalary"</span>, <span class="number">21</span>);</span><br><span class="line">        Person p3 = <span class="keyword">new</span> Person(<span class="string">"hawk"</span>, <span class="number">19</span>);</span><br><span class="line">        Person p2 = <span class="keyword">new</span> Person(<span class="string">"claire"</span>, <span class="number">20</span>);</span><br><span class="line">        List&lt;Person&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        list.add(p1);</span><br><span class="line">        list.add(p2);</span><br><span class="line">        list.add(p3);</span><br><span class="line">        Collections.sort(list);</span><br><span class="line">        System.out.println(list);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>实现了将对象集合按年龄的升序排序，当想实现降序排序的时候，只需要将this和p的顺序交换</li>
+<li>compareTo()会返回一个整数，小于0代表小于，等于0代表等于，大于0代表大于，当返回正数时，即交换两个数，完成比较</li>
+</ol>
+<h3 id="Comparator"><a href="#Comparator" class="headerlink" title="Comparator"></a>Comparator</h3><p>当我们想要比较的对象没有实现Comparable接口时，即没发使用上述方法进行比较，这时可以使用Comparator来进行比较。</p>
+<p>下面先来看一下Comparator的源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Comparator</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">compare</span><span class="params">(T o1, T o2)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">default</span> Comparator&lt;T&gt; <span class="title">reversed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Collections.reverseOrder(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">default</span> Comparator&lt;T&gt; <span class="title">thenComparing</span><span class="params">(Comparator&lt;? <span class="keyword">super</span> T&gt; other)</span> </span>&#123;</span><br><span class="line">        Objects.requireNonNull(other);</span><br><span class="line">        <span class="keyword">return</span> (Comparator&lt;T&gt; &amp; Serializable) (c1, c2) -&gt; &#123;</span><br><span class="line">            <span class="keyword">int</span> res = compare(c1, c2);</span><br><span class="line">            <span class="keyword">return</span> (res != <span class="number">0</span>) ? res : other.compare(c1, c2);</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">default</span> Comparator&lt;T&gt; <span class="title">thenComparingInt</span><span class="params">(ToIntFunction&lt;? <span class="keyword">super</span> T&gt; keyExtractor)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> thenComparing(comparingInt(keyExtractor));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>我们排序时需要实现的方法是compare。</li>
+<li>equals在排序时没有用到，是从Object继承来的默认实现</li>
+<li>后面省略了一些default的方法，这些方法都是jdk1.8中针对lambda实现的默认方法</li>
+</ol>
+<ul>
+<li>使用方法：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">List&lt;People&gt; peopleList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        peopleList.addAll(Arrays.asList(<span class="keyword">new</span> People(<span class="string">"stalary"</span>, <span class="number">21</span>),<span class="keyword">new</span> People(<span class="string">"claire"</span>, <span class="number">20</span>),<span class="keyword">new</span> People(<span class="string">"hawk"</span>, <span class="number">19</span>)));</span><br><span class="line">        Collections.sort(peopleList, <span class="keyword">new</span> PeopleComparator());</span><br><span class="line">        </span><br><span class="line">        <span class="meta">@Data</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">People</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PeopleComparator</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">People</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(People o1, People o2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> o1.getAge() - o2.getAge();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在jdk1.8中我们可以这样进行排序</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peopleList.sort(Comparator.comparing(People::getAge));</span><br></pre></td></tr></table></figure>
+<p>当想要升序排序时，我们可以修改比较器中的compare或者直接调用reversed方法(1.8中实现的默认方法)</p>
+<p>还可以在比较时写一个匿名内部类的比较器进行比较，但使用lambda更加方便，所以不推荐使用。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总体来看Comparator更加灵活，可以不需要对象去继承一个接口，而且在1.8引入了lambda以后使用更加方便</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/01/07/BinaryTreeNextNode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1044,186 +1245,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/12/23/JavaUseFfmpeg/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/23/JavaUseFfmpeg/" itemprop="url">【Java】ffmpeg的调用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-23T08:20:40+08:00">
-                2017-12-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/ffmpeg/" itemprop="url" rel="index">
-                    <span itemprop="name">ffmpeg</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2017/12/23/JavaUseFfmpeg/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://stalary.com/2017/12/23/JavaUseFfmpeg/" class="cy_cmt_count" data-xid="2017/12/23/JavaUseFfmpeg/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天介绍一下java如何调用ffmpeg对音频视频等进行转码，暂时只介绍一个其他格式转码到mp3的例子</p>
-<h3 id="下载ffmpeg"><a href="#下载ffmpeg" class="headerlink" title="下载ffmpeg"></a>下载ffmpeg</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Mac: </span><br><span class="line">1.下载homebrew</span><br><span class="line">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br><span class="line">2.下载ffmpeg</span><br><span class="line">brew ffmpeg</span><br><span class="line">3.找到ffmpeg</span><br><span class="line">文件路径：/usr/local/Cellar/ffmpeg/3.4.1/bin</span><br><span class="line"></span><br><span class="line">Windows:</span><br><span class="line">1.前往http://www.ffmpeg.org/download.html下载build文件</span><br><span class="line">2.解压文件，配置环境变量PATH，使系统可以找到该软件</span><br><span class="line">3.cmd输入ffmpeg -version查看是否安装成功</span><br><span class="line"></span><br><span class="line">linux:</span><br><span class="line">1.官网下载源码包</span><br><span class="line">2.解压源码包</span><br><span class="line">3. ./configure --enable-shared --prefix=/usr/local/ffmpeg --enable-libmp3lame(这里因为我是转mp3，所以下载了libmp3lame的编译器)</span><br><span class="line">4.make</span><br><span class="line">5.make install</span><br><span class="line">如果遇到报错，则有可能是缺少yasm的依赖，需要去下载yasm的包进行解压并编译</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">如果是centos系统可以直接使用yum -y install ffmpeg，如果需要切换数据源则按如下步骤:</span><br><span class="line"></span><br><span class="line">1.安装EPEL Release，因为安装需要使用其他的repo源，所以需要EPEL支持</span><br><span class="line">yum install -y epel-release </span><br><span class="line">#如果出现缺少Code提示，可以：</span><br><span class="line">sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</span><br><span class="line">#安装完成之后，可以查看是否安装成功</span><br><span class="line">yum repolist </span><br><span class="line">2.安装Nux-Dextop源</span><br><span class="line">#导入一个Code</span><br><span class="line">sudo rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro </span><br><span class="line">#安装nux-dextop 源</span><br><span class="line">sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm</span><br><span class="line">#查看repo源是否安装成功</span><br><span class="line">yum repolist </span><br><span class="line">3.yum安装ffmpeg</span><br><span class="line">yum install -y ffmpeg</span><br></pre></td></tr></table></figure>
-<h3 id="通过java调用ffmpeg"><a href="#通过java调用ffmpeg" class="headerlink" title="通过java调用ffmpeg"></a>通过java调用ffmpeg</h3><ul>
-<li>我们使用jave来进行操作ffmpeg</li>
-<li>jave：<a href="http://www.sauronsoftware.it/projects/jave/manual.php" target="_blank" rel="noopener">http://www.sauronsoftware.it/projects/jave/manual.php</a></li>
-<li>需要引入一个jar包，这里分享给大家(当时找了半天)</li>
-<li>链接:<a href="https://pan.baidu.com/s/1cygkBc" target="_blank" rel="noopener">https://pan.baidu.com/s/1cygkBc</a>  密码:qpg7</li>
-<li>引入的java中就可以开始使用了，下面是一个其他格式转化为mp3格式的小demo</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: Stalary</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2017/10/14</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        File source = <span class="keyword">new</span> File(<span class="string">"/Users/mac/Downloads/1"</span>);</span><br><span class="line">        File target = <span class="keyword">new</span> File(<span class="string">"/Users/mac/Downloads/test.mp3"</span>);</span><br><span class="line">        <span class="comment">// 设置转码后的格式</span></span><br><span class="line">        AudioAttributes audio = <span class="keyword">new</span> AudioAttributes();</span><br><span class="line">        audio.setCodec(<span class="string">"libmp3lame"</span>);</span><br><span class="line">        EncodingAttributes attrs = <span class="keyword">new</span> EncodingAttributes();</span><br><span class="line">        attrs.setFormat(<span class="string">"mp3"</span>);</span><br><span class="line">        attrs.setAudioAttributes(audio);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 这里需要注意：只有mac才需要进行指定ffmpeg路径，否则会找不到</span></span><br><span class="line">            <span class="comment">// 需要自行实现一个MyFFMPEGExecutableLocator类并继承FFMPEGLocator</span></span><br><span class="line">            <span class="comment">// 实现其中的getFFMPEGExecutablePath方法返回本机ffmpeg地址</span></span><br><span class="line">            <span class="comment">// 其他操作系统直接使用new Encoder();</span></span><br><span class="line">            Encoder encoder = <span class="keyword">new</span> Encoder(<span class="keyword">new</span> MyFFMPEGExecutableLocator());</span><br><span class="line">            encoder.encode(source, target, attrs);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalArgumentException | EncoderException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyFFMPEGExecutableLocator</span> <span class="keyword">extends</span> <span class="title">FFMPEGLocator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getFFMPEGExecutablePath</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"/usr/local/Cellar/ffmpeg/3.4.1/bin/ffmpeg"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面就是一个最基本的转码格式，具体需求可以去ffmpeg查看文档，下面说一下前端上传一个音频到获取到音频url的流程。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/9252736-09647b4235fdecee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="流程图"></p>
-<p>ffmpeg的基本使用就介绍到这里啦，爬了不少坑，也学到了不少</p>
-<p>每一次钻研，都是未来上升的阶梯</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
- 
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1278,7 +1299,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1289,7 +1310,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
