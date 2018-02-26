@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="链表," />
+  <meta name="keywords" content="java," />
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="链表中环的入口结点  题目解释：  找到一个带环的链表中环的入口结点  样例：此时的入口结点就是3结点  题解：   这个题的思路是我们可以使用一对快慢指针：  首先快指针移动两个结点，慢指针移动一个结点，当两个结点相遇时就可以知道链表是否存在环。 然后返回相遇的点，再进行设置两个指针，第一个指针从相遇点开始向后移动，">
-<meta name="keywords" content="链表">
+<meta name="description" content="今天来分析一下重入锁的源码 ReentranLock定义重入锁ReentranLock是一种支持重进入的锁，表示该锁可以支持一个线程对资源重复加锁，并且分为公平锁和非公平锁 synchronizedsynchronized大家一定都很熟悉了，这也是一种隐式的重入锁，是一种非公平锁 重进入的实现 当线程再次获取锁时，锁需">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【剑指offer】链表中环的入口结点">
-<meta property="og:url" content="http://stalary.com/2017/12/09/SwordOfferEntrance/index.html">
+<meta property="og:title" content="【java】重入锁源码分析">
+<meta property="og:url" content="http://stalary.com/2018/02/27/ReentranLock/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="链表中环的入口结点  题目解释：  找到一个带环的链表中环的入口结点  样例：此时的入口结点就是3结点  题解：   这个题的思路是我们可以使用一对快慢指针：  首先快指针移动两个结点，慢指针移动一个结点，当两个结点相遇时就可以知道链表是否存在环。 然后返回相遇的点，再进行设置两个指针，第一个指针从相遇点开始向后移动，并统计结点的数量，当再次相遇时即可获得环中元素的数量。 最后使第二个指针从头开始">
+<meta property="og:description" content="今天来分析一下重入锁的源码 ReentranLock定义重入锁ReentranLock是一种支持重进入的锁，表示该锁可以支持一个线程对资源重复加锁，并且分为公平锁和非公平锁 synchronizedsynchronized大家一定都很熟悉了，这也是一种隐式的重入锁，是一种非公平锁 重进入的实现 当线程再次获取锁时，锁需要先判断该线程是否为当前占据锁的线程，如果是则再次成功获取 当释放锁时，如果线程">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/9252736-10dfbd7547961aae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-12-10T08:22:09.851Z">
+<meta property="og:updated_time" content="2018-02-26T16:10:50.691Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【剑指offer】链表中环的入口结点">
-<meta name="twitter:description" content="链表中环的入口结点  题目解释：  找到一个带环的链表中环的入口结点  样例：此时的入口结点就是3结点  题解：   这个题的思路是我们可以使用一对快慢指针：  首先快指针移动两个结点，慢指针移动一个结点，当两个结点相遇时就可以知道链表是否存在环。 然后返回相遇的点，再进行设置两个指针，第一个指针从相遇点开始向后移动，并统计结点的数量，当再次相遇时即可获得环中元素的数量。 最后使第二个指针从头开始">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/9252736-10dfbd7547961aae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="【java】重入锁源码分析">
+<meta name="twitter:description" content="今天来分析一下重入锁的源码 ReentranLock定义重入锁ReentranLock是一种支持重进入的锁，表示该锁可以支持一个线程对资源重复加锁，并且分为公平锁和非公平锁 synchronizedsynchronized大家一定都很熟悉了，这也是一种隐式的重入锁，是一种非公平锁 重进入的实现 当线程再次获取锁时，锁需要先判断该线程是否为当前占据锁的线程，如果是则再次成功获取 当释放锁时，如果线程">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://stalary.com/2017/12/09/SwordOfferEntrance/"/>
+  <link rel="canonical" href="http://stalary.com/2018/02/27/ReentranLock/"/>
 
 
 
 
 
-  <title>【剑指offer】链表中环的入口结点 | Stalary的小书房</title>
+  <title>【java】重入锁源码分析 | Stalary的小书房</title>
   
 
 
@@ -278,7 +276,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/12/09/SwordOfferEntrance/">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/02/27/ReentranLock/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="stalary">
@@ -295,7 +293,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">【剑指offer】链表中环的入口结点</h1>
+          <h1 class="post-title" itemprop="name headline">【java】重入锁源码分析</h1>
         
 
         <div class="post-meta">
@@ -307,8 +305,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T23:00:40+08:00">
-                2017-12-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T00:10:40+08:00">
+                2018-02-27
               </time>
             
 
@@ -330,8 +328,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -341,8 +339,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
+                  <a href="/categories/java/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
                   </a>
                 </span>
 
@@ -360,8 +358,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/12/09/SwordOfferEntrance/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/12/09/SwordOfferEntrance/" itemprop="commentsCount"></span>
+                <a href="/2018/02/27/ReentranLock/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/02/27/ReentranLock/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -394,27 +392,27 @@
       
 
       
-        <p>链表中环的入口结点</p>
-<ul>
-<li>题目解释：</li>
-</ul>
-<p>找到一个带环的链表中环的入口结点</p>
-<ul>
-<li><p>样例：<br><img src="http://upload-images.jianshu.io/upload_images/9252736-10dfbd7547961aae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>此时的入口结点就是3结点</p>
-</li>
-<li><p>题解：</p>
-</li>
-</ul>
-<p>这个题的思路是我们可以使用一对快慢指针：</p>
-<ol>
-<li>首先快指针移动两个结点，慢指针移动一个结点，当两个结点相遇时就可以知道链表是否存在环。</li>
-<li>然后返回相遇的点，再进行设置两个指针，第一个指针从相遇点开始向后移动，并统计结点的数量，当再次相遇时即可获得环中元素的数量。</li>
-<li>最后使第二个指针从头开始移动，第一个指针也随之移动，当和第一个指针相遇时即找到了入口结点  </li>
+        <p>今天来分析一下重入锁的源码</p>
+<h3 id="ReentranLock定义"><a href="#ReentranLock定义" class="headerlink" title="ReentranLock定义"></a>ReentranLock定义</h3><p>重入锁ReentranLock是一种支持重进入的锁，表示该锁可以支持一个线程对资源重复加锁，并且分为公平锁和非公平锁</p>
+<h3 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h3><p>synchronized大家一定都很熟悉了，这也是一种隐式的重入锁，是一种非公平锁</p>
+<h3 id="重进入的实现"><a href="#重进入的实现" class="headerlink" title="重进入的实现"></a>重进入的实现</h3><ol>
+<li>当线程再次获取锁时，锁需要先判断该线程是否为当前占据锁的线程，如果是则再次成功获取</li>
+<li>当释放锁时，如果线程重复n次获取了锁，必须要在第n次释放该锁后，其他线程才能够获取到该锁</li>
 </ol>
-<ul>
-<li>code：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用一对快慢指针来判断是否有环，快指针每次移动2，慢指针每次移动1</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> pHead</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">meetNode</span><span class="params">(ListNode pHead)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (pHead == <span class="keyword">null</span> || pHead.next == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode slow = pHead.next;</span><br><span class="line">        ListNode fast = slow.next;</span><br><span class="line">        <span class="keyword">while</span> (fast != <span class="keyword">null</span> &amp;&amp; slow != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (fast == slow) &#123;</span><br><span class="line">                <span class="keyword">return</span> fast;</span><br><span class="line">            &#125;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next;</span><br><span class="line">            <span class="keyword">if</span> (fast != slow) &#123;</span><br><span class="line">                fast = fast.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从相遇点向后移动，当再次回到这个点的时候，就能统计出环中元素的数量</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> pHead</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">entryNodeOfLoop</span><span class="params">(ListNode pHead)</span> </span>&#123;</span><br><span class="line">        ListNode meetNode = meetNode(pHead);</span><br><span class="line">        <span class="keyword">if</span> (meetNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">        ListNode p1 = meetNode;</span><br><span class="line">        <span class="keyword">while</span> (p1.next != meetNode) &#123;</span><br><span class="line">            p1 = p1.next;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        p1 = pHead;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">            p1 = p1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode p2 = pHead;</span><br><span class="line">        <span class="keyword">while</span> (p2 != p1) &#123;</span><br><span class="line">            p1 = p1.next;</span><br><span class="line">            p2 = p2.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p1;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode next = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        ListNode(<span class="keyword">int</span> val) &#123;</span><br><span class="line">            <span class="keyword">this</span>.val = val;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h3><p><strong>非公平锁的获取</strong></p>
+<p>当再次获取同步状态时，通过判断当前线程是否为锁的持有者来决定获取操作是否成功，成功则将同步状态值增加并返回true</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">nonfairTryAcquire</span><span class="params">(<span class="keyword">int</span> acquires)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 判断当前线程是不是锁的持有者</span></span><br><span class="line">    <span class="keyword">final</span> Thread current = Thread.currentThread();</span><br><span class="line">    <span class="comment">// 获取同步状态值</span></span><br><span class="line">    <span class="keyword">int</span> c = getState();</span><br><span class="line">    <span class="comment">// 当锁没有持有者时，进行CAS操作，成功时，即将锁的拥有者设置为当前线程</span></span><br><span class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, acquires)) &#123;</span><br><span class="line">            setExclusiveOwnerThread(current);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果当前线程是锁的持有者，则将同步数量增加</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (current == getExclusiveOwnerThread()) &#123;</span><br><span class="line">        <span class="keyword">int</span> nextc = c + acquires;</span><br><span class="line">        <span class="comment">// 数量错误时，抛出异常</span></span><br><span class="line">        <span class="keyword">if</span> (nextc &lt; <span class="number">0</span>) <span class="comment">// overflow</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Maximum lock count exceeded"</span>);</span><br><span class="line">        <span class="comment">// 数量正确时，更新同步状态值            setState(nextc);</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>公平锁的获取</strong></p>
+<p>与非公平锁的获取区别为，需要在CAS操作的同时判断是否还有前驱结点，当没有前驱结点时才为下一次需要执行的线程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">(<span class="keyword">int</span> acquires)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Thread current = Thread.currentThread();</span><br><span class="line">        <span class="keyword">int</span> c = getState();</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 区别只是这里需要先判断一下当前结点是否有前驱结点</span></span><br><span class="line">            <span class="keyword">if</span> (!hasQueuedPredecessors() &amp;&amp;</span><br><span class="line">                    compareAndSetState(<span class="number">0</span>, acquires)) &#123;</span><br><span class="line">                setExclusiveOwnerThread(current);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (current == getExclusiveOwnerThread()) &#123;</span><br><span class="line">            <span class="keyword">int</span> nextc = c + acquires;</span><br><span class="line">            <span class="keyword">if</span> (nextc &lt; <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Maximum lock count exceeded"</span>);</span><br><span class="line">            setState(nextc);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>锁的释放</strong></p>
+<p>如果该锁被获取了n次，那么前n-1次tryRelease方法一定返回false，只有同步状态完全释放了才返回true，并且将锁的占有者设为空。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> releases)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 当前同步状态值为锁当前的被持有数减去释放数</span></span><br><span class="line">        <span class="keyword">int</span> c = getState() - releases;</span><br><span class="line">        <span class="comment">// 如果当前线程不是锁的持有者，则抛出异常</span></span><br><span class="line">        <span class="keyword">if</span> (Thread.currentThread() != getExclusiveOwnerThread())</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalMonitorStateException();</span><br><span class="line">        <span class="keyword">boolean</span> free = <span class="keyword">false</span>;</span><br><span class="line">        <span class="comment">// 只有当锁的持有数为0时，才会将锁的持有者移除，实现锁的释放</span></span><br><span class="line">        <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</span><br><span class="line">            free = <span class="keyword">true</span>;</span><br><span class="line">            setExclusiveOwnerThread(<span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 数量不为0时，将数量写回同步状态值</span></span><br><span class="line">        setState(c);</span><br><span class="line">        <span class="keyword">return</span> free;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="公平锁与非公平锁的区别"><a href="#公平锁与非公平锁的区别" class="headerlink" title="公平锁与非公平锁的区别"></a>公平锁与非公平锁的区别</h3><ol>
+<li>公平锁比非公平锁的的效率低，因为需要切换更多次，吞吐量降低</li>
+<li>公平锁能够减少饥饿发生的概率，因为非公平锁会使刚释放锁的线程再次获取同步状态的几率非常大，使得其他线程只能在AQS(同步队列)中等待</li>
+</ol>
+<p><strong>也许我们很渺小，但我们都要仰望星空的权利</strong></p>
 
       
     </div>
@@ -443,7 +441,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/链表/" rel="tag"><i class="fa fa-tag"></i> 链表</a>
+            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
           
         </div>
       
@@ -456,8 +454,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/09/leetcode409/" rel="next" title="【leetcode】409题解">
-                <i class="fa fa-chevron-left"></i> 【leetcode】409题解
+              <a href="/2018/02/26/sort/" rel="next" title="【java】常用排序的整理">
+                <i class="fa fa-chevron-left"></i> 【java】常用排序的整理
               </a>
             
           </div>
@@ -465,10 +463,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/12/SwordOfferPrintMatrix/" rel="prev" title="【剑指offer】顺时针打印矩阵">
-                【剑指offer】顺时针打印矩阵 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -552,8 +546,17 @@ var jiathis_config={
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -651,6 +654,22 @@ var jiathis_config={
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ReentranLock定义"><span class="nav-number">1.</span> <span class="nav-text">ReentranLock定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized"><span class="nav-number">2.</span> <span class="nav-text">synchronized</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重进入的实现"><span class="nav-number">3.</span> <span class="nav-text">重进入的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码解析"><span class="nav-number">4.</span> <span class="nav-text">源码解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#公平锁与非公平锁的区别"><span class="nav-number">5.</span> <span class="nav-text">公平锁与非公平锁的区别</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
