@@ -275,6 +275,210 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/02/01/SpringtBootAndJpa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stalary">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stalary的小书房">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/01/SpringtBootAndJpa/" itemprop="url">【java】Spring-Boot和Jpa整合开发</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T02:50:40+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-Boot/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring-Boot</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-Boot/Jpad/" itemprop="url" rel="index">
+                    <span itemprop="name">Jpad</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/02/01/SpringtBootAndJpa/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://stalary.com/2018/02/01/SpringtBootAndJpa/" class="cy_cmt_count" data-xid="2018/02/01/SpringtBootAndJpa/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>新手入门<strong>Hibernate</strong>和<strong>Mybatis</strong>以及配置繁重的<strong>Spring-MVC</strong>还有些难度，今天就从实用出发，从零开始搭建一个<strong>Spring-Boot+Jpa</strong>的服务</p>
+<h3 id="什么是Jpa？"><a href="#什么是Jpa？" class="headerlink" title="什么是Jpa？"></a>什么是Jpa？</h3><p>Jpa是<strong>Java Persistence API</strong>的简称。<br>致力于通过操作<strong>对象</strong>，执行<strong>CURD</strong>操作，使开发者从繁重的jdbc和sql中脱离出来的一种规范。<br>而<strong>Hibernate ORM</strong>框架则是Jpa规范的一种<strong>实现</strong>。<br><strong>Spring Data Jpa</strong>是在Jpa规范的基础下提供了Repository层的实现</p>
+<p>下图即为几种事物之间的关系：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-0aafdf713ed5086b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.11.05.png"></p>
+<h3 id="什么是Spring-Boot？"><a href="#什么是Spring-Boot？" class="headerlink" title="什么是Spring-Boot？"></a>什么是Spring-Boot？</h3><p>是一种可以方便集成各种依赖，省去大多数配置文件的自动化框架，可以基于Spring进行快速开发</p>
+<h3 id="项目的搭建"><a href="#项目的搭建" class="headerlink" title="项目的搭建"></a>项目的搭建</h3><p>首先准备好IDEA<br><img src="http://upload-images.jianshu.io/upload_images/9252736-eae4a4de33816349.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.14.18.png"></p>
+<p>点击Create New Project</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-085107f62095be06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.14.58.png"></p>
+<p>点击右侧的Spring Initalizr，然后点击Next</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-2ad0d2dd0ef494ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.16.10.png"></p>
+<p><strong>Group</strong>即为所在组<br><strong>Artifact</strong>即为项目名<br><strong>Type</strong>选择<strong>Maven Project</strong>，<strong>Maven</strong>稍后进行讲解<br><strong>Packaging</strong>选择<strong>jar</strong><br>点击<strong>Next</strong><br>有的小伙伴一定会有疑问，为什么不选择<strong>war</strong><br>这里进行说明一下，因为<strong>Spring-boot</strong>是一个自带<strong>tomcat</strong>的容器，当我们使用<strong>tomcat</strong>进行部署时，需要将<strong>war</strong>包放入到<strong>/tomcat/webapps</strong>进行运行，而<strong>Spring-boot</strong>则只需要打成<strong>jar，java -jar</strong>即可运行，是不是很方便？</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-2b582b43c774adb4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.24.11.png"></p>
+<p>勾选上右侧我所选择的依赖，然后点击Next，再点击Finish，我们的项目就创建完成了</p>
+<p><strong>Lombok</strong>大家可能还很陌生，这是一个可以极大简化开发的插件，需要在使用时勾选下图中右侧<strong>Enable annotation processing</strong>，意思是开启注解处理，因为<strong>Lombok</strong>是基于注解(在类或者方法上进行标记的一种语法)的插件</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-417a51c77862201a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.26.40.png"></p>
+<p>下面我们打开项目中的<strong>pom.xml</strong>，如果右下角有提示，可以点击<strong>auto-import</strong>，意思为自动导入依赖包</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-78d957b85b2062f7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.29.32.png"></p>
+<p>下面说一下<strong>Maven</strong><br>这是一个十分便捷的依赖管理工具，我们可以通过<dependency></dependency>来直接倒入包，而不用再去网上搜索一个个的jar包<br>所以大家以后需要什么依赖可以直接去maven仓库(<a href="https://mvnrepository.com/" target="_blank" rel="noopener">https://mvnrepository.com/</a>)<br>直接复制代码过来，就可以下载依赖</p>
+<p>搜索想要添加的依赖，然后点击想要的版本号(可以选择用的人数最多的，即Usages数量最大的)进入<br><img src="http://upload-images.jianshu.io/upload_images/9252736-9b8dee17bd26e145.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.34.01.png"></p>
+<p>然后复制下图中<strong>Maven</strong>里的代码到<strong>pom.xml</strong>中即可<br><img src="http://upload-images.jianshu.io/upload_images/9252736-a6e70d2a4bcd82c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.34.09.png"></p>
+<p>下面就要开始创建我们的<strong>MVC</strong>架构了<br>大家可以按照我所建的包(右键src/main/java/你的包名，即与Application同目录， new Package)来进行创建</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-62c8b56057786de6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.40.43.png"></p>
+<p>当然，这些只是最基本的结构，下面配置一下<strong>resources</strong>里的<strong>application.properties</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-7d6363a7b5c0129f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 01.45.46.png"></p>
+<p>大家需要把<strong>url</strong>里的<strong>loginDemo</strong>替换成自己创建的db库名，<strong>username</strong>和<strong>password</strong>替换成自己的mysql数据库的，<strong>port</strong>为自定义的运行后的端口号</p>
+<p>下面来进行编写一个简单的查询接口</p>
+<p>1.我们在utils里创建一个ResponseMessage，这是用来返回数据时，返回统一格式<br><img src="http://upload-images.jianshu.io/upload_images/9252736-170c52152700db0c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.11.28.png"><br>这里的<strong>@Data</strong>和<strong>@AllArgsConstructor</strong>和<strong>@NoArgsConstructor</strong>都是<strong>Lombok</strong>插件的注解，代表自动为实体生成<strong>get，set</strong>方法，重写<strong>toString()</strong>方法，自动生成全参，无参构造函数</p>
+<p>2.创建一个和数据库中的表映射的实体类<br><img src="http://upload-images.jianshu.io/upload_images/9252736-46de3961ee8ac462.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.11.47.png"><br><strong>@Id</strong>和<strong>@GeneratedValue</strong>代表生成表的时候设为自增主键，最后又添加了一个不含有id的构造函数，，因为不传id，就代表生成自增id，创建新数据</p>
+<p>3.创建一个repository<br><img src="http://upload-images.jianshu.io/upload_images/9252736-83dd5045e969f129.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.11.53.png"><br>要继承<strong>JpaRepository</strong>，并且泛型传入<strong>User</strong>对象<br>因为实体中设置了<strong>status=0</strong>代表正常，所以我们按照<strong>status</strong>搜出所有正常的<strong>User</strong></p>
+<p>4.创建一个service<br><img src="http://upload-images.jianshu.io/upload_images/9252736-7a0e8b537876fc4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.11.55.png"><br>通过<strong>@Autowired</strong>注入<strong>UserRepository</strong>进行调用<strong>findByStatus()</strong>方法</p>
+<p>5.创建一个controller<br><img src="http://upload-images.jianshu.io/upload_images/9252736-352f285800618321.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.12.03.png"><br><strong>@RequestController</strong>内部包含两个注解<strong>@RequestBody和@Controller</strong>代表这是一个返回json数据格式的controller<br><strong>@RequestMapping</strong>代表映射，即一会访问接口时的地址<br>内部调用service方法的getList()进行返回数据</p>
+<p>6.创建test单元测试，用于增加初始数据<br><img src="http://upload-images.jianshu.io/upload_images/9252736-e79e812d219d9ecd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.08.46.png"><br>这里<strong>Hibernate</strong>自动建的表会出现中文乱码无法插入的错误，在<strong>varchar</strong>的字段后面加上<strong>CHARACTER SET ‘utf8’</strong>即可解决<br><img src="http://upload-images.jianshu.io/upload_images/9252736-e04184eea5455d4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.25.58.png"><br>然后点击18行的绿色按钮。Run Tests即可完成数据初始化</p>
+<p>7.去BootJpaApplication点击第七行绿色按钮，Run<br><img src="http://upload-images.jianshu.io/upload_images/9252736-59bc15931f182d67.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.27.43.png"><br>打开浏览器输入url(<a href="http://localhost:8088/user/list" target="_blank" rel="noopener">http://localhost:8088/user/list</a>)<br><img src="http://upload-images.jianshu.io/upload_images/9252736-014d3cc4f29040b0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.09.43.png"><br>这样我们就拿到了数据，一个完成的项目也就搭建完成了</p>
+<h3 id="项目的部署"><a href="#项目的部署" class="headerlink" title="项目的部署"></a>项目的部署</h3><p>1.在命令行中使用<strong>mvn package</strong>打成jar包<br><img src="http://upload-images.jianshu.io/upload_images/9252736-2fff89ae56ae85aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-01 at 02.32.18.png"><br><strong>注意：在运行之前，先将init()中代码注释掉，否则会重复创建数据</strong></p>
+<p>2.在命令行中使用<strong>java -jar target/boot-jpa-0.0.1-SNAPSHOT.jar</strong>即可开启服务，再次访问<a href="http://localhost:8088/user/list" target="_blank" rel="noopener">http://localhost:8088/user/list</a><br>依旧能够成功获取数据(开启服务前不要忘记刚才通过<strong>BootJpaApplication</strong>运行的服务)</p>
+<p>一个完整的Spring-Boot+Jpa的创建到运行到部署的流程就此全部完成<br>本人github上放有基于Spring-Boot+Jpa的一个登陆demo，欢迎大家查看<br><a href="https://github.com/stalary/SpringBootDemo" target="_blank" rel="noopener">https://github.com/stalary/SpringBootDemo</a></p>
+<hr>
+<p>今天我们耀眼的光芒，不过是明日无人问津的落日余晖。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/01/28/RedisSubscribeAndPublish/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1067,218 +1271,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/01/03/CORSResolveCookiesLoose/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/03/CORSResolveCookiesLoose/" itemprop="url">【web】跨域丢失cookie的问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-03T22:20:40+08:00">
-                2018-01-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/web/" itemprop="url" rel="index">
-                    <span itemprop="name">web</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/web/跨域/" itemprop="url" rel="index">
-                    <span itemprop="name">跨域</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2018/01/03/CORSResolveCookiesLoose/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://stalary.com/2018/01/03/CORSResolveCookiesLoose/" class="cy_cmt_count" data-xid="2018/01/03/CORSResolveCookiesLoose/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>2018年的第一篇博客，新的开始，新的起点</p>
-<p>前几天在写一个利用cookie存储token的登陆demo时遇到了跨域丢失token的问题，在这里分享一下解决的方法。</p>
-<h4 id="案例分析"><a href="#案例分析" class="headerlink" title="案例分析"></a>案例分析</h4><ul>
-<li>前端使用了vue-reource的$http进行请求后台接口</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.$http(&#123;</span><br><span class="line">              url: <span class="string">"http://120.24.5.178:8100/user/login"</span>,</span><br><span class="line">              method: <span class="string">"POST"</span>,</span><br><span class="line">              body: <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">                username: <span class="keyword">this</span>.ruleForm.username,</span><br><span class="line">                password: <span class="keyword">this</span>.ruleForm.password</span><br><span class="line">              &#125;),</span><br><span class="line">              headers: &#123;</span><br><span class="line">                <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span></span><br><span class="line">              &#125;</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>登陆完成后，服务端监控发现无法拿到cookie，下面看几张前端控制台监控的图</p>
-</li>
-<li><p>无法拿到cookie时的监控图<br><img src="http://upload-images.jianshu.io/upload_images/9252736-6be7f1065e84050a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/9252736-f05479b3bf243d54.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-</li>
-<li>后台cors代码</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest req, ServletResponse res, FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        HttpServletRequest request = (HttpServletRequest) req;</span><br><span class="line">        HttpServletResponse response = (HttpServletResponse) res;</span><br><span class="line">        String origin = request.getHeader(<span class="string">"Origin"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"*"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Access-Control-Allow-Methods"</span>,</span><br><span class="line">                <span class="string">"GET, POST, PUT, DELETE, OPTIONS"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Access-Control-Allow-Credentials"</span>, <span class="string">"true"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Access-Control-Allow-Headers"</span>,</span><br><span class="line">                <span class="string">"Origin, X-Requested-With, Content-Type, Accept, Authorization"</span>);</span><br><span class="line"></span><br><span class="line">        chain.doFilter(req, res);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>后台获取cookie的代码</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Cookie[] cookies = request.getCookies();</span><br><span class="line">        <span class="keyword">if</span> (cookies != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : cookies) &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="string">"ticket"</span>.equals(cookie.getName())) &#123;</span><br><span class="line">                    String value = <span class="keyword">null</span>;</span><br><span class="line">                    <span class="keyword">if</span> (!StringUtils.isEmpty(cookie.getValue())) &#123;</span><br><span class="line">                        value = DigestUtil.Decrypt(cookie.getValue());</span><br><span class="line">                    &#125;</span><br><span class="line">                    User login = userService.findByTicket(value);</span><br><span class="line">                    request.getSession().setAttribute(<span class="string">"user"</span>, login);</span><br><span class="line">                    log.info(<span class="string">"ticket: "</span> + value);</span><br><span class="line">                    log.info(<span class="string">"user: "</span> + login);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>因为request中没有cookies，所以后台获取为null</p>
-</li>
-<li><p>经过上网查资料修改后的监控图片</p>
-</li>
-</ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/9252736-3177695f2b63ed13.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/9252736-36f7d79c8afde696.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<ul>
-<li>我们可以发现在request中多了cookie这个字段，并且在cookies中有了ticket，后台可以通过request.getCookies()进行获取了</li>
-</ul>
-<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><ul>
-<li>最后定位到了这是一个跨域问题，在跨域时cookie被丢弃。</li>
-<li>前端：请求时增加withCredentials: true</li>
-<li><p>后端：</p>
-<ul>
-<li>直接使用*来匹配所有域名只能适用于无需使用cookie的场景</li>
-<li>可以将origin的*替换为允许请求的正则表达式</li>
-<li><p>可以加入一个list列表，代表请求白名单</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; allowedOrigins = Arrays.asList(<span class="string">"http://localhost:8080"</span>, <span class="string">"http://localhost:8100"</span>, <span class="string">"http://login.stalary.com"</span>);</span><br><span class="line">response.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, allowedOrigins.contains(origin) ? origin : <span class="string">""</span>);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>也可以直接拿到前端的第一次options请求的header来进行跨域处理</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String origin = request.getHeader(<span class="string">"Origin"</span>);</span><br><span class="line">    response.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, origin);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<p>本次简单的跨域丢失cookie的处理就介绍到这里了，如有问题可以私信博主qq<br><a href="http://login.stalary.com" target="_blank" rel="noopener">登陆demo地址</a><br><a href="https://github.com/stalary/SpringBootDemo" target="_blank" rel="noopener">登陆demo源码地址</a><br><a href="http://login.stalary.com/swagger-ui.html" target="_blank" rel="noopener">登陆demo-swagger接口地址</a></p>
-<p>服务器是学生机，访问较慢，请见谅。</p>
-<h5 id="每一次知识的积累，都是明天你微笑的源泉"><a href="#每一次知识的积累，都是明天你微笑的源泉" class="headerlink" title="每一次知识的积累，都是明天你微笑的源泉"></a>每一次知识的积累，都是明天你微笑的源泉</h5>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
- 
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1333,7 +1325,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1344,7 +1336,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
