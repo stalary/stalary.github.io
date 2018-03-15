@@ -275,6 +275,223 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/02/24/Redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stalary">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stalary的小书房">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/24/Redis/" itemprop="url">【Redis】项目中Redis常用方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-24T17:50:40+08:00">
+                2018-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/02/24/Redis/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://stalary.com/2018/02/24/Redis/" class="cy_cmt_count" data-xid="2018/02/24/Redis/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天来讲一讲项目中使用redis的几种用法</p>
+<h3 id="实现赞踩"><a href="#实现赞踩" class="headerlink" title="实现赞踩"></a>实现赞踩</h3><p>可以使用集合或者哈希表来完成赞踩<br>使用集合的sadd和srem来完成时，首先我们需要创建两个集合，一个赞集合，一个踩集合</p>
+<ul>
+<li>点赞时：向赞集合添加该用户，删除踩集合中的该用户</li>
+<li>踩时：向踩集合添加该用户，删除赞集合中的该用户</li>
+<li>demo:</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"127.0.0.1"</span>, <span class="number">6379</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String  like = <span class="string">"like:entity1"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String disLike = <span class="string">"disLike:entity1"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"like: "</span> + like(<span class="string">"user1"</span>));</span><br><span class="line">        System.out.println(<span class="string">"disLike: "</span> + disLike(<span class="string">"user1"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">like</span><span class="params">(String userId)</span> </span>&#123;</span><br><span class="line">        jedis.sadd(like, userId);</span><br><span class="line">        jedis.srem(disLike, userId);</span><br><span class="line">        <span class="keyword">return</span> jedis.scard(like);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">disLike</span><span class="params">(String userId)</span> </span>&#123;</span><br><span class="line">        jedis.sadd(disLike, userId);</span><br><span class="line">        jedis.srem(like, userId);</span><br><span class="line">        <span class="keyword">return</span> jedis.scard(disLike);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="实现生产者消费者模式"><a href="#实现生产者消费者模式" class="headerlink" title="实现生产者消费者模式"></a>实现生产者消费者模式</h4><p>可以使用列表的lpush,brpop来实现，如果要实现安全模式，则使用rpoplpush</p>
+<ul>
+<li>生产者使用lpush将消息放入列表中</li>
+<li>消费者使用brpop阻塞的从列表中取出消息</li>
+<li>demo</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ExecutorService executor = Executors.newCachedThreadPool();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        executor.execute(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">10</span>; i++) &#123;</span><br><span class="line">                    publish(<span class="string">"message: "</span> + i);</span><br><span class="line">                    Thread.sleep(<span class="number">100</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        executor.execute(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                subscribe();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">publish</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"127.0.0.1"</span>, <span class="number">6379</span>);</span><br><span class="line">        jedis.lpush(<span class="string">"test"</span>, message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">subscribe</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"127.0.0.1"</span>, <span class="number">6379</span>);</span><br><span class="line">        List&lt;String&gt; test = jedis.brpop(<span class="number">1</span>, <span class="string">"test"</span>);</span><br><span class="line">        <span class="keyword">if</span> (test.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(test);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="计数器的使用"><a href="#计数器的使用" class="headerlink" title="计数器的使用"></a>计数器的使用</h3><p>我们可以使用incr作为计数器来统计访问次数等操作</p>
+<ul>
+<li>demo：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"127.0.0.1"</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        jedis.set(<span class="string">"people"</span>, <span class="string">"1"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            view();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(jedis.get(<span class="string">"people"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">view</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        jedis.incr(<span class="string">"people"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="统计用户一段时间内的上线次数"><a href="#统计用户一段时间内的上线次数" class="headerlink" title="统计用户一段时间内的上线次数"></a>统计用户一段时间内的上线次数</h3><p>可以使用setbit和bitcount来进行统计上线次数</p>
+<ul>
+<li>使用setbit在指定的天将该位置为1</li>
+<li>使用bitcount统计登录天数</li>
+<li>demo：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"127.0.0.1"</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">                login(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(jedis.bitcount(<span class="string">"login"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">login</span><span class="params">(<span class="keyword">long</span> day)</span> </span>&#123;</span><br><span class="line">        jedis.setbit(<span class="string">"login"</span>, day, <span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="RDB和AOF持久化的区别"><a href="#RDB和AOF持久化的区别" class="headerlink" title="RDB和AOF持久化的区别"></a>RDB和AOF持久化的区别</h3><ul>
+<li>RDB：定期提交save进行备份<ul>
+<li>优点：<ul>
+<li>文件紧凑，体积较小</li>
+<li>适合灾难恢复</li>
+<li>可最大化redis的性能</li>
+<li>恢复数据速度比aof快</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>有可能会丢失数据(未到保存点时，发生故障)</li>
+<li>每次保存时需要fork出一个子进程，数据较大时，停止时间较长</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>AOF：持续用日志记录些操作，crash后利用日志进行恢复<ul>
+<li>优点：<ul>
+<li>使redis变得更加耐久，不会丢失数据</li>
+<li>对日志是追加操作，不需要seek</li>
+<li>可以在提交较大时自动在后台进行重写</li>
+<li>有序的保证了所有写入操作</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>体积大于rdb</li>
+<li>在处理巨大的写入载入时，RDB 可以提供更有保证的最大延迟时间</li>
+<li>重新载入时，可能无法将数据集恢复成保存时的原样</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>今天的分享到这里就结束了，愿我们每一天都不会忘记自己的梦想，每天都会明白我们所想要的是什么</p>
+<p><strong>曾经我们梦想离乡，而当那天真正到来时，我们却无尽的思乡</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/02/15/IteratorAndCollection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1080,244 +1297,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/02/04/ThreeLockUpgrade/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/04/ThreeLockUpgrade/" itemprop="url">【并发】偏向锁、轻量级锁、重量级锁的升级以及区别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T20:30:40+08:00">
-                2018-02-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/并发/" itemprop="url" rel="index">
-                    <span itemprop="name">并发</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2018/02/04/ThreeLockUpgrade/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://stalary.com/2018/02/04/ThreeLockUpgrade/" class="cy_cmt_count" data-xid="2018/02/04/ThreeLockUpgrade/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天来讲一下偏向锁、轻量级锁、重量级锁的升级以及区别。</p>
-<h3 id="锁的状态："><a href="#锁的状态：" class="headerlink" title="锁的状态："></a>锁的状态：</h3><ul>
-<li>无锁状态</li>
-<li>偏向锁状态</li>
-<li>轻量级锁状态</li>
-<li>重量级锁状态</li>
-</ul>
-<p>四种状态会随着竞争的情况逐渐升级，而且是不可逆的过程，即不可降级。</p>
-<blockquote>
-<p>要注意的是，这四种状态都不是Java语言中的锁，而是Jvm为了提高锁的获取与释放效率而做的优化(使用synchronized时)。</p>
-</blockquote>
-<p>首先通过一个小例子来解释一下三种锁的区别：</p>
-<blockquote>
-<p>假如家里只有一个碗，当我自己在家时，没有人会和我争碗，这时即为偏向锁状态</p>
-<p>当我和女朋友都在家吃饭时，如果女朋友不是很饿，则她会等我吃完再用我的碗去吃饭，这就是轻量级锁状态</p>
-<p>当我和女朋友都很饿的时候，这时候就会去争抢这唯一的一个碗(贫穷的我)吃饭，这就是重量级锁状态</p>
-</blockquote>
-<h3 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h3><p>偏向锁的由来：</p>
-<blockquote>
-<p>大多数情况下，锁不存在多线程竞争，而是总是由同一线程多次获得时，为了使线程获得锁的代价更低而引入了偏向锁。</p>
-</blockquote>
-<p>偏向锁的使用：</p>
-<blockquote>
-<p>当线程进入和退出同步块时，需要经历几个测试步骤：</p>
-<ol>
-<li>测试对象头Mark Word(默认存储对象的HashCode,分代年龄，锁标记位)里是否存储着指向当前线程的偏向锁。</li>
-<li>若测试失败，则测试Mark Word中偏向锁标识是否设置成1(表示当前为偏向锁)</li>
-<li>没有设置则使用CAS竞争，否则尝试使用CAS将对象头的偏向锁指向当前线程</li>
-</ol>
-</blockquote>
-<p>偏向锁的撤销：</p>
-<blockquote>
-<p>当其他线程尝试竞争偏向锁时，就会释放锁，锁的撤销，需要等待全局安全点，分为以下几个步骤：</p>
-<ol>
-<li>暂停拥有偏向锁的线程，检查线程是否存活</li>
-<li>处于非活动状态，则设置为无锁状态</li>
-<li>存活，则重新偏向于其他线程或者恢复到无锁状态或者标记对象不适合作为偏向锁</li>
-<li>唤醒线程</li>
-</ol>
-</blockquote>
-<p>偏向锁的升级：</p>
-<blockquote>
-<p>当有第二个线程进入同步代码块时，则升级为轻量级锁</p>
-</blockquote>
-<h3 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h3><p>轻量级锁的加锁：</p>
-<blockquote>
-<p>如果成功使用CAS将对象头重的Mark Word替换为指向锁记录的指针，则获得锁，失败则当前线程尝试使用自旋(循环等待)来获取锁。</p>
-</blockquote>
-<p>轻量级锁的解锁：</p>
-<blockquote>
-<p>当有另一个线程与该线程同时竞争时，锁会升级为重量级锁。为了防止继续自旋，一旦升级，将无法降级。</p>
-</blockquote>
-<h3 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a>重量级锁</h3><p>重量级锁特点：</p>
-<blockquote>
-<p>其他线程试图获取锁时，都会被阻塞，只有持有锁的线程释放锁之后才会唤醒这些线程，进行竞争。</p>
-</blockquote>
-<h3 id="三种锁的对比"><a href="#三种锁的对比" class="headerlink" title="三种锁的对比"></a>三种锁的对比</h3><p><img src="http://upload-images.jianshu.io/upload_images/9252736-d05c6e30126341fd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Screen Shot 2018-02-04 at 20.15.42.png"><br>通俗来讲就是：</p>
-<ul>
-<li>偏向锁：仅有一个线程进入临界区</li>
-<li>轻量级锁：多个线程交替进入临界区</li>
-<li>重量级锁：多个线程同时进入临界区</li>
-</ul>
-<p>这是并发专题的第一篇博客，以后还会随时更新</p>
-<p>主要参考资料：</p>
-<blockquote>
-<p>《Java并发编程的艺术》<br><a href="https://www.zhihu.com/question/53826114" target="_blank" rel="noopener">java偏向锁，轻量级锁与重量级锁为什么会相互膨胀?</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
- 
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1367,7 +1351,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1378,7 +1362,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1389,7 +1373,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
