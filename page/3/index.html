@@ -275,6 +275,225 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/02/08/ForkJoin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stalary">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stalary的小书房">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/08/ForkJoin/" itemprop="url">【并发】并发框架之Fork/Join框架</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-08T17:30:40+08:00">
+                2018-02-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/02/08/ForkJoin/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://stalary.com/2018/02/08/ForkJoin/" class="cy_cmt_count" data-xid="2018/02/08/ForkJoin/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天来介绍一下java并发框架之Fork/Join</p>
+<h3 id="初探Fork-Join："><a href="#初探Fork-Join：" class="headerlink" title="初探Fork/Join："></a>初探Fork/Join：</h3><ul>
+<li>分割任务</li>
+</ul>
+<blockquote>
+<p>使用一个fork类来把大任务分割成子任务，当子任务还较大时，不停的分割，直到分割到子任务足够小。(类似于归并排序的分化阶段)</p>
+</blockquote>
+<ul>
+<li>执行任务合并结果</li>
+</ul>
+<blockquote>
+<p>分割后的子任务分别放在双端队列里，然后开启多线程分别从双端队列获取任务执行，子任务执行完的结果都放在一个队列里，然后启动一个线程从队列里获取数据，最后合并这些数据。(类似于归并排序的合并阶段)</p>
+</blockquote>
+<ul>
+<li>举一个栗子</li>
+</ul>
+<blockquote>
+<p>一个周末，哥们都来家里做客，我们一共七个人，而只有我会做饭，用了两个小时才做好了所有的饭菜，大家都快饿的半死才吃上了饭。</p>
+<p>但是如果我把每一个菜的做法告诉其中两个人，而那两个人又去分别告诉两个人，这样他们四个人同时去做菜(假设我家比较富裕～有很多锅)，我就可以去愉快的编程了，并且只用了二十分钟所有的菜就都做好了，最后大家很开心的坐在一起吃饭。</p>
+</blockquote>
+<p>上面的两个小例子：当我把要做很多个菜的任务分进行分发的时候，就相当于我们今天要讲的Fork/Join框架。</p>
+<ul>
+<li>下面通过一幅图来更加深刻的理解</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/9252736-c6056a7e12effdee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Fork:Join运行流程图.png"></p>
+<p>看完上图是不是觉得更加像归并排序了呢？<br>当然与递归也是同一个道理，都是为了划分大问题。</p>
+<ul>
+<li>实现原理：</li>
+</ul>
+<ol>
+<li>ForkJoinTask的fork的实现原理</li>
+</ol>
+<p>当我们调用fork方法时，程序会调用ForkJoinWorkerThread的pushTask方法异步的执行任务，然后立即返回结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> ForkJoinTask&lt;V&gt; <span class="title">fork</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread t;</span><br><span class="line">        <span class="keyword">if</span> ((t = Thread.currentThread()) <span class="keyword">instanceof</span> ForkJoinWorkerThread)</span><br><span class="line">            ((ForkJoinWorkerThread)t).workQueue.push(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            ForkJoinPool.common.externalPush(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>push方法把当前任务存放在ForkJoinTask数组队列里，然后调用ForkJoinPool的signalWork()方法唤醒或创建一个工作线程来执行任务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(ForkJoinTask&lt;?&gt; task)</span> </span>&#123;</span><br><span class="line">            ForkJoinTask&lt;?&gt;[] a; ForkJoinPool p;</span><br><span class="line">            <span class="keyword">int</span> b = base, s = top, n;</span><br><span class="line">            <span class="keyword">if</span> ((a = array) != <span class="keyword">null</span>) &#123;    <span class="comment">// ignore if queue removed</span></span><br><span class="line">                <span class="keyword">int</span> m = a.length - <span class="number">1</span>;     <span class="comment">// fenced write for task visibility</span></span><br><span class="line">                U.putOrderedObject(a, ((m &amp; s) &lt;&lt; ASHIFT) + ABASE, task);</span><br><span class="line">                U.putOrderedInt(<span class="keyword">this</span>, QTOP, s + <span class="number">1</span>);</span><br><span class="line">                <span class="keyword">if</span> ((n = s - b) &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="keyword">if</span> ((p = pool) != <span class="keyword">null</span>)</span><br><span class="line">                        p.signalWork(p.workQueues, <span class="keyword">this</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (n &gt;= m)</span><br><span class="line">                    growArray();</span><br><span class="line">            &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.ForkJoinTask的join方法的实现原理</p>
+<p>调用join方法时阻塞当前线程并等待获取结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> V <span class="title">join</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> s;</span><br><span class="line">        <span class="keyword">if</span> ((s = doJoin() &amp; DONE_MASK) != NORMAL)</span><br><span class="line">            reportException(s);</span><br><span class="line">        <span class="keyword">return</span> getRawResult();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过调用doJoin方法来获取当前任务的状态</p>
+<blockquote>
+<p>已完成：NORMAL，直接返回任务结果<br>被取消：CANCELLED，直接抛出CancellationException<br>信号：SIGNAL<br>出现异常：EXCEPTIONAL，抛出对应异常</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">doJoin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> s; Thread t; ForkJoinWorkerThread wt; ForkJoinPool.WorkQueue w;</span><br><span class="line">    <span class="keyword">return</span> (s = status) &lt; <span class="number">0</span> ? s :</span><br><span class="line">        ((t = Thread.currentThread()) <span class="keyword">instanceof</span> ForkJoinWorkerThread) ?</span><br><span class="line">        (w = (wt = (ForkJoinWorkerThread)t).workQueue).</span><br><span class="line">        tryUnpush(<span class="keyword">this</span>) &amp;&amp; (s = doExec()) &lt; <span class="number">0</span> ? s :</span><br><span class="line">        wt.pool.awaitJoin(w, <span class="keyword">this</span>, <span class="number">0L</span>) :</span><br><span class="line">        externalAwaitDone();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在doJoin()方法中，首先查看任务是否已经完成，如果执行完成则直接返回状态，没有完成，则从任务数组中取出任务并执行，顺利完成，则返回NORMAL状态，出现异常则返回EXCEPTIONAL</p>
+<h3 id="Fork-Join的使用"><a href="#Fork-Join的使用" class="headerlink" title="Fork/Join的使用"></a>Fork/Join的使用</h3><p>当我们遇到一个大的耗时操作时，我们就可以对任务进行拆分，最后进行汇总，下面给出一个使用的Demo</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.ForkJoinPool;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Future;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.RecursiveTask;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ForkJoinDemo</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> lirongqian</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 2018/02/08</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ForkJoinDemo</span> <span class="keyword">extends</span> <span class="title">RecursiveTask</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THRESHOLD = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> start;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> end;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ForkJoinDemo</span><span class="params">(<span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.start = start;</span><br><span class="line">        <span class="keyword">this</span>.end = end;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Integer <span class="title">compute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">boolean</span> canCompute = (end - start) &lt;= THRESHOLD;</span><br><span class="line">        <span class="keyword">if</span> (canCompute) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt;= end; i++) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="comment">// 睡一秒来模拟耗时操作</span></span><br><span class="line">                    TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">                    sum += i;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (start + end) / <span class="number">2</span>;</span><br><span class="line">            ForkJoin.Wait waitLeft = <span class="keyword">new</span> ForkJoin.Wait(start, mid);</span><br><span class="line">            ForkJoin.Wait waitRight = <span class="keyword">new</span> ForkJoin.Wait(mid + <span class="number">1</span>, end);</span><br><span class="line"></span><br><span class="line">            waitLeft.fork();</span><br><span class="line">            waitRight.fork();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">int</span> leftResult = waitLeft.join();</span><br><span class="line">            <span class="keyword">int</span> rightResult = waitRight.join();</span><br><span class="line">            sum = leftResult + rightResult;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> start = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> end = <span class="number">10</span>;</span><br><span class="line">        <span class="keyword">long</span> start2 = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt;= end; i++) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// 睡一秒来模拟耗时操作</span></span><br><span class="line">                TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">                sum += i;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(sum);</span><br><span class="line">        System.out.println(<span class="string">"for time: "</span> + (System.currentTimeMillis() - start2));</span><br><span class="line">        <span class="keyword">long</span> start1 = System.currentTimeMillis();</span><br><span class="line">        ForkJoinPool forkJoinPool = <span class="keyword">new</span> ForkJoinPool();</span><br><span class="line">        <span class="comment">// 生成一个任务</span></span><br><span class="line">        ForkJoinDemo task = <span class="keyword">new</span> ForkJoinDemo(start, end);</span><br><span class="line">        <span class="comment">// 执行一个任务</span></span><br><span class="line">        Future&lt;Integer&gt; result = forkJoinPool.submit(task);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.println(result.get());</span><br><span class="line">            System.out.println(<span class="string">"Fork/Join time: "</span> + (System.currentTimeMillis() - start1));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<blockquote>
+<p>55<br>for time: 10041<br>55<br>Fork/Join time: 3014</p>
+</blockquote>
+<p>我们可以发现，使用Fork/Join大大缩短了任务执行的时间，是不是很牛逼？大家快去自己动手试一试吧。</p>
+<p><strong>编程的乐趣就在于接触到新事物时的眼前一亮</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/02/06/thisDemo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1077,227 +1296,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/01/12/JavaForFivePool/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/12/JavaForFivePool/" itemprop="url">【java】五种java线程池的使用与比较</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T11:50:40+08:00">
-                2018-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/线程池/" itemprop="url" rel="index">
-                    <span itemprop="name">线程池</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2018/01/12/JavaForFivePool/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://stalary.com/2018/01/12/JavaForFivePool/" class="cy_cmt_count" data-xid="2018/01/12/JavaForFivePool/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天对五种常见的java内置线程池进行讲解。</p>
-<h3 id="线程使用的demo"><a href="#线程使用的demo" class="headerlink" title="线程使用的demo"></a>线程使用的demo</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">cache</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ExecutorService pool = Executors.newCachedThreadPool();</span><br><span class="line">        <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">        pool.execute(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">                sum = (<span class="keyword">int</span>) Math.sqrt(i * i - <span class="number">1</span> + i);</span><br><span class="line">                System.out.println(sum);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        System.out.println(<span class="string">"cache: "</span> + (System.currentTimeMillis() - start));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="newCachedThreadPool"><a href="#newCachedThreadPool" class="headerlink" title="newCachedThreadPool"></a>newCachedThreadPool</h3><ul>
-<li>这是一个可缓存线程池，可以灵活的回收空闲线程，无可回收线程时，新建线程</li>
-</ul>
-<p>源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newCachedThreadPool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">0</span>, Integer.MAX_VALUE,</span><br><span class="line">                                      <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">                                      <span class="keyword">new</span> SynchronousQueue&lt;Runnable&gt;());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>通过源码可以看出底层调用的是ThreadPoolExecutor方法，传入一个同步的阻塞队列实现缓存。</p>
-<p>下面说一下ThreadPoolExecutor</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                              <span class="keyword">int</span> maximumPoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                              <span class="keyword">long</span> keepAliveTime,</span></span></span><br><span class="line"><span class="function"><span class="params">                              TimeUnit unit,</span></span></span><br><span class="line"><span class="function"><span class="params">                              BlockingQueue&lt;Runnable&gt; workQueue)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,</span><br><span class="line">             Executors.defaultThreadFactory(), defaultHandler);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>通过源码可以看出，我们可以传入线程池的核心线程数(最小线程数)，最大线程数量，保持时间，时间单位，阻塞队列这些参数，最大线程数设置为jvm可用的cpu数量为最佳实践</p>
-<h3 id="newWorkStealingPool"><a href="#newWorkStealingPool" class="headerlink" title="newWorkStealingPool"></a>newWorkStealingPool</h3><ul>
-<li>创建持有足够线程的线程池来并行，通过使用多个队列减少竞争，不传参数，则默认设定为cpu的数量</li>
-</ul>
-<p>源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newWorkStealingPool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ForkJoinPool</span><br><span class="line">            (Runtime.getRuntime().availableProcessors(),</span><br><span class="line">             ForkJoinPool.defaultForkJoinWorkerThreadFactory,</span><br><span class="line">             <span class="keyword">null</span>, <span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>通过源码可以看出底层调用的是ForkJoinPool线程池</p>
-<p>下面说一下ForkJoinPool</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ForkJoinPool</span><span class="params">(<span class="keyword">int</span> parallelism,</span></span></span><br><span class="line"><span class="function"><span class="params">                        ForkJoinWorkerThreadFactory factory,</span></span></span><br><span class="line"><span class="function"><span class="params">                        UncaughtExceptionHandler handler,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">boolean</span> asyncMode)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(checkParallelism(parallelism),</span><br><span class="line">             checkFactory(factory),</span><br><span class="line">             handler,</span><br><span class="line">             asyncMode ? FIFO_QUEUE : LIFO_QUEUE,</span><br><span class="line">             <span class="string">"ForkJoinPool-"</span> + nextPoolId() + <span class="string">"-worker-"</span>);</span><br><span class="line">        checkPermission();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>使用一个无限队列来保存需要执行的任务，可以传入线程的数量，不传入，则默认使用当前计算机中可用的cpu数量，使用分治法来解决问题，使用fork()和join()来进行调用</p>
-<h3 id="newSingleThreadExecutor"><a href="#newSingleThreadExecutor" class="headerlink" title="newSingleThreadExecutor"></a>newSingleThreadExecutor</h3><p>创建一个单线程化的线程池，保证所有任务按照指定的顺序执行(FIFO,LIFO,优先级)，当要求进程限制时，可以进行使用</p>
-<p>源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newSingleThreadExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> FinalizableDelegatedExecutorService</span><br><span class="line">            (<span class="keyword">new</span> ThreadPoolExecutor(<span class="number">1</span>, <span class="number">1</span>,</span><br><span class="line">                                    <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                    <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;()));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="newFixedThreadPool"><a href="#newFixedThreadPool" class="headerlink" title="newFixedThreadPool"></a>newFixedThreadPool</h3><p>创建一个固定线程数量，可重用的线程池</p>
-<p>源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newFixedThreadPool</span><span class="params">(<span class="keyword">int</span> nThreads)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(nThreads, nThreads,</span><br><span class="line">                                      <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                      <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="newScheduledThreadPool"><a href="#newScheduledThreadPool" class="headerlink" title="newScheduledThreadPool"></a>newScheduledThreadPool</h3><p>创建一个可定期或者延时执行任务的线程池</p>
-<p>源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> ScheduledThreadPoolExecutor(corePoolSize);</span><br></pre></td></tr></table></figure>
-<p>通过源码可以看出底层调用的是一个ScheduledThreadPoolExecutor，然后传入线程数量</p>
-<p>下面来介绍一下ScheduledThreadPoolExecutor</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ScheduledThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(corePoolSize, Integer.MAX_VALUE, <span class="number">0</span>, NANOSECONDS,</span><br><span class="line">              <span class="keyword">new</span> DelayedWorkQueue());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>通过源码可以看出底层调用了ThreadPoolExecutor，维护了一个延迟队列，可以传入线程数量，传入延时的时间等参数，下面给出一个demo</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ScheduledExecutorService pool = Executors.newScheduledThreadPool(<span class="number">5</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; i = i + <span class="number">5</span>) &#123;</span><br><span class="line">            pool.schedule(() -&gt; System.out.println(<span class="string">"我被执行了，当前时间"</span> + <span class="keyword">new</span> Date()), i, TimeUnit.SECONDS);</span><br><span class="line">        &#125;</span><br><span class="line">        pool.shutdown();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>执行结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">我被执行了，当前时间Fri Jan 12 11:20:41 CST 2018</span><br><span class="line">我被执行了，当前时间Fri Jan 12 11:20:46 CST 2018</span><br><span class="line">我被执行了，当前时间Fri Jan 12 11:20:51 CST 2018</span><br></pre></td></tr></table></figure>
-<p>有的小伙伴可能会用疑问，为什么使用schedule()而不使用submit()或者execute()呢，下面通过源码来分析</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span> </span>&#123;</span><br><span class="line">    schedule(command, <span class="number">0</span>, NANOSECONDS);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> Future&lt;?&gt; submit(Runnable task) &#123;</span><br><span class="line">    <span class="keyword">return</span> schedule(task, <span class="number">0</span>, NANOSECONDS);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过源码可以发现这两个方法都是调用的schedule(),而且将延时时间设置为了0，所以想要实现延时操作，需要直接调用schedule()</p>
-<p>下面我们再来分析一下submit()和execute()的以及shutdown()和shutdownNow()的区别</p>
-<ul>
-<li>submit()，提交一个线程任务，可以接受回调函数的返回值吗，适用于需要处理返回着或者异常的业务场景</li>
-<li>execute()，执行一个任务，没有返回值</li>
-<li>shutdown()，表示不再接受新任务，但不会强行终止已经提交或者正在执行中的任务</li>
-<li>shutdownNow()，对于尚未执行的任务全部取消，正在执行的任务全部发出interrupt()，停止执行</li>
-</ul>
-<h3 id="五种线程池的适应场景"><a href="#五种线程池的适应场景" class="headerlink" title="五种线程池的适应场景"></a>五种线程池的适应场景</h3><ol>
-<li>newCachedThreadPool：用来创建一个可以无限扩大的线程池，当业务遇到无法确定线程多少的时候可以使用</li>
-<li>newFixedThreadPool：创建一个固定大小的线程池，因为采用无界的阻塞队列，所以实际线程数量永远不会变化，适用于可以预测线程数量的业务中</li>
-<li>newSingleThreadExecutor：创建一个单线程的线程池，适用于只需要一个线程的业务，避免重复启动，关闭线程</li>
-<li>newScheduledThreadPool：可以延时启动，定时启动的线程池，适用于需要定时执行的业务</li>
-<li>newWorkStealingPool：创建一个拥有多个任务队列的线程池，可以减少连接数，创建当前可用cpu数量的线程来并行执行，适用于大耗时的操作，可以并行来执行</li>
-</ol>
-<p>以上就是今天所想要分享的内容，由于并发接触并不深入，如有错误，请联系博主</p>
-<p>浩瀚星辰中渺小的我们，却有着改变世界的梦想</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
- 
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1352,7 +1350,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -275,6 +275,193 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/12/09/SwordOfferEntrance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stalary">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stalary的小书房">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/09/SwordOfferEntrance/" itemprop="url">【剑指offer】链表中环的入口结点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T23:00:40+08:00">
+                2017-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/12/09/SwordOfferEntrance/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://stalary.com/2017/12/09/SwordOfferEntrance/" class="cy_cmt_count" data-xid="2017/12/09/SwordOfferEntrance/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>链表中环的入口结点</p>
+<ul>
+<li>题目解释：</li>
+</ul>
+<p>找到一个带环的链表中环的入口结点</p>
+<ul>
+<li><p>样例：<br><img src="http://upload-images.jianshu.io/upload_images/9252736-10dfbd7547961aae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>此时的入口结点就是3结点</p>
+</li>
+<li><p>题解：</p>
+</li>
+</ul>
+<p>这个题的思路是我们可以使用一对快慢指针：</p>
+<ol>
+<li>首先快指针移动两个结点，慢指针移动一个结点，当两个结点相遇时就可以知道链表是否存在环。</li>
+<li>然后返回相遇的点，再进行设置两个指针，第一个指针从相遇点开始向后移动，并统计结点的数量，当再次相遇时即可获得环中元素的数量。</li>
+<li>最后使第二个指针从头开始移动，第一个指针也随之移动，当和第一个指针相遇时即找到了入口结点  </li>
+</ol>
+<ul>
+<li>code：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用一对快慢指针来判断是否有环，快指针每次移动2，慢指针每次移动1</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> pHead</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">meetNode</span><span class="params">(ListNode pHead)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (pHead == <span class="keyword">null</span> || pHead.next == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode slow = pHead.next;</span><br><span class="line">        ListNode fast = slow.next;</span><br><span class="line">        <span class="keyword">while</span> (fast != <span class="keyword">null</span> &amp;&amp; slow != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (fast == slow) &#123;</span><br><span class="line">                <span class="keyword">return</span> fast;</span><br><span class="line">            &#125;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next;</span><br><span class="line">            <span class="keyword">if</span> (fast != slow) &#123;</span><br><span class="line">                fast = fast.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从相遇点向后移动，当再次回到这个点的时候，就能统计出环中元素的数量</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> pHead</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">entryNodeOfLoop</span><span class="params">(ListNode pHead)</span> </span>&#123;</span><br><span class="line">        ListNode meetNode = meetNode(pHead);</span><br><span class="line">        <span class="keyword">if</span> (meetNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">        ListNode p1 = meetNode;</span><br><span class="line">        <span class="keyword">while</span> (p1.next != meetNode) &#123;</span><br><span class="line">            p1 = p1.next;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        p1 = pHead;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">            p1 = p1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode p2 = pHead;</span><br><span class="line">        <span class="keyword">while</span> (p2 != p1) &#123;</span><br><span class="line">            p1 = p1.next;</span><br><span class="line">            p2 = p2.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p1;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode next = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        ListNode(<span class="keyword">int</span> val) &#123;</span><br><span class="line">            <span class="keyword">this</span>.val = val;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/12/09/leetcode409/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1026,193 +1213,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/12/04/SwordOfferJump/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/04/SwordOfferJump/" itemprop="url">【剑指offer】变态跳</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T23:55:40+08:00">
-                2017-12-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2017/12/04/SwordOfferJump/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://stalary.com/2017/12/04/SwordOfferJump/" class="cy_cmt_count" data-xid="2017/12/04/SwordOfferJump/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>变态跳</p>
-<ul>
-<li>题目描述：</li>
-</ul>
-<p>一只青蛙一次可以跳上1级，也可以2级…也可以n级台阶，求青蛙跳上一个n级的台阶有多少种跳法</p>
-<ul>
-<li>样例：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">input：</span><br><span class="line">4</span><br><span class="line">output：</span><br><span class="line">8</span><br></pre></td></tr></table></figure>
-<ul>
-<li>题解：</li>
-</ul>
-<p>我们可以先将前几项列出进行找规律</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 -&gt; 1</span><br><span class="line">2 -&gt; 2</span><br><span class="line">3 -&gt; 4</span><br><span class="line">4 -&gt; 8</span><br></pre></td></tr></table></figure>
-<p>由此可以发现每次的跳法都是所有之前跳法的和，即</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f(n) = f(n-1) + f(n-2) + ... + f(1);</span><br><span class="line">f(n-1) = f(n-2) + f(n-3) + ... + f(1);</span><br><span class="line">f(n) - f(n-1) = f(n-1);</span><br><span class="line">-&gt; f(n) = 2 * f(n-1);</span><br></pre></td></tr></table></figure>
-<p>所以这是一道简单的动态规划题目</p>
-<ul>
-<li>code:</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">JumpFloorII</span><span class="params">(<span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (target &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> target;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span>[] arr = <span class="keyword">new</span> <span class="keyword">int</span>[target + <span class="number">1</span>];</span><br><span class="line">        arr[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        arr[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            arr[i] = <span class="number">2</span> * arr[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr[target];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
- 
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1267,7 +1267,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
