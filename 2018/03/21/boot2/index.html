@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Stalary的小书房">
 <meta property="og:description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结 HikariCPSpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。 下面就说一下在配置中我们需要做的变化 原来我们在配置读写分离的数据库，是这样配置的 1234spring.datasource.readwrite.ur">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-21T15:39:29.146Z">
+<meta property="og:updated_time" content="2018-03-21T15:40:00.128Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot2.0爬坑指南">
 <meta name="twitter:description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结 HikariCPSpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。 下面就说一下在配置中我们需要做的变化 原来我们在配置读写分离的数据库，是这样配置的 1234spring.datasource.readwrite.ur">
@@ -410,6 +410,17 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String driverClassName;</span><br><span class="line"><span class="keyword">private</span> String jdbcUrl;</span><br></pre></td></tr></table></figure>
 <p>我们可以从源码中看到这两个属性，这也就是我们要设置jdbc-url的原因</p>
 <p><strong>故事到这里只是刚刚开始，请大家耐心去看</strong></p>
+<h3 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h3><p>springboot2默认需要4.0以上的gradle了，所以我们修改一下gradle-wrapper.properties</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distributionUrl=https\:<span class="comment">//services.gradle.org/distributions/gradle-4.1-all.zip</span></span><br></pre></td></tr></table></figure>
+<p>还有一个重要的地方，gradle的依赖管理进行了升级，在gradle中加入一个插件即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: <span class="string">'org.springframework.boot'</span></span><br><span class="line">apply plugin: <span class="string">'io.spring.dependency-management'</span></span><br></pre></td></tr></table></figure>
+<p>在打包时的命令也发生了变化，可以使用<strong>gradle bootjar</strong>或者<strong>gradle bootwar</strong>来进行打包，然后<strong>gradle bootrun</strong>运行</p>
+<p>当然，要补充一点，在boot2.0迁移的官方文档中说，推荐我们加入</p>
+<blockquote>
+<p>runtime(“org.springframework.boot:spring-boot-properties-migrator”)</p>
+</blockquote>
+<p>只要将其作为依赖添加到项目中，它不仅会分析应用程序的环境并在启动时打印诊断信息，而且还会在运行时为项目临时迁移属性</p>
+<p>ps:boot2的报错真的有点少，我遇到了多次什么报错信息都没有Hikari就自动关闭的情况</p>
 
       
     </div>
@@ -661,7 +672,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#HikariCP"><span class="nav-number">1.</span> <span class="nav-text">HikariCP</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#HikariCP"><span class="nav-number">1.</span> <span class="nav-text">HikariCP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle"><span class="nav-number">2.</span> <span class="nav-text">Gradle</span></a></li></ol></div>
             
 
           </div>
