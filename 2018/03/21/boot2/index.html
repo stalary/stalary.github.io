@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结">
+<meta name="description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结 HikariCPSpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。 下面就说一下在配置中我们需要做的变化 原来我们在配置读写分离的数据库，是这样配置的">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot2.0爬坑指南">
 <meta property="og:url" content="http://stalary.com/2018/03/21/boot2/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结">
+<meta property="og:description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结 HikariCPSpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。 下面就说一下在配置中我们需要做的变化 原来我们在配置读写分离的数据库，是这样配置的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-21T15:31:30.425Z">
+<meta property="og:updated_time" content="2018-03-21T15:33:48.145Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot2.0爬坑指南">
-<meta name="twitter:description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结">
+<meta name="twitter:description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结 HikariCPSpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。 下面就说一下在配置中我们需要做的变化 原来我们在配置读写分离的数据库，是这样配置的">
 
 
 
@@ -382,6 +382,9 @@
 
       
         <p>公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结</p>
+<h3 id="HikariCP"><a href="#HikariCP" class="headerlink" title="HikariCP"></a>HikariCP</h3><p>SpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。</p>
+<p>下面就说一下在配置中我们需要做的变化</p>
+<p>原来我们在配置读写分离的数据库，是这样配置的</p>
 
       
     </div>
@@ -515,8 +518,17 @@ var jiathis_config={
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -614,6 +626,22 @@ var jiathis_config={
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#HikariCP"><span class="nav-number">1.</span> <span class="nav-text">HikariCP</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
