@@ -79,7 +79,7 @@
 
 
 
-<meta name="description" content="今天来介绍一下volatitle volatile是什么volatitle是一个确保共享变量能够被准确和一致地更新的关键字(保证可见性)，只能对变量使用 volatile是如何保证可见性的在对有volatile修饰符修饰的共享变量进行写操作时，汇编代码回多一条lock前缀的指令。该指令有如下两个作用：  将当前缓存行的">
+<meta name="description" content="今天来介绍一下volatitle volatile是什么volatitle是一个确保共享变量能够被准确和一致地更新的关键字(保证可见性)，只能对变量使用 volatile是如何保证可见性的在对有volatile修饰符修饰的共享变量进行写操作时，汇编代码回多一条lock前缀的指令。该指令有如下两个作用：  将当前缓存行的数据回写到内存中 使其他cpu里缓存了该内存地址的数据无效(缓存一致性机制)">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【java】volatile详解">
@@ -620,7 +620,7 @@ var jiathis_config={
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

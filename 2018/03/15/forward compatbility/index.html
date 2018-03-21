@@ -79,7 +79,7 @@
 
 
 
-<meta name="description" content="前几天，做了许久的项目终于上线了，然而在提测的过程中，却被提出了不兼容老版本的大坑，所以今天来分析一下如何兼容老版本 兼容方法我们可以在客户端请求接口时，在全局请求中加入一个api_version，服务端在拦截器中获取到api_version的参数，来判断调用哪个版本的接口，这就类似于门面模式，对外使用统一接口，但是内">
+<meta name="description" content="前几天，做了许久的项目终于上线了，然而在提测的过程中，却被提出了不兼容老版本的大坑，所以今天来分析一下如何兼容老版本 兼容方法我们可以在客户端请求接口时，在全局请求中加入一个api_version，服务端在拦截器中获取到api_version的参数，来判断调用哪个版本的接口，这就类似于门面模式，对外使用统一接口，但是内部逻辑各版本会不相同  遇到的坑不要以为版本适配这样就很完美了，当项目上线后才发">
 <meta name="keywords" content="项目">
 <meta property="og:type" content="article">
 <meta property="og:title" content="项目上线时如何向前兼容">
@@ -565,7 +565,7 @@ var jiathis_config={
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

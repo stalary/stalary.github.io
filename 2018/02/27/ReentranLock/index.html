@@ -79,7 +79,7 @@
 
 
 
-<meta name="description" content="今天来分析一下重入锁的源码 ReentranLock定义重入锁ReentranLock是一种支持重进入的锁，表示该锁可以支持一个线程对资源重复加锁，并且分为公平锁和非公平锁 synchronizedsynchronized大家一定都很熟悉了，这也是一种隐式的重入锁，是一种非公平锁 重进入的实现 当线程再次获取锁时，锁需">
+<meta name="description" content="今天来分析一下重入锁的源码 ReentranLock定义重入锁ReentranLock是一种支持重进入的锁，表示该锁可以支持一个线程对资源重复加锁，并且分为公平锁和非公平锁 synchronizedsynchronized大家一定都很熟悉了，这也是一种隐式的重入锁，是一种非公平锁 重进入的实现 当线程再次获取锁时，锁需要先判断该线程是否为当前占据锁的线程，如果是则再次成功获取 当释放锁时，如果线程">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【java】重入锁源码分析">
@@ -590,7 +590,7 @@ var jiathis_config={
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

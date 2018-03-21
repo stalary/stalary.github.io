@@ -79,7 +79,7 @@
 
 
 
-<meta name="description" content="今天来介绍一下java并发框架之Fork/Join 初探Fork/Join： 分割任务   使用一个fork类来把大任务分割成子任务，当子任务还较大时，不停的分割，直到分割到子任务足够小。(类似于归并排序的分化阶段)   执行任务合并结果   分割后的子任务分别放在双端队列里，然后开启多线程分别从双端队列获取任务执行，">
+<meta name="description" content="今天来介绍一下java并发框架之Fork/Join 初探Fork/Join： 分割任务   使用一个fork类来把大任务分割成子任务，当子任务还较大时，不停的分割，直到分割到子任务足够小。(类似于归并排序的分化阶段)   执行任务合并结果   分割后的子任务分别放在双端队列里，然后开启多线程分别从双端队列获取任务执行，子任务执行完的结果都放在一个队列里，然后启动一个线程从队列里获取数据，最后合并这">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【并发】并发框架之Fork&#x2F;Join框架">
@@ -624,7 +624,7 @@ var jiathis_config={
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
