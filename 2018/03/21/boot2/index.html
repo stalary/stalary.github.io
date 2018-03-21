@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结 HikariCPSpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。 下面就说一下在配置中我们需要做的变化 原来我们在配置读写分离的数据库，是这样配置的">
+<meta name="description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结 HikariCPSpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。 下面就说一下在配置中我们需要做的变化 原来我们在配置读写分离的数据库，是这样配置的 1234spring.datasource.readwrite.ur">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot2.0爬坑指南">
 <meta property="og:url" content="http://stalary.com/2018/03/21/boot2/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结 HikariCPSpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。 下面就说一下在配置中我们需要做的变化 原来我们在配置读写分离的数据库，是这样配置的">
+<meta property="og:description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结 HikariCPSpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。 下面就说一下在配置中我们需要做的变化 原来我们在配置读写分离的数据库，是这样配置的 1234spring.datasource.readwrite.ur">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-21T15:33:48.145Z">
+<meta property="og:updated_time" content="2018-03-21T15:37:21.300Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot2.0爬坑指南">
-<meta name="twitter:description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结 HikariCPSpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。 下面就说一下在配置中我们需要做的变化 原来我们在配置读写分离的数据库，是这样配置的">
+<meta name="twitter:description" content="公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结 HikariCPSpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。 下面就说一下在配置中我们需要做的变化 原来我们在配置读写分离的数据库，是这样配置的 1234spring.datasource.readwrite.ur">
 
 
 
@@ -385,6 +385,7 @@
 <h3 id="HikariCP"><a href="#HikariCP" class="headerlink" title="HikariCP"></a>HikariCP</h3><p>SpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。</p>
 <p>下面就说一下在配置中我们需要做的变化</p>
 <p>原来我们在配置读写分离的数据库，是这样配置的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.readwrite.url=jdbc:mysql:<span class="comment">//127.0.0.1:3306/bookSystem?characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line">spring.datasource.readwrite.username=root</span><br><span class="line">spring.datasource.readwrite.password=<span class="number">123456</span></span><br><span class="line">spring.datasource.readwrite.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br></pre></td></tr></table></figure>
 
       
     </div>

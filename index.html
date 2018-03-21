@@ -383,6 +383,7 @@
 <h3 id="HikariCP"><a href="#HikariCP" class="headerlink" title="HikariCP"></a>HikariCP</h3><p>SpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。</p>
 <p>下面就说一下在配置中我们需要做的变化</p>
 <p>原来我们在配置读写分离的数据库，是这样配置的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.readwrite.url=jdbc:mysql:<span class="comment">//127.0.0.1:3306/bookSystem?characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line">spring.datasource.readwrite.username=root</span><br><span class="line">spring.datasource.readwrite.password=<span class="number">123456</span></span><br><span class="line">spring.datasource.readwrite.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br></pre></td></tr></table></figure>
 
           
         
