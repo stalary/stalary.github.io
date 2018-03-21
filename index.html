@@ -392,6 +392,22 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.readwrite.jdbc-url=jdbc:mysql:<span class="comment">//127.0.0.1:3306/bookSystem?characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line">spring.datasource.readwrite.username=root</span><br><span class="line">spring.datasource.readwrite.password=<span class="number">123456</span></span><br><span class="line">spring.datasource.readwrite.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br></pre></td></tr></table></figure>
 <p>可以看出url前面加上了jdbc</p>
 <p>当然既然是使用了读写分离的数据库，光做这些是不够的，需要进行手动配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="comment">// 设置为首选的数据源</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="comment">// 读取配置</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix=<span class="string">"spring.datasource.readwrite"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> DataSource <span class="title">dataSource</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> DataSourceBuilder.create().build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也许有的朋友还不知道配置文件是如何读取到配置类的我们就简单说一下</p>
+<ul>
+<li>配置文件中写一个name</li>
+<li>在需要匹配的类中有一个name属性</li>
+<li>这样就会一一对应进行读取</li>
+</ul>
+<p>可能上面说的有点抽象，下面通过一个实例来进行进一步的解释</p>
+<p>application.yml写了这样几行配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">props:</span><br><span class="line">  map:</span><br><span class="line">    key: 123</span><br><span class="line">    key1: 456</span><br><span class="line">  test: 123456</span><br></pre></td></tr></table></figure>
+<p>读取类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"props"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Props</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String test;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以发现我们先配置一个前缀，让配置类找到props，然后通过属性与配置的一一对应进行匹配，现在明白了如何配置，我们就来看一下HikariConfig</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String driverClassName;</span><br><span class="line"><span class="keyword">private</span> String jdbcUrl;</span><br></pre></td></tr></table></figure>
+<p>我们可以从源码中看到这两个属性，这也就是我们要设置jdbc-url的原因</p>
+<p><strong>故事到这里只是刚刚开始，请大家耐心去看</strong></p>
 
           
         
