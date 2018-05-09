@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="数组," />
+  <meta name="keywords" content="web," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Range Addition II  题目描述：  给出一个m*n的矩阵，值全为0，然后操作一个二维数组，来对矩阵进行改变，即每次数组中的[x,y]能够覆盖矩阵，即将覆盖的区域加1，返回矩阵中最大整数的个数  样例：  1234567891011121314151617输入：  m = 3，n = 3 操作= [[2,2]，[3,3]] 输出： 4 说明： 最初，M = [[0,0,0]， [0,">
-<meta name="keywords" content="数组">
+<meta name="description" content="这周接到了一个对爬取数据进行清理的任务，具体需求为，有一张接近百万的key值表，每一个key对应一个对象，但是在es中存在大量的相似对象，需要按照相似度清除key值表中重复的对象。 下面简单的介绍一下本人的思路。 文件准备因为百万级数据的清理在单机模式下其实是很耗时的操作，所以我们需要考虑到一些异常的发生，并且要暂存一下重复的key值，所以需要构建三个临时文件  touch out.json se">
+<meta name="keywords" content="web">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【leetcode】598题解">
-<meta property="og:url" content="http://stalary.com/2017/11/29/leetcode598/index.html">
+<meta property="og:title" content="【web】海量数据的简单清洗">
+<meta property="og:url" content="http://stalary.com/2018/05/09/dataclean/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="Range Addition II  题目描述：  给出一个m*n的矩阵，值全为0，然后操作一个二维数组，来对矩阵进行改变，即每次数组中的[x,y]能够覆盖矩阵，即将覆盖的区域加1，返回矩阵中最大整数的个数  样例：  1234567891011121314151617输入：  m = 3，n = 3 操作= [[2,2]，[3,3]] 输出： 4 说明： 最初，M = [[0,0,0]， [0,">
+<meta property="og:description" content="这周接到了一个对爬取数据进行清理的任务，具体需求为，有一张接近百万的key值表，每一个key对应一个对象，但是在es中存在大量的相似对象，需要按照相似度清除key值表中重复的对象。 下面简单的介绍一下本人的思路。 文件准备因为百万级数据的清理在单机模式下其实是很耗时的操作，所以我们需要考虑到一些异常的发生，并且要暂存一下重复的key值，所以需要构建三个临时文件  touch out.json se">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-06T02:42:27.043Z">
+<meta property="og:updated_time" content="2018-05-09T06:10:05.858Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【leetcode】598题解">
-<meta name="twitter:description" content="Range Addition II  题目描述：  给出一个m*n的矩阵，值全为0，然后操作一个二维数组，来对矩阵进行改变，即每次数组中的[x,y]能够覆盖矩阵，即将覆盖的区域加1，返回矩阵中最大整数的个数  样例：  1234567891011121314151617输入：  m = 3，n = 3 操作= [[2,2]，[3,3]] 输出： 4 说明： 最初，M = [[0,0,0]， [0,">
+<meta name="twitter:title" content="【web】海量数据的简单清洗">
+<meta name="twitter:description" content="这周接到了一个对爬取数据进行清理的任务，具体需求为，有一张接近百万的key值表，每一个key对应一个对象，但是在es中存在大量的相似对象，需要按照相似度清除key值表中重复的对象。 下面简单的介绍一下本人的思路。 文件准备因为百万级数据的清理在单机模式下其实是很耗时的操作，所以我们需要考虑到一些异常的发生，并且要暂存一下重复的key值，所以需要构建三个临时文件  touch out.json se">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://stalary.com/2017/11/29/leetcode598/"/>
+  <link rel="canonical" href="http://stalary.com/2018/05/09/dataclean/"/>
 
 
 
 
 
-  <title>【leetcode】598题解 | Stalary的小书房</title>
+  <title>【web】海量数据的简单清洗 | Stalary的小书房</title>
   
 
 
@@ -276,7 +276,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2017/11/29/leetcode598/">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/05/09/dataclean/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="stalary">
@@ -293,7 +293,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">【leetcode】598题解</h1>
+          <h1 class="post-title" itemprop="name headline">【web】海量数据的简单清洗</h1>
         
 
         <div class="post-meta">
@@ -305,8 +305,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-29T00:20:41+08:00">
-                2017-11-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-09T14:10:40+08:00">
+                2018-05-09
               </time>
             
 
@@ -328,19 +328,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">leetcode</span>
+                  <a href="/categories/web/" itemprop="url" rel="index">
+                    <span itemprop="name">web</span>
                   </a>
                 </span>
 
@@ -358,8 +347,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/11/29/leetcode598/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/11/29/leetcode598/" itemprop="commentsCount"></span>
+                <a href="/2018/05/09/dataclean/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/05/09/dataclean/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -392,25 +381,26 @@
       
 
       
-        <p>Range Addition II</p>
-<ul>
-<li>题目描述：</li>
-</ul>
-<p>给出一个m*n的矩阵，值全为0，然后操作一个二维数组，来对矩阵进行改变，即每次数组中的[x,y]能够覆盖矩阵，即将覆盖的区域加1，返回矩阵中最大整数的个数</p>
-<ul>
-<li>样例：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">输入：  </span><br><span class="line">m = 3，n = 3 </span><br><span class="line">操作= [[2,2]，[3,3]] 输出： 4</span><br><span class="line"> 说明： </span><br><span class="line">最初，M = </span><br><span class="line">[[0,0,0]，</span><br><span class="line"> [0,0,0]，</span><br><span class="line"> [0，0，0]] </span><br><span class="line">执行后[2,2]，M = </span><br><span class="line">[[1，1,0]，</span><br><span class="line"> [1,1，0]，</span><br><span class="line"> [0,0，0]] </span><br><span class="line">执行后[3,3] ，M = </span><br><span class="line">[[2,2,1]，</span><br><span class="line"> [2,2,1]，</span><br><span class="line"> [1,1,1]] </span><br><span class="line">所以M中的最大整数是2，M中有四个。所以返回4。</span><br></pre></td></tr></table></figure>
-<ul>
-<li>题解：</li>
-</ul>
-<p>这道题一上来思路就是要去找覆盖的地方，而覆盖的地方有什么特点呢？</p>
-<p>1，肯定是一个比操作它的区域要小的区域<br>2，为最大整数，因为每次都会被覆盖，覆盖即加1</p>
-<p>所以求个数的问题其实就是求最小区域的面积，即每次将行列与操作数组的行列进行比较，取最小值，代码十分简单。</p>
-<ul>
-<li>code</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxCount</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n, <span class="keyword">int</span>[][] ops)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ops.length; i++) &#123;</span><br><span class="line">            m = Math.min(m, ops[i][<span class="number">0</span>]);</span><br><span class="line">            n = Math.min(n, ops[i][<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> m * n;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+        <p>这周接到了一个对爬取数据进行清理的任务，具体需求为，有一张接近百万的key值表，每一个key对应一个对象，但是在es中存在大量的相似对象，需要按照相似度清除key值表中重复的对象。</p>
+<p>下面简单的介绍一下本人的思路。</p>
+<h3 id="文件准备"><a href="#文件准备" class="headerlink" title="文件准备"></a>文件准备</h3><p>因为百万级数据的清理在单机模式下其实是很耗时的操作，所以我们需要考虑到一些异常的发生，并且要暂存一下重复的key值，所以需要构建三个临时文件</p>
+<blockquote>
+<p>touch out.json set.json error.json</p>
+</blockquote>
+<p>分别代表输出文件，key值暂存文件，以及错误文件</p>
+<h3 id="重试机制的简单实现"><a href="#重试机制的简单实现" class="headerlink" title="重试机制的简单实现"></a>重试机制的简单实现</h3><p>有时调用es进行查询会出现超时的情况，为了防止服务的直接停止，我们需要捕获异常进行处理。</p>
+<p>对于重试，思路如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    <span class="comment">// 重试超过三次后退出并写入错误文件中</span></span><br><span class="line">    <span class="keyword">if</span> (map.getOrDefault(key, <span class="number">0</span>) &gt;= <span class="number">3</span>) &#123;</span><br><span class="line">    FileWriter fw2 = <span class="keyword">new</span> FileWriter(errorFile, <span class="keyword">true</span>);</span><br><span class="line">    fw2.write(<span class="string">"\""</span> + key + <span class="string">"\""</span> + <span class="string">","</span>);</span><br><span class="line">    fw2.close();</span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    log.warn(<span class="string">"error!"</span>, e);</span><br><span class="line">    <span class="comment">// 当失败时放入队列头部</span></span><br><span class="line">    list.addFirst(key);</span><br><span class="line">    map.put(key,map.getOrDefault(key, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们使用一个map来统计当前key的失败次数，进入异常后判断一下当前失败次数，当超过3次后，写入错误文件，并跳到下一个key，未达到三次时，放入队列头部，下次继续重试</p>
+<h3 id="开始清洗"><a href="#开始清洗" class="headerlink" title="开始清洗"></a>开始清洗</h3><p>首先将数据读取到队列中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String content = FileUtils.readFileToString(file, <span class="string">"UTF-8"</span>);</span><br><span class="line"><span class="comment">// 提取json的values</span></span><br><span class="line">JSONObject jsonObject = JSONObject.fromObject(content);</span><br><span class="line">LinkedList&lt;String&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;(jsonObject.values());</span><br></pre></td></tr></table></figure>
+<p>然后通过当前key去es中查找唯一的对象，再通过对象值去查找与之相似的key，存入set中。</p>
+<p>删除队列中存在的相似key</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list.removeAll(set);</span><br></pre></td></tr></table></figure>
+<p>最好统计一下当前运行的进度，比如每一千个输出一次</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (count % <span class="number">1000</span> == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// 已清洗数据量</span></span><br><span class="line">    log.info(<span class="string">"count: "</span> + count);</span><br><span class="line">    <span class="comment">// 已删除数据量</span></span><br><span class="line">    log.info(<span class="string">"cleanCount: "</span> + cleanCount);</span><br><span class="line">    FileWriter fw1 = <span class="keyword">new</span> FileWriter(setFile, <span class="keyword">true</span>);</span><br><span class="line">    fw1.write(<span class="string">"\""</span> + count + <span class="string">"\":"</span> + <span class="string">"\""</span> + cleanCount + <span class="string">"\""</span> + <span class="string">","</span>);</span><br><span class="line">    fw1.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>今天的介绍就到这里了，如有问题，请联系博主</p>
+<p><strong>付出不到，就不要想着收获</strong></p>
 
       
     </div>
@@ -439,7 +429,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/数组/" rel="tag"><i class="fa fa-tag"></i> 数组</a>
+            <a href="/tags/web/" rel="tag"><i class="fa fa-tag"></i> web</a>
           
         </div>
       
@@ -452,8 +442,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/28/leetcode538/" rel="next" title="【leetcode】538题解">
-                <i class="fa fa-chevron-left"></i> 【leetcode】538题解
+              <a href="/2018/04/23/jar/" rel="next" title="【java】打出指定类的jar包">
+                <i class="fa fa-chevron-left"></i> 【java】打出指定类的jar包
               </a>
             
           </div>
@@ -461,10 +451,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/29/leetcode122/" rel="prev" title="【leetcode】122题解">
-                【leetcode】122题解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -548,8 +534,17 @@ var jiathis_config={
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -647,6 +642,22 @@ var jiathis_config={
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件准备"><span class="nav-number">1.</span> <span class="nav-text">文件准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重试机制的简单实现"><span class="nav-number">2.</span> <span class="nav-text">重试机制的简单实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开始清洗"><span class="nav-number">3.</span> <span class="nav-text">开始清洗</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

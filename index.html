@@ -275,6 +275,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/05/09/dataclean/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stalary">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stalary的小书房">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/09/dataclean/" itemprop="url">【web】海量数据的简单清洗</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-09T14:10:40+08:00">
+                2018-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/" itemprop="url" rel="index">
+                    <span itemprop="name">web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/05/09/dataclean/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://stalary.com/2018/05/09/dataclean/" class="cy_cmt_count" data-xid="2018/05/09/dataclean/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这周接到了一个对爬取数据进行清理的任务，具体需求为，有一张接近百万的key值表，每一个key对应一个对象，但是在es中存在大量的相似对象，需要按照相似度清除key值表中重复的对象。</p>
+<p>下面简单的介绍一下本人的思路。</p>
+<h3 id="文件准备"><a href="#文件准备" class="headerlink" title="文件准备"></a>文件准备</h3><p>因为百万级数据的清理在单机模式下其实是很耗时的操作，所以我们需要考虑到一些异常的发生，并且要暂存一下重复的key值，所以需要构建三个临时文件</p>
+<blockquote>
+<p>touch out.json set.json error.json</p>
+</blockquote>
+<p>分别代表输出文件，key值暂存文件，以及错误文件</p>
+<h3 id="重试机制的简单实现"><a href="#重试机制的简单实现" class="headerlink" title="重试机制的简单实现"></a>重试机制的简单实现</h3><p>有时调用es进行查询会出现超时的情况，为了防止服务的直接停止，我们需要捕获异常进行处理。</p>
+<p>对于重试，思路如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    <span class="comment">// 重试超过三次后退出并写入错误文件中</span></span><br><span class="line">    <span class="keyword">if</span> (map.getOrDefault(key, <span class="number">0</span>) &gt;= <span class="number">3</span>) &#123;</span><br><span class="line">    FileWriter fw2 = <span class="keyword">new</span> FileWriter(errorFile, <span class="keyword">true</span>);</span><br><span class="line">    fw2.write(<span class="string">"\""</span> + key + <span class="string">"\""</span> + <span class="string">","</span>);</span><br><span class="line">    fw2.close();</span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    log.warn(<span class="string">"error!"</span>, e);</span><br><span class="line">    <span class="comment">// 当失败时放入队列头部</span></span><br><span class="line">    list.addFirst(key);</span><br><span class="line">    map.put(key,map.getOrDefault(key, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们使用一个map来统计当前key的失败次数，进入异常后判断一下当前失败次数，当超过3次后，写入错误文件，并跳到下一个key，未达到三次时，放入队列头部，下次继续重试</p>
+<h3 id="开始清洗"><a href="#开始清洗" class="headerlink" title="开始清洗"></a>开始清洗</h3><p>首先将数据读取到队列中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String content = FileUtils.readFileToString(file, <span class="string">"UTF-8"</span>);</span><br><span class="line"><span class="comment">// 提取json的values</span></span><br><span class="line">JSONObject jsonObject = JSONObject.fromObject(content);</span><br><span class="line">LinkedList&lt;String&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;(jsonObject.values());</span><br></pre></td></tr></table></figure>
+<p>然后通过当前key去es中查找唯一的对象，再通过对象值去查找与之相似的key，存入set中。</p>
+<p>删除队列中存在的相似key</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list.removeAll(set);</span><br></pre></td></tr></table></figure>
+<p>最好统计一下当前运行的进度，比如每一千个输出一次</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (count % <span class="number">1000</span> == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// 已清洗数据量</span></span><br><span class="line">    log.info(<span class="string">"count: "</span> + count);</span><br><span class="line">    <span class="comment">// 已删除数据量</span></span><br><span class="line">    log.info(<span class="string">"cleanCount: "</span> + cleanCount);</span><br><span class="line">    FileWriter fw1 = <span class="keyword">new</span> FileWriter(setFile, <span class="keyword">true</span>);</span><br><span class="line">    fw1.write(<span class="string">"\""</span> + count + <span class="string">"\":"</span> + <span class="string">"\""</span> + cleanCount + <span class="string">"\""</span> + <span class="string">","</span>);</span><br><span class="line">    fw1.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>今天的介绍就到这里了，如有问题，请联系博主</p>
+<p><strong>付出不到，就不要想着收获</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/04/23/jar/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1036,171 +1211,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/03/15/forward compatbility/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/15/forward compatbility/" itemprop="url">项目上线时如何向前兼容</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T23:20:40+08:00">
-                2018-03-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/项目，兼容/" itemprop="url" rel="index">
-                    <span itemprop="name">项目，兼容</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2018/03/15/forward compatbility/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://stalary.com/2018/03/15/forward compatbility/" class="cy_cmt_count" data-xid="2018/03/15/forward compatbility/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>前几天，做了许久的项目终于上线了，然而在提测的过程中，却被提出了不兼容老版本的大坑，所以今天来分析一下如何兼容老版本</p>
-<h3 id="兼容方法"><a href="#兼容方法" class="headerlink" title="兼容方法"></a>兼容方法</h3><p>我们可以在客户端请求接口时，在全局请求中加入一个api_version，服务端在拦截器中获取到api_version的参数，来判断调用哪个版本的接口，这就类似于门面模式，对外使用统一接口，但是内部逻辑各版本会不相同</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/9252736-105d76df4b31ac02.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="调用图片"></p>
-<h3 id="遇到的坑"><a href="#遇到的坑" class="headerlink" title="遇到的坑"></a>遇到的坑</h3><p>不要以为版本适配这样就很完美了，当项目上线后才发现了一个巨大的坑，通过消息队列读取的消息，异步处理时，由于无法接受到请求的版本号，所以发生了一直走不到新接口的bug，经过了三个小时的排查才发现了这个bug，最后使用了特殊标示才解决问题。</p>
-<p><strong>事情总有两面性，为了兼容我们就要写更多的代码，但这是必需的事情。</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
- 
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1250,7 +1265,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
