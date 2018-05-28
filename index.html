@@ -275,6 +275,180 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/05/29/spider/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stalary">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stalary的小书房">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/29/spider/" itemprop="url">python与java读取api的对比</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-29T00:20:40+08:00">
+                2018-05-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/05/29/spider/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://stalary.com/2018/05/29/spider/" class="cy_cmt_count" data-xid="2018/05/29/spider/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天来说一下为什么我们一般会选择python来作为爬虫</p>
+<p>我们来对可以直接获取到api来进行抓取数据的情况来分析</p>
+<p>例如我要爬取一个博客<br>如果用java来解析代码需要这样写</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    String s = httpJsonGet(<span class="string">"http://47.94.17.80:8100/news/newsList?size=10&amp;index=1"</span>);</span><br><span class="line">    ObjectMapper jackson = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line">    JsonNode data = jackson.readTree(s).get(<span class="string">"data"</span>);</span><br><span class="line">    JsonNode newsAndCommentList = data.get(<span class="string">"newsAndCommentList"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; newsAndCommentList.size(); i++) &#123;</span><br><span class="line">        JsonNode newsAndComment = newsAndCommentList.get(i);</span><br><span class="line">        JsonNode newsDTO = newsAndComment.get(<span class="string">"newsDTO"</span>);</span><br><span class="line">        JsonNode commentDTOList = newsAndComment.get(<span class="string">"commentDTOList"</span>);</span><br><span class="line">        System.out.println(newsDTO);</span><br><span class="line">        System.out.println(commentDTOList);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果使用python需要这样写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">res = requests.get(<span class="string">'http://47.94.17.80:8100/news/newsList?size=10&amp;index=1'</span>).json()</span><br><span class="line">data = res[<span class="string">'data'</span>][<span class="string">'newsAndCommentList'</span>]</span><br><span class="line"><span class="keyword">for</span> dto <span class="keyword">in</span> data:</span><br><span class="line">    print(index)</span><br><span class="line">    print(<span class="string">'news: '</span> + str(dto[<span class="string">'newsDTO'</span>]))</span><br><span class="line">    print(<span class="string">'comment: '</span> + str(dto[<span class="string">'commentDTOList'</span>]))</span><br></pre></td></tr></table></figure>
+<p>使用java时，需要自己封装一下httpclient，并且还要引入json解析的包，当使用python时，我们需要引入一下requests即可，并且从代码量也可以看出，python还是很占优势的。</p>
+<p><strong>一切的坚持，都源自于兴趣</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/05/15/sortByValue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -982,247 +1156,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/03/21/boot2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/21/boot2/" itemprop="url">SpringBoot2.0爬坑指南</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T23:20:40+08:00">
-                2018-03-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/spring/" itemprop="url" rel="index">
-                    <span itemprop="name">spring</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2018/03/21/boot2/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://stalary.com/2018/03/21/boot2/" class="cy_cmt_count" data-xid="2018/03/21/boot2/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>公司的项目需要从SpringMVC迁移到SpringBoot2.0，本人用了三天的时间才基本完成迁移，今天就来大体的做一下总结</p>
-<h3 id="HikariCP"><a href="#HikariCP" class="headerlink" title="HikariCP"></a>HikariCP</h3><p>SpringBoot2.0将HikariCP替换原来的Tomcat作为默认的数据库连接池(众心所向)。</p>
-<p>下面就说一下在配置中我们需要做的变化</p>
-<p>原来我们在配置读写分离的数据库，是这样配置的</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.readwrite.url=jdbc:mysql:<span class="comment">//127.0.0.1:3306/bookSystem?characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line">spring.datasource.readwrite.username=root</span><br><span class="line">spring.datasource.readwrite.password=<span class="number">123456</span></span><br><span class="line">spring.datasource.readwrite.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br></pre></td></tr></table></figure>
-<p>如果升级后还保持原有配置会出现错误</p>
-<blockquote>
-<p>HikariPool-1 - jdbcUrl is required with driverClassName</p>
-</blockquote>
-<p>而在升级以后我们需要如何配置呢？</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.readwrite.jdbc-url=jdbc:mysql:<span class="comment">//127.0.0.1:3306/bookSystem?characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line">spring.datasource.readwrite.username=root</span><br><span class="line">spring.datasource.readwrite.password=<span class="number">123456</span></span><br><span class="line">spring.datasource.readwrite.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br></pre></td></tr></table></figure>
-<p>可以看出url前面加上了jdbc</p>
-<p>当然既然是使用了读写分离的数据库，光做这些是不够的，需要进行手动配置</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="comment">// 设置为首选的数据源</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="comment">// 读取配置</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix=<span class="string">"spring.datasource.readwrite"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> DataSource <span class="title">dataSource</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> DataSourceBuilder.create().build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>也许有的朋友还不知道配置文件是如何读取到配置类的我们就简单说一下</p>
-<ul>
-<li>配置文件中写一个name</li>
-<li>在需要匹配的类中有一个name属性</li>
-<li>这样就会一一对应进行读取</li>
-</ul>
-<p>可能上面说的有点抽象，下面通过一个实例来进行进一步的解释</p>
-<p>application.yml写了这样几行配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">props:</span><br><span class="line">  map:</span><br><span class="line">    key: 123</span><br><span class="line">    key1: 456</span><br><span class="line">  test: 123456</span><br></pre></td></tr></table></figure>
-<p>读取类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"props"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Props</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String test;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以发现我们先配置一个前缀，让配置类找到props，然后通过属性与配置的一一对应进行匹配，现在明白了如何配置，我们就来看一下HikariConfig</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String driverClassName;</span><br><span class="line"><span class="keyword">private</span> String jdbcUrl;</span><br></pre></td></tr></table></figure>
-<p>我们可以从源码中看到这两个属性，这也就是我们要设置jdbc-url的原因</p>
-<p><strong>故事到这里只是刚刚开始，请大家耐心去看</strong></p>
-<h3 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h3><p>springboot2默认需要4.0以上的gradle了，所以我们修改一下gradle-wrapper.properties</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distributionUrl=https\:<span class="comment">//services.gradle.org/distributions/gradle-4.1-all.zip</span></span><br></pre></td></tr></table></figure>
-<p>还有一个重要的地方，gradle的依赖管理进行了升级，在gradle中加入一个插件即可</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: <span class="string">'org.springframework.boot'</span></span><br><span class="line">apply plugin: <span class="string">'io.spring.dependency-management'</span></span><br></pre></td></tr></table></figure>
-<p>在打包时的命令也发生了变化，可以使用<strong>gradle bootjar</strong>或者<strong>gradle bootwar</strong>来进行打包，然后<strong>gradle bootrun</strong>运行</p>
-<p>当然，要补充一点，在boot2.0迁移的官方文档中说，推荐我们加入</p>
-<blockquote>
-<p>runtime(“org.springframework.boot:spring-boot-properties-migrator”)</p>
-</blockquote>
-<p>只要将其作为依赖添加到项目中，它不仅会分析应用程序的环境并在启动时打印诊断信息，而且还会在运行时为项目临时迁移属性</p>
-<p>ps: boot2的报错真的有点少，我遇到了多次什么报错信息都没有Hikari就自动关闭的情况</p>
-<h3 id="ORM"><a href="#ORM" class="headerlink" title="ORM"></a>ORM</h3><p>由于我们的项目还是使用的Hibernate，所以起初想着平滑迁移，便没有改变，但是发现在Hibernate5.2.1以上已经不推荐Criteria，这代表着正在逐渐向JPA标准化进行过度，所以下面给出两种替换方式</p>
-<h4 id="JPA"><a href="#JPA" class="headerlink" title="JPA"></a>JPA</h4><p>demo</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 传入Pageable对象和quizId，返回一个Page对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">QuizRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">QuizEntity</span>, <span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">Page&lt;QuizEntity&gt; <span class="title">findByQuizId</span><span class="params">(<span class="keyword">long</span> quizId, Pageable pageable)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Pageable</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PageRequest pageRequest = PageRequest.of(page - <span class="number">1</span>, size, Sort.by(Sort.Direction.DESC, <span class="string">"createTime"</span>));</span><br></pre></td></tr></table></figure>
-<h4 id="CriteriaBuilder"><a href="#CriteriaBuilder" class="headerlink" title="CriteriaBuilder"></a>CriteriaBuilder</h4><p>demo</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QuizDao</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 注入EntityManager</span></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> EntityManager entityManager;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Pair&lt;Long, List&lt;QuizEntity&gt;&gt; search(String keyword, <span class="keyword">int</span> page, <span class="keyword">int</span> size) &#123;</span><br><span class="line">        <span class="comment">// 创建构造器</span></span><br><span class="line">        CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span><br><span class="line">        <span class="comment">// 设置语句查询对应的实体     </span></span><br><span class="line">        CriteriaQuery&lt;QuizEntity&gt; criteria = builder.createQuery(QuizEntity.class);</span><br><span class="line">        <span class="comment">// 设置from的来源</span></span><br><span class="line">        Root&lt;QuizEntity&gt; root = criteria.from(QuizEntity.class);</span><br><span class="line">        <span class="comment">// 设置查询的条件</span></span><br><span class="line">        criteria.where(builder.ge(root.get(<span class="string">"status"</span>), <span class="number">0</span>));</span><br><span class="line">        <span class="comment">// 设置排序的属性</span></span><br><span class="line">        criteria.orderBy(builder.asc(root.get(<span class="string">"createTime"</span>)));</span><br><span class="line">        TypedQuery&lt;QuizEntity&gt; query = entityManager.createQuery(criteria);</span><br><span class="line">        <span class="comment">// 获取总数据量</span></span><br><span class="line">        <span class="keyword">long</span> total = query.getResultList().size();</span><br><span class="line">        <span class="comment">// 设置第几页，和每页的数据</span></span><br><span class="line">        query.setFirstResult((page - <span class="number">1</span>) * size);</span><br><span class="line">        query.setMaxResults(size);</span><br><span class="line">        List&lt;QuizEntity&gt; resultList = query.getResultList();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Pair&lt;&gt;(total, resultList);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以发现一种更加方便快捷，一种更加灵活，大家可以自行选型，但当我使用JPA时，遇到了问题。</p>
-<p>在我使用UPDATE时发生了error，最后发现需要进行事务和标注</p>
-<p>demo</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(rollbackFor = Exception.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">QuizRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">QuizEntity</span>, <span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Modifying</span></span><br><span class="line">    <span class="meta">@Query</span>(<span class="string">"update tr_quiz q set q.readState=true where q.quizId = ?1 and q.lessonId = ?2 and q.status &gt;= 0"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">readAll</span><span class="params">(<span class="keyword">long</span> quizId, <span class="keyword">long</span> lessonId)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>@Transactional和@Modifying注解大家一定不要忘记。</p>
-</blockquote>
-<h3 id="lombok"><a href="#lombok" class="headerlink" title="lombok"></a>lombok</h3><p>lombok相信大家基本都用过，就是可以通过注解来生成构造函数，getset方法等的包，而在boot2中引入最新版时，遇到了一些问题</p>
-<p>通过查看官方文档，发现了下面这句话</p>
-<blockquote>
-<p>BREAKING CHANGE: lombok config key lombok.addJavaxGeneratedAnnotation now defaults to false instead of true. Oracle broke this annotation with the release of JDK9, necessitating this breaking change.</p>
-<p>lombok在最新版本中默认lombok.addJavaxGeneratedAnnotation为false</p>
-</blockquote>
-<p>这导致了通过http请求获取数据进行转化时的失败，需要我们手动配置一下，所以我选择了降级到1.16.18省去配置的麻烦</p>
-<h3 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h3><p>如果使用的client为Jedis，那恭喜你，你又需要做转变了，因为boot2.0中默认为lettuce，我们需要修改一下gradle的配置</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">compile(<span class="string">'org.springframework.boot:spring-boot-starter-data-redis'</span>) &#123;</span><br><span class="line">        exclude <span class="keyword">module</span>: <span class="string">'lettuce-core'</span></span><br><span class="line">    &#125;</span><br><span class="line">    compile(<span class="string">'redis.clients:jedis'</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="Cassandra"><a href="#Cassandra" class="headerlink" title="Cassandra"></a>Cassandra</h3><p>我们集群中的Cassandra版本比较老，所以不能使用</p>
-<blockquote>
-<p>compile(‘org.springframework.boot:spring-boot-starter-cassandra’)</p>
-</blockquote>
-<p>需要使用</p>
-<blockquote>
-<p>compile(‘com.datastax.cassandra:cassandra-driver-core:2.1.7.1’)  compile(‘com.datastax.cassandra:cassandra-driver-mapping:2.1.7.1’)</p>
-</blockquote>
-<p>但是，引入包后一直发生错误，又是Hikari自动停止，后来仔细观察了包的依赖关系(使用./gradlew dependencyInsight –dependency cassandra-driver-core可以分析)</p>
-<p>发现在mapping中包含了core，于是去掉core，果然项目跑起来了-   -，很激动。</p>
-<h3 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h3><p>最后再来说一下kafka在boot中的基本使用，今天直接少最简单的一种单线程消费</p>
-<p>我们只需要创建两个类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> </span>&#123;</span><br><span class="line">    <span class="meta">@KafkaListener</span>(topics = &#123;<span class="string">"test"</span>&#125;)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(ConsumerRecord record)</span> </span>&#123;</span><br><span class="line">        String topic = record.topic();</span><br><span class="line">        String key = record.key().toString();</span><br><span class="line">        String message = record.value().toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Producer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> KafkaTemplate&lt;String, String&gt; kafkaTemplate;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">(String topic, String message)</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">"send message: topic: "</span> + topic + <span class="string">" message: "</span> + message);</span><br><span class="line">        kafkaTemplate.send(topic, message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">(String topic, String key, String message)</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">"send message: topic: "</span> + topic + <span class="string">" key: "</span> + key + <span class="string">" message: "</span> + message);</span><br><span class="line">        kafkaTemplate.send(topic, key, message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>怎么样？是不是很简单，但一定不要忘了在application.properties里配置一下，下面给出基本的配置</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#kafka</span><br><span class="line">#producer</span><br><span class="line"><span class="comment">// bootstrap-servers代替原来的broker.list</span></span><br><span class="line">spring.kafka.bootstrap-servers=localhost:<span class="number">9092</span></span><br><span class="line"><span class="comment">// 生产者key的序列化方式</span></span><br><span class="line">spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer</span><br><span class="line"><span class="comment">// 生产者value的序列化方式</span></span><br><span class="line">spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer</span><br><span class="line"></span><br><span class="line">#consumer</span><br><span class="line">spring.kafka.consumer.group-id=test_group</span><br><span class="line">spring.kafka.consumer.enable-auto-commit=<span class="keyword">true</span></span><br><span class="line"><span class="comment">// 消费者key的反序列化方式</span></span><br><span class="line">spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer</span><br><span class="line"><span class="comment">// 消费者value的反序列化方式</span></span><br><span class="line">spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer</span><br></pre></td></tr></table></figure>
-<p>最后，当调试时不要忘记在application。properties中设置</p>
-<blockquote>
-<p>debug=true</p>
-</blockquote>
-<p>打开debug可以看到更清晰的调试信息。</p>
-<p>吃水不忘挖井人，附上boot2.0的官方迁移文档<br><a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Guide" target="_blank" rel="noopener">官方迁移文档</a></p>
-<p><strong>最激动人心的不是站在高处时的耀眼，而是无人问津时的默默付出</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
- 
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1277,7 +1210,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1288,7 +1221,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1299,7 +1232,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
