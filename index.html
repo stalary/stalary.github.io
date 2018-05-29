@@ -275,6 +275,188 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/05/30/kafkacluster/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stalary">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stalary的小书房">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/30/kafkacluster/" itemprop="url">kafka集群的崩溃以及配置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-30T21:24:40+08:00">
+                2018-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kafka/" itemprop="url" rel="index">
+                    <span itemprop="name">kafka</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/05/30/kafkacluster/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://stalary.com/2018/05/30/kafkacluster/" class="cy_cmt_count" data-xid="2018/05/30/kafkacluster/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天由于kafka集群搭建时的配置不当，由于一台主消费者挂掉(服务器崩了，需要维修)，导致了所有新版消费者(新版的offset存储在kafka)都无法拉取消息。</p>
+<p>由于是线上问题，所以是绝对不能影响用户的，使用老版客户端(offset存储在zk)进行消费，然后将kafka迁移到备用服务。</p>
+<p>下面来说一下这次事故的具体处理思路</p>
+<ol>
+<li>首先要确保获取到的消息不能丢失，所以老版消费者进行消费</li>
+<li>线上服务通过均衡负载一台一台的进行切换kafka服务，当原生产者数据都消费完时，将消费者切换到备用服务</li>
+<li>开始配置线上kafka服务</li>
+</ol>
+<p>主要做了如下修改</p>
+<blockquote>
+<p>offsets.topic.replication.factor=3</p>
+</blockquote>
+<p>设置副本数量为3,这样当一台消费者宕机时，其他消费者也可以进行消费</p>
+<p>为了使topic可以进行复制副本，这里采用了比较粗暴的方法，直接清空topic和offset<br>分为以下几个步骤</p>
+<blockquote>
+<p>./zookeeper-shell.sh 127.0.0.1:24500<br>rmr  /brokers/topics/topic-name<br>rmr  /config/topics/topic-name<br>rmr /admin/delete_topics/topic-name</p>
+</blockquote>
+<p>此时已经将topic完全删除，然后进行topic的新建</p>
+<blockquote>
+<p>bin/kafka-topics –create –zookeeper localhost:2181 –replication-factor 3 –partitions 3 –topic topic-name</p>
+</blockquote>
+<p>这时可以启动生产者和消费者进行查看，已经不再出现一开始的异常</p>
+<blockquote>
+<p>Connection to node -1 could not be established. Broker may not be available.</p>
+</blockquote>
+<p>这时我进行了测试，对三台broker中的任意一台进行下线，服务会自动选择其他节点进行生产和消费。</p>
+<p><strong>只要自己能做，就不要交给别人，只有自己才是最靠得住的</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/05/29/spider/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -969,193 +1151,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/04/07/LogAndKafka/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/07/LogAndKafka/" itemprop="url">使用kafka+logback，异步持久化日志</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-07T20:20:40+08:00">
-                2018-04-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/kafka/" itemprop="url" rel="index">
-                    <span itemprop="name">kafka</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/kafka/log/" itemprop="url" rel="index">
-                    <span itemprop="name">log</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2018/04/07/LogAndKafka/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://stalary.com/2018/04/07/LogAndKafka/" class="cy_cmt_count" data-xid="2018/04/07/LogAndKafka/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近一直在忙着攻克个人开源的用户中心中异步日志的功能，今天终于完成了这个困扰我许久的问题。</p>
-<h3 id="服务器kafka如何配置"><a href="#服务器kafka如何配置" class="headerlink" title="服务器kafka如何配置"></a>服务器kafka如何配置</h3><p>当我们没有修改配置时，会遇到生产者连接服务器失败的情况</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">advertised.host.name=47.94.248.38</span><br></pre></td></tr></table></figure>
-<p>我们需要把host设置为当前服务器的ip</p>
-<h3 id="logback配置"><a href="#logback配置" class="headerlink" title="logback配置"></a>logback配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line"></span><br><span class="line">    &lt;property name=&quot;CONSOLE_LOG_PATTERN&quot;</span><br><span class="line">              value=&quot;%date&#123;yyyy-MM-dd HH:mm:ss&#125; | %highlight(%-5level) | %boldGreen(%msg%n)&quot;/&gt;</span><br><span class="line">    &lt;appender name=&quot;KAFKA&quot; class=&quot;com.stalary.usercenter.config.KafkaAppender&quot;&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">    &lt;appender name=&quot;console&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;</span><br><span class="line">        &lt;encoder&gt;</span><br><span class="line">            &lt;pattern&gt;$&#123;CONSOLE_LOG_PATTERN&#125;&lt;/pattern&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line">    &lt;root level=&quot;info&quot;&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;KAFKA&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;console&quot;/&gt;</span><br><span class="line">    &lt;/root&gt;</span><br><span class="line">    // 关闭每次显示kafka设置信息</span><br><span class="line">    &lt;logger name=&quot;org.apache.kafka&quot; level=&quot;OFF&quot;/&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="kafka配置"><a href="#kafka配置" class="headerlink" title="kafka配置"></a>kafka配置</h3><p>首先我们需要设置一个formatter，即对消息的格式化</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public interface Formatter &#123;</span><br><span class="line"></span><br><span class="line">    String format(ILoggingEvent event);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>实现类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class MessageFormatter implements Formatter &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String format(ILoggingEvent event) &#123;</span><br><span class="line">        if (event.getFormattedMessage().startsWith(UCUtil.USER_LOG)) &#123;</span><br><span class="line">            return event.getLevel().toString() + UCUtil.SPLIT + event.getFormattedMessage();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后我们要实现一个KafkaAppender，即消息追加类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">@Slf4j</span><br><span class="line">public class KafkaAppender extends AppenderBase&lt;ILoggingEvent&gt; &#123;</span><br><span class="line"></span><br><span class="line">    @Resource</span><br><span class="line">    private KafkaTemplate&lt;String, String&gt; kafkaTemplate;</span><br><span class="line"></span><br><span class="line">    @Resource</span><br><span class="line">    private Formatter formatter;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void start() &#123;</span><br><span class="line">        if (this.formatter == null) &#123;</span><br><span class="line">            this.formatter = new MessageFormatter();</span><br><span class="line">        &#125;</span><br><span class="line">        super.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void stop() &#123;</span><br><span class="line">        super.stop();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void append(ILoggingEvent event) &#123;</span><br><span class="line">        Map&lt;String, Object&gt; props = new HashMap&lt;&gt;();</span><br><span class="line">        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, &quot;http://47.94.248.38:9092&quot;);</span><br><span class="line">        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);</span><br><span class="line">        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);</span><br><span class="line">        props.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, &quot;1000&quot;);</span><br><span class="line">        props.put(ProducerConfig.RETRIES_CONFIG, 0);</span><br><span class="line">        kafkaTemplate = new KafkaTemplate&lt;&gt;(new DefaultKafkaProducerFactory&lt;String, String&gt;(props));</span><br><span class="line">        String logStr = this.formatter.format(event);</span><br><span class="line">        if (logStr != null) &#123;</span><br><span class="line">            kafkaTemplate.send(Consumer.LOG, logStr);</span><br><span class="line">            log.info(&quot;send message: topic: &quot; + Consumer.LOG + &quot; message: &quot; + logStr);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里遇到了一个坑啊，博主直接使用了自己写好的生产者不知道为什么无法发送消息，所以新申请一个KafkaTemplate</p>
-<p>ILoggingEvent 则可以进行捕获日志。</p>
-<p>下面来看一下消费者</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">@Slf4j</span><br><span class="line">@Component</span><br><span class="line">public class Consumer &#123;</span><br><span class="line"></span><br><span class="line">    public static final String LOGIN_STAT = &quot;login_stat&quot;;</span><br><span class="line"></span><br><span class="line">    public static final String LOG = &quot;center_log&quot;;</span><br><span class="line"></span><br><span class="line">    @Resource</span><br><span class="line">    private Gson gson;</span><br><span class="line"></span><br><span class="line">    @Resource</span><br><span class="line">    private StatService statService;</span><br><span class="line"></span><br><span class="line">    @Resource</span><br><span class="line">    private LogService logService;</span><br><span class="line"></span><br><span class="line">    @KafkaListener(topics = &#123;LOGIN_STAT, LOG&#125;)</span><br><span class="line">    public void process(ConsumerRecord record) &#123;</span><br><span class="line">        long startTime = System.currentTimeMillis();</span><br><span class="line">        String topic = record.topic();</span><br><span class="line">        String key = &quot;&quot;;</span><br><span class="line">        if (record.key() != null) &#123;</span><br><span class="line">            key = record.key().toString();</span><br><span class="line">        &#125;</span><br><span class="line">        String message = record.value().toString();</span><br><span class="line">        if (LOGIN_STAT.equals(topic)) &#123;</span><br><span class="line">            UserStat userStat = gson.fromJson(message, UserStat.class);</span><br><span class="line">            statService.saveUserStat(userStat);</span><br><span class="line">        &#125; else if (LOG.equals(topic)) &#123;</span><br><span class="line">            String[] split = message.split(UCUtil.SPLIT);</span><br><span class="line">            String level = split[0];</span><br><span class="line">            String type = split[2];</span><br><span class="line">            Long commonId = Long.valueOf(split[3]);</span><br><span class="line">            String content = split[4];</span><br><span class="line">            // 异步存储日志</span><br><span class="line">            Log oldLog = logService.findOldLog(commonId, type, content);</span><br><span class="line">            if (oldLog != null) &#123;</span><br><span class="line">                oldLog.setCount(oldLog.getCount() + 1);</span><br><span class="line">                logService.save(oldLog);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                Log log = new Log(level, content, type, commonId, 1);</span><br><span class="line">                logService.save(log);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        long endTime = System.currentTimeMillis();</span><br><span class="line">        log.info(&quot;SubmitConsumer.time=&quot; + (endTime - startTime));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Log实体</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">@Data</span><br><span class="line">@AllArgsConstructor</span><br><span class="line">@NoArgsConstructor</span><br><span class="line">@EqualsAndHashCode(callSuper = true)</span><br><span class="line">@Table(name = &quot;log&quot;)</span><br><span class="line">@Entity</span><br><span class="line">public class Log extends BaseEntity &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 日志等级</span><br><span class="line">     */</span><br><span class="line">    private String level;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 日志内容</span><br><span class="line">     */</span><br><span class="line">    private String content;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 日志种类(user，project)</span><br><span class="line">     */</span><br><span class="line">    private String type;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 通用id</span><br><span class="line">     */</span><br><span class="line">    private Long commonId;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 次数</span><br><span class="line">     */</span><br><span class="line">    private Integer count = 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以上就是完整的异步日志</p>
-<p><a href="https://github.com/stalary/UserCenter" target="_blank" rel="noopener">用户中心地址</a></p>
-<p>大家觉得好用可以给我的github赏点星星哦～</p>
-<p><strong>你所能想到的，就能实现，技术是没有界限的</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
- 
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1210,7 +1205,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
