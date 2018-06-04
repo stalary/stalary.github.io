@@ -6,8 +6,11 @@
       <title><![CDATA[MySQL分页排序中的坑]]></title>
       <url>/2018/06/04/MySQL%E5%88%86%E9%A1%B5%E6%8E%92%E5%BA%8F%E4%B8%AD%E7%9A%84%E5%9D%91/</url>
       <content type="html"><![CDATA[<p>今天项目提测，被测出了一个奇怪的bug，第一页最后一条数据和第二页的第一条数据重复了，并且神奇的丢失了一个条数据，下面开始来分析一下这个场景。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9252736-ffa3c57101bdbd6a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="屏幕快照 2018-06-04 19.29.11.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9252736-5dbcb229f827a828.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="屏幕快照 2018-06-04 19.29.19.png"></p>
+<p>可以看到663202在第一页和第二页都出现了。</p>
 <blockquote>
-<p>场景为对一些作业进行按时间排序，但是有的作业时间事相同的。</p>
+<p>场景为对一些作业进行按时间排序，但是有的作业时间是相同的。</p>
 </blockquote>
 <p>对代码进行查看发现，代码并没有什么问题，只是简单的查询全集并按时间排序分页返回给前端。</p>
 <p>所以去看一看mysql对limit的解释，从官方文档中发现了这样一句话</p>
@@ -38,6 +41,7 @@
 <li>给order by字段加上索引</li>
 </ol>
 </blockquote>
+<p><strong>世上没有解决不了的bug，也许只是方向不对</strong></p>
 ]]></content>
       
         <categories>

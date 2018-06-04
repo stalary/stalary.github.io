@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="今天项目提测，被测出了一个奇怪的bug，第一页最后一条数据和第二页的第一条数据重复了，并且神奇的丢失了一个条数据，下面开始来分析一下这个场景。  场景为对一些作业进行按时间排序，但是有的作业时间事相同的。  对代码进行查看发现，代码并没有什么问题，只是简单的查询全集并按时间排序分页返回给前端。 所以去看一看mysql对limit的解释，从官方文档中发现了这样一句话  如果多个行在列中具有相同的值O">
+<meta name="description" content="今天项目提测，被测出了一个奇怪的bug，第一页最后一条数据和第二页的第一条数据重复了，并且神奇的丢失了一个条数据，下面开始来分析一下这个场景。   可以看到663202在第一页和第二页都出现了。  场景为对一些作业进行按时间排序，但是有的作业时间是相同的。  对代码进行查看发现，代码并没有什么问题，只是简单的查询全集并按时间排序分页返回给前端。 所以去看一看mysql对limit的解释，从官方文档">
 <meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL分页排序中的坑">
 <meta property="og:url" content="http://stalary.com/2018/06/04/MySQL分页排序中的坑/index.html">
 <meta property="og:site_name" content="Stalary的小书房">
-<meta property="og:description" content="今天项目提测，被测出了一个奇怪的bug，第一页最后一条数据和第二页的第一条数据重复了，并且神奇的丢失了一个条数据，下面开始来分析一下这个场景。  场景为对一些作业进行按时间排序，但是有的作业时间事相同的。  对代码进行查看发现，代码并没有什么问题，只是简单的查询全集并按时间排序分页返回给前端。 所以去看一看mysql对limit的解释，从官方文档中发现了这样一句话  如果多个行在列中具有相同的值O">
+<meta property="og:description" content="今天项目提测，被测出了一个奇怪的bug，第一页最后一条数据和第二页的第一条数据重复了，并且神奇的丢失了一个条数据，下面开始来分析一下这个场景。   可以看到663202在第一页和第二页都出现了。  场景为对一些作业进行按时间排序，但是有的作业时间是相同的。  对代码进行查看发现，代码并没有什么问题，只是简单的查询全集并按时间排序分页返回给前端。 所以去看一看mysql对limit的解释，从官方文档">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-04T11:30:18.411Z">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9252736-ffa3c57101bdbd6a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9252736-5dbcb229f827a828.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-06-04T11:32:19.800Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL分页排序中的坑">
-<meta name="twitter:description" content="今天项目提测，被测出了一个奇怪的bug，第一页最后一条数据和第二页的第一条数据重复了，并且神奇的丢失了一个条数据，下面开始来分析一下这个场景。  场景为对一些作业进行按时间排序，但是有的作业时间事相同的。  对代码进行查看发现，代码并没有什么问题，只是简单的查询全集并按时间排序分页返回给前端。 所以去看一看mysql对limit的解释，从官方文档中发现了这样一句话  如果多个行在列中具有相同的值O">
+<meta name="twitter:description" content="今天项目提测，被测出了一个奇怪的bug，第一页最后一条数据和第二页的第一条数据重复了，并且神奇的丢失了一个条数据，下面开始来分析一下这个场景。   可以看到663202在第一页和第二页都出现了。  场景为对一些作业进行按时间排序，但是有的作业时间是相同的。  对代码进行查看发现，代码并没有什么问题，只是简单的查询全集并按时间排序分页返回给前端。 所以去看一看mysql对limit的解释，从官方文档">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/9252736-ffa3c57101bdbd6a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -382,8 +385,11 @@
 
       
         <p>今天项目提测，被测出了一个奇怪的bug，第一页最后一条数据和第二页的第一条数据重复了，并且神奇的丢失了一个条数据，下面开始来分析一下这个场景。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9252736-ffa3c57101bdbd6a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="屏幕快照 2018-06-04 19.29.11.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9252736-5dbcb229f827a828.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="屏幕快照 2018-06-04 19.29.19.png"></p>
+<p>可以看到663202在第一页和第二页都出现了。</p>
 <blockquote>
-<p>场景为对一些作业进行按时间排序，但是有的作业时间事相同的。</p>
+<p>场景为对一些作业进行按时间排序，但是有的作业时间是相同的。</p>
 </blockquote>
 <p>对代码进行查看发现，代码并没有什么问题，只是简单的查询全集并按时间排序分页返回给前端。</p>
 <p>所以去看一看mysql对limit的解释，从官方文档中发现了这样一句话</p>
@@ -414,6 +420,7 @@
 <li>给order by字段加上索引</li>
 </ol>
 </blockquote>
+<p><strong>世上没有解决不了的bug，也许只是方向不对</strong></p>
 
       
     </div>
