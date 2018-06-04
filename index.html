@@ -275,6 +275,194 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/06/04/MySQL分页排序中的坑/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stalary">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stalary的小书房">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/04/MySQL分页排序中的坑/" itemprop="url">MySQL分页排序中的坑</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-04T19:30:40+08:00">
+                2018-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/06/04/MySQL分页排序中的坑/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://stalary.com/2018/06/04/MySQL分页排序中的坑/" class="cy_cmt_count" data-xid="2018/06/04/MySQL分页排序中的坑/" itemprop="commentsCount" ></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天项目提测，被测出了一个奇怪的bug，第一页最后一条数据和第二页的第一条数据重复了，并且神奇的丢失了一个条数据，下面开始来分析一下这个场景。</p>
+<blockquote>
+<p>场景为对一些作业进行按时间排序，但是有的作业时间事相同的。</p>
+</blockquote>
+<p>对代码进行查看发现，代码并没有什么问题，只是简单的查询全集并按时间排序分页返回给前端。</p>
+<p>所以去看一看mysql对limit的解释，从官方文档中发现了这样一句话</p>
+<blockquote>
+<p>如果多个行在列中具有相同的值ORDER BY，则服务器可以按任意顺序自由返回这些行，并且根据总体执行计划可能会有所不同。换句话说，这些行的排序顺序对于无序列是非确定性的。</p>
+</blockquote>
+<p>根据这句话我们可以发现，在order by的值相同时，返回的顺序不一定一致。</p>
+<p>下面我们来思考一下造成这个坑的原因是什么呢？</p>
+<p>在MySQL 5.6版本，优化器在遇到order by xxx limit x,x 时，会做一个优化，使用优先队列，来进行排序，这样的好处在于在排序过程中，仅保留需要的n条数据即可。</p>
+<p>如果你已经熟悉了各大排序的特点，那么可以知道堆排序是不稳定排序，所以导致了今天的这个问题。</p>
+<p>下面分享一下各个排序的稳定性：</p>
+<blockquote>
+<ol>
+<li>冒泡排序：稳定</li>
+<li>选择排序：不稳定，每次选择最小的与之前交换，可能会将相同元素的顺序打乱</li>
+<li>插入排序：稳定</li>
+<li>快速排序：不稳定，不稳定发生在key与相遇点进行交换时。</li>
+<li>归并排序：稳定</li>
+<li>基数排序：稳定</li>
+<li>希尔排序：不稳定，插入顺序不同，相同元素可能在不同的插入顺序中分别排序</li>
+<li>堆排序：不稳定，可能子节点与父节点进行交换时，将两个相同元素顺序打乱，5(left) 6(root) 5(right) -&gt; 5 5 6，此时right位于5的left</li>
+</ol>
+</blockquote>
+<p>下面说一下问题的解决方法：</p>
+<blockquote>
+<ol>
+<li>order by后加一个唯一字段(id)进行排序</li>
+<li>给order by字段加上索引</li>
+</ol>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/05/30/kafkacluster/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -975,182 +1163,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://stalary.com/2018/04/23/jar/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="stalary">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stalary的小书房">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/23/jar/" itemprop="url">【java】打出指定类的jar包</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-23T14:10:40+08:00">
-                2018-04-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/jar/" itemprop="url" rel="index">
-                    <span itemprop="name">jar</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2018/04/23/jar/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://stalary.com/2018/04/23/jar/" class="cy_cmt_count" data-xid="2018/04/23/jar/" itemprop="commentsCount" ></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近接到了一个需求，由于两个服务较为耦合，需要复制多个pojo，为了防止这种冗余操作，所以选择了引入jar包的方法，今天来介绍一下如何打出指定类的jar包</p>
-<p>首先拿我原来写的用户中心为例子，在调用时，我可能需要一些pojo来进行反序列化对象</p>
-<ol>
-<li><p>首先使用maven插件进行打包<br><img src="https://upload-images.jianshu.io/upload_images/9252736-bbc253f659a77a78.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="maven插件打包"></p>
-</li>
-<li><p>然后我们找到这个jar，将其解压<br><img src="https://upload-images.jianshu.io/upload_images/9252736-6300741cfffd7094.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="解压结构图"></p>
-</li>
-<li><p>可以看出，这个jar包中包括了我们整个项目，但我们只需要data包，这是我们删除其他所有的冗余包，<strong>一定要保留完整路径，否则引入后编译时会找不到包</strong>。<br><img src="https://upload-images.jianshu.io/upload_images/9252736-c814d6b48ed2876e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="删除后结构图"></p>
-</li>
-<li><p>然后使用jar cvf usercenter.data.jar com 命令将删除冗余后的文件夹打成jar包</p>
-</li>
-<li><p>在pom.xml的同级目录下创建libs，将jar放入，然后在pom.xml中引入如下语句</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">			&lt;groupId&gt;usercenter&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;data&lt;/artifactId&gt;</span><br><span class="line">			&lt;scope&gt;system&lt;/scope&gt;</span><br><span class="line">			&lt;systemPath&gt;$&#123;basedir&#125;/libs/usercenter.data.jar&lt;/systemPath&gt;</span><br><span class="line">		&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>然后我们就可以在项目中进行使用了</li>
-</ol>
-<p><img src="https://upload-images.jianshu.io/upload_images/9252736-a10338dafa42eec4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="使用图"></p>
-<p>今天的介绍就到这里了，虽然很简单，但有时你也许会用上。</p>
-<p><strong>浩瀚的星辰，究竟何处才是我的归宿</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
- 
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1205,7 +1217,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1216,7 +1228,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
